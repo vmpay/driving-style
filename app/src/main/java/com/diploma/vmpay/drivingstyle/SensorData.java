@@ -1,6 +1,7 @@
 package com.diploma.vmpay.drivingstyle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,8 +17,10 @@ public class SensorData extends AppCompatActivity implements SensorEventListener
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private TextView tvWelcome;
+    private TextView tvAlpha;
     private String list = "";
     private float gravity[] = {0,0,0}, linear_acceleration[] = {0,0,0};
+    private float alpha = (float)0.8;
 
 
     @Override
@@ -25,8 +28,14 @@ public class SensorData extends AppCompatActivity implements SensorEventListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_data);
 
+        Intent intent = getIntent();
+        alpha = intent.getFloatExtra("alpha", (float)0.8);
+
         tvWelcome = (TextView) findViewById(R.id.tvWelcome);
+        tvAlpha = (TextView) findViewById(R.id.tvAlpha);
+        tvAlpha.setText("Alpha = " + alpha + "\n");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
         //list += mSensorManager.getSensorList(Sensor.TYPE_ALL).toString();
         //tvWelcome.setText(list);
 
@@ -45,7 +54,7 @@ public class SensorData extends AppCompatActivity implements SensorEventListener
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        final float alpha = (float) 0.8;
+
 
         // Isolate the force of gravity with the low-pass filter.
         gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
@@ -56,7 +65,7 @@ public class SensorData extends AppCompatActivity implements SensorEventListener
         linear_acceleration[0] = event.values[0] - gravity[0];
         linear_acceleration[1] = event.values[1] - gravity[1];
         linear_acceleration[2] = event.values[2] - gravity[2];
-        list = "Accelerometer\nx=" + linear_acceleration[0] + "\ny=" + linear_acceleration[1] + "\nz=" + linear_acceleration[2];
+        //list = "Accelerometer\nx=" + linear_acceleration[0] + "\ny=" + linear_acceleration[1] + "\nz=" + linear_acceleration[2];
         list = "Accelerometer\nx=";
         if (linear_acceleration[0]<0)
             list += "-\t";

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Driving Style</string>
+    <string name="alpha">Alpha: </string>
+    <string name="alphavalue">0.8</string>
+    <string name="Accelerometer">Accelerometer</string>
+    <string name="GPS">GPS</string>
 </resources>
