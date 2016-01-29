@@ -4,4 +4,7 @@
     <string name="alphavalue">0.8</string>
     <string name="Accelerometer">Accelerometer</string>
     <string name="GPS">GPS</string>
+    <string name="btnStart">Start</string>
+    <string name="btnFinish">Finish</string>
+    <string name="btnAnalyze">Analyze</string>
 </resources>

@@ -12,16 +12,20 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     TextView tvAlphaVal;
     float leftValue = (float) 0.8;
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
         Button btnAcc = (Button) findViewById(R.id.btnAccelerometer);
+        Button btnGPS = (Button) findViewById(R.id.btnGPS);
         SeekBar sbAlpha = (SeekBar) findViewById(R.id.sbAlpha);
         tvAlphaVal = (TextView) findViewById(R.id.AlphaValue);
 
         btnAcc.setOnClickListener(this);
+        //btnGPS.setOnClickListener(this);
         sbAlpha.setOnSeekBarChangeListener(this);
 
     }
@@ -31,30 +35,22 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         switch(v.getId())
         {
             case R.id.btnAccelerometer:
-                Intent intent = new Intent(this, SensorData.class);
+                intent = new Intent(this, SensorData.class);
                 intent.putExtra("alpha", leftValue);
                 startActivity(intent);
                 break;
+            case R.id.btnGPS:
+                intent = new Intent(this, GpsActivity.class);
+                startActivity(intent);
             default:
                 break;
         }
-
-
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         leftValue = (float)progress / 100;
-        //int rightValue = seekBar.getMax() - progress;
         tvAlphaVal.setText("" + leftValue);
-        /*
-        // настраиваем вес
-        lParams1.weight = leftValue;
-        lParams2.weight = rightValue;
-        // в текст кнопок пишем значения переменных
-        btn1.setText(String.valueOf(leftValue));
-        btn2.setText(String.valueOf(rightValue));
-        */
     }
 
     @Override

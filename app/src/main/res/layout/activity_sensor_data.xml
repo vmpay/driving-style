@@ -3,21 +3,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.diploma.vmpay.drivingstyle.SensorData"
     android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:id="@+id/tvAlpha"/>
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:id="@+id/tvAlpha"
+                android:text="@string/alpha"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:id="@+id/tvWelcome"
+                android:text="@string/Accelerometer"/>
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:id="@+id/gvGraph" />
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:id="@+id/tvWelcome"/>
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnStart"
+                android:text="@string/btnStart"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnFinish"
+                android:text="@string/btnFinish"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnDB"
+                android:text="Clear table"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnAnalyze"
+                android:text="@string/btnAnalyze"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
