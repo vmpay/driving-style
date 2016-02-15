@@ -131,6 +131,16 @@ public class SensorData extends AppCompatActivity implements SensorEventListener
         //mSensorManager.unregisterListener(this);
     }
 
+    /*protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(LOG_TAG, "onRestoreInstanceState");
+    }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(LOG_TAG, "onSaveInstanceState");
+    }*/
+
     @Override
     public void onClick(View v) {
         int PKid, tripID, number, accelerationx, accelerationy, accelerationz, count, i=0;
@@ -218,7 +228,6 @@ public class SensorData extends AppCompatActivity implements SensorEventListener
                 break;
             case R.id.btnFinish:
                 mSensorManager.unregisterListener(this);
-                //this.deleteDatabase("DrivingStyle.db");
                 break;
             case R.id.btnStart:
                 mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);

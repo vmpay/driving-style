@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Driving_Style</string>
+
+    <!-- AuthActivity resources -->
+    <string name="login">Login:</string>
+    <string name="loginHint">Enter your E-mail</string>
+    <string name="password">Password:</string>
+    <string name="passwordHint">Enter your password</string>
+    <string name="rememberMe">Remember me</string>
+    <string name="signIn">Sign In</string>
+    <string name="signUp">Sign Up</string>
+    <string name="toggleButtonTextOn">YES</string>
+    <string name="toggleButtonTextOff">NO</string>
+    <string name="registrationTitle">Sign Up Form</string>
+    <string name="repeatPassword">Repeat the password:</string>
+    <string name="error_invalid_password">Error invalid password</string>
+    <string name="error_field_required">Error filed required</string>
+    <string name="error_invalid_email">Error invalid email</string>
+    <string name="prompt_email">E-mail:</string>
+    <string name="prompt_password">Password:</string>
+    <string name="action_sign_in_short">action_sign_in_short:</string>
+
+
+    <!-- StartActivity resources -->
+    <string-array name="step_number" >
+        <item>\u2776 \u2781 \u2782 \u2783 \u2784 \u2785 \u2786</item>
+        <item>\u2780 \u2777 \u2782 \u2783 \u2784 \u2785 \u2786</item>
+        <item>\u2780 \u2781 \u2778 \u2783 \u2784 \u2785 \u2786</item>
+        <item>\u2780 \u2781 \u2782 \u2779 \u2784 \u2785 \u2786</item>
+        <item>\u2780 \u2781 \u2782 \u2783 \u277A \u2785 \u2786</item>
+        <item>\u2780 \u2781 \u2782 \u2783 \u2784 \u277B \u2786</item>
+        <item>\u2780 \u2781 \u2782 \u2783 \u2784 \u2785 \u277C</item>
+    </string-array>
+
+</resources>
