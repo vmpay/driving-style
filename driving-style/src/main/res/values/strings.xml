@@ -20,6 +20,12 @@
 	<string name="prompt_password">Password:</string>
 	<string name="action_sign_in_short">action_sign_in_short:</string>
 
+	<string-array name="email_autocomplete_full">
+		<item>gmail.com</item>
+		<item>onet.pl</item>
+		<item>rambler.ru</item>
+	</string-array>
+
 	<!-- TestActivity resources -->
 	<string name="accelerometer_title">Acceleration (m/s^2)</string>
 	<string name="start_recording_button">Start</string>

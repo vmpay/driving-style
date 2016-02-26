@@ -4,21 +4,20 @@ package com.diploma.vmpay.driving_style.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.ToggleButton;
 
-import com.diploma.vmpay.driving_style.AuthActivity;
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.StartActivity;
 import com.diploma.vmpay.driving_style.test.TestActivity;
 
 /**
@@ -28,11 +27,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 {
 
 	private final String LOG_TAG = "AuthActivity";
-	
+
 	private Button btnSignIn, btnSignUp;
 	private AutoCompleteTextView mEmailView;
 	private EditText mPasswordView;
 	private Switch swRememberMe;
+	private ArrayAdapter<String> adapterEmail;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
@@ -47,9 +47,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 		btnSignIn.setOnClickListener(this);
 		btnSignUp.setOnClickListener(this);
 
+		adapterEmail.createFromResource(getActivity(), R.array.email_autocomplete_full,
+				android.R.layout.simple_dropdown_item_1line);
+
 //        setupActionBar();
 		// Set up the login form.
 		mEmailView = (AutoCompleteTextView) v.findViewById(R.id.email);
+		mEmailView.setAdapter(adapterEmail);
+		//mEmailView.showDropDown();
 		//populateAutoComplete();
 
 		mPasswordView = (EditText) v.findViewById(R.id.password);
