@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvStepNumber"
         android:gravity="center"
-        style="@style/TextLarge"/>
+        style="@style/LargeTextStyle"/>
 
 </LinearLayout>

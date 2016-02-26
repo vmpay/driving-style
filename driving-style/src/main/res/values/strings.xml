@@ -1,35 +1,48 @@
 <resources>
-    <string name="app_name">Driving_Style</string>
+	<string name="app_name">Driving_Style</string>
 
-    <!-- AuthActivity resources -->
-    <string name="login">Login:</string>
-    <string name="loginHint">Enter your E-mail</string>
-    <string name="password">Password:</string>
-    <string name="passwordHint">Enter your password</string>
-    <string name="rememberMe">Remember me</string>
-    <string name="signIn">Sign In</string>
-    <string name="signUp">Sign Up</string>
-    <string name="toggleButtonTextOn">YES</string>
-    <string name="toggleButtonTextOff">NO</string>
-    <string name="registrationTitle">Sign Up Form</string>
-    <string name="repeatPassword">Repeat the password:</string>
-    <string name="error_invalid_password">Error invalid password</string>
-    <string name="error_field_required">Error filed required</string>
-    <string name="error_invalid_email">Error invalid email</string>
-    <string name="prompt_email">E-mail:</string>
-    <string name="prompt_password">Password:</string>
-    <string name="action_sign_in_short">action_sign_in_short:</string>
+	<!-- AuthActivity resources -->
+	<string name="login">Login:</string>
+	<string name="loginHint">Enter your E-mail</string>
+	<string name="password">Password:</string>
+	<string name="passwordHint">Enter your password</string>
+	<string name="rememberMe">Remember me</string>
+	<string name="signIn">Sign In</string>
+	<string name="signUp">Sign Up</string>
+	<string name="toggleButtonTextOn">YES</string>
+	<string name="toggleButtonTextOff">NO</string>
+	<string name="registrationTitle">Sign Up Form</string>
+	<string name="repeatPassword">Repeat the password:</string>
+	<string name="error_invalid_password">Error invalid password</string>
+	<string name="error_field_required">Error filed required</string>
+	<string name="error_invalid_email">Error invalid email</string>
+	<string name="prompt_email">E-mail:</string>
+	<string name="prompt_password">Password:</string>
+	<string name="action_sign_in_short">action_sign_in_short:</string>
+
+	<!-- TestActivity resources -->
+	<string name="accelerometer_title">Acceleration (m/s^2)</string>
+	<string name="start_recording_button">Start</string>
+	<string name="stop_recording_button">Stop</string>
+	<string name="tvAlpha">\u03B1 = 0.80</string>
+	<string name="start_acc_btn">Launch</string>
+	<string name="accelerometer_sensor">Accelerometer sensor</string>
+	<string name="acc_values">x = \ny = \nz = </string>
+	<string name="db_recording">DATABASE RECORDING</string>
+	<string name="gps_title">GPS</string>
+	<string name="gps_sensor">GPS sensor</string>
+	<string name="gps_values">Latitude\nLongitude \nElevation</string>
 
 
-    <!-- StartActivity resources -->
-    <string-array name="step_number" >
-        <item>\u2776 \u2781 \u2782 \u2783 \u2784 \u2785 \u2786</item>
-        <item>\u2780 \u2777 \u2782 \u2783 \u2784 \u2785 \u2786</item>
-        <item>\u2780 \u2781 \u2778 \u2783 \u2784 \u2785 \u2786</item>
-        <item>\u2780 \u2781 \u2782 \u2779 \u2784 \u2785 \u2786</item>
-        <item>\u2780 \u2781 \u2782 \u2783 \u277A \u2785 \u2786</item>
-        <item>\u2780 \u2781 \u2782 \u2783 \u2784 \u277B \u2786</item>
-        <item>\u2780 \u2781 \u2782 \u2783 \u2784 \u2785 \u277C</item>
-    </string-array>
+	<!-- StartActivity resources -->
+	<string-array name="step_number">
+		<item>\u2776 \u2781 \u2782 \u2783 \u2784 \u2785 \u2786</item>
+		<item>\u2780 \u2777 \u2782 \u2783 \u2784 \u2785 \u2786</item>
+		<item>\u2780 \u2781 \u2778 \u2783 \u2784 \u2785 \u2786</item>
+		<item>\u2780 \u2781 \u2782 \u2779 \u2784 \u2785 \u2786</item>
+		<item>\u2780 \u2781 \u2782 \u2783 \u277A \u2785 \u2786</item>
+		<item>\u2780 \u2781 \u2782 \u2783 \u2784 \u277B \u2786</item>
+		<item>\u2780 \u2781 \u2782 \u2783 \u2784 \u2785 \u277C</item>
+	</string-array>
 
 </resources>

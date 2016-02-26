@@ -1,39 +1,73 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+		<!-- Customize your theme here. -->
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="windowNoTitle">true</item>
+	</style>
 
-    <!-- Fonts -->
-    <style name="TextMedium" >
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textColorHint">?android:textColorHint</item>
-        <item name="android:textColorHighlight">?android:textColorHighlight</item>
-        <item name="android:textColorLink">?android:textColorLink</item>
-        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
-    </style>
+	<!-- Fonts -->
+	<style name="MediumInactiveTextStyle">
+		<item name="android:textColor">@color/textInactive</item>
+		<item name="android:textColorHint">?android:textColorHint</item>
+		<item name="android:textColorHighlight">?android:textColorHighlight</item>
+		<item name="android:textColorLink">?android:textColorLink</item>
+		<item name="android:textSize">@dimen/medium_font_size</item>
+	</style>
 
-    <style name="TextSmall" >
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textColorHint">?android:textColorHint</item>
-        <item name="android:textColorHighlight">?android:textColorHighlight</item>
-        <item name="android:textColorLink">?android:textColorLink</item>
-        <item name="android:textSize">@dimen/abc_text_size_body_1_material</item>
-    </style>
+	<style name="SmallInactiveTextStyle">
+		<item name="android:textColor">@color/textInactive</item>
+		<item name="android:textColorHint">?android:textColorHint</item>
+		<item name="android:textColorHighlight">?android:textColorHighlight</item>
+		<item name="android:textColorLink">?android:textColorLink</item>
+		<item name="android:textSize">@dimen/small_font_size</item>
+	</style>
 
-    <style name="TextLarge" >
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textColorHint">?android:textColorHint</item>
-        <item name="android:textColorHighlight">?android:textColorHighlight</item>
-        <item name="android:textColorLink">?android:textColorLink</item>
-        <item name="android:textSize">@dimen/abc_text_size_large_material</item>
-        <item name="android:layout_margin">@dimen/activity_vertical_margin</item>
-        <item name="android:gravity">center</item>
-    </style>
+	<style name="MediumTextStyle">
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:textColorHint">?android:textColorHint</item>
+		<item name="android:textColorHighlight">?android:textColorHighlight</item>
+		<item name="android:textColorLink">?android:textColorLink</item>
+		<item name="android:textSize">@dimen/medium_font_size</item>
+	</style>
+
+	<style name="SmallTextStyle">
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:textColorHint">?android:textColorHint</item>
+		<item name="android:textColorHighlight">?android:textColorHighlight</item>
+		<item name="android:textColorLink">?android:textColorLink</item>
+		<item name="android:textSize">@dimen/small_font_size</item>
+	</style>
+
+	<style name="LargeTextStyle">
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:textColorHint">?android:textColorHint</item>
+		<item name="android:textColorHighlight">?android:textColorHighlight</item>
+		<item name="android:textColorLink">?android:textColorLink</item>
+		<item name="android:textSize">@dimen/large_font_size</item>
+		<item name="android:layout_margin">@dimen/activity_vertical_margin</item>
+		<item name="android:gravity">center</item>
+	</style>
+
+	<style name="BigTitleStyle">
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:textColorHint">?android:textColorHint</item>
+		<item name="android:textColorHighlight">?android:textColorHighlight</item>
+		<item name="android:textColorLink">?android:textColorLink</item>
+		<item name="android:textSize">@dimen/large_font_size</item>
+		<item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+		<item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:gravity">center</item>
+	</style>
+
+	<style name="SharedButtonStyle">
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:textSize">@dimen/small_font_size</item>
+		<item name="android:background">@drawable/shared_button_bg</item>
+	</style>
 
 </resources>
