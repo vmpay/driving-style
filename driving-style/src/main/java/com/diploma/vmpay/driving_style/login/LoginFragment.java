@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,7 @@ import com.diploma.vmpay.driving_style.test.TestActivity;
 /**
  * Created by Andrew on 10.02.2016.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener
+public class LoginFragment extends Fragment implements View.OnClickListener, TextWatcher
 {
 
 	private final String LOG_TAG = "AuthActivity";
@@ -54,6 +56,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 		// Set up the login form.
 		mEmailView = (AutoCompleteTextView) v.findViewById(R.id.email);
 		mEmailView.setAdapter(adapterEmail);
+		mEmailView.addTextChangedListener(this);
 		//populateAutoComplete();
 
 		mPasswordView = (EditText) v.findViewById(R.id.password);
@@ -156,5 +159,30 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 	{
 		//TODO: Replace this with your own logic
 		return password.length() > 4;
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count, int after)
+	{
+		//Log.d(LOG_TAG, "LoginFragment: beforeTextChange s = " + s);
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count)
+	{
+		//Log.d(LOG_TAG, "LoginFragment: onTextChange s = " + s);
+		String string = s.toString().substring((s.length()-1));
+		Log.d(LOG_TAG, "Last char = " + string);
+		if (string.equals("@"))
+		{
+			Log.d(LOG_TAG, "inside if" + string);
+			mEmailView.showDropDown();
+		}
+	}
+
+	@Override
+	public void afterTextChanged(Editable s)
+	{
+		//Log.d(LOG_TAG, "LoginFragment: afterTextChange s = " + s);
 	}
 }
