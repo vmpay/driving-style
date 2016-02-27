@@ -32,7 +32,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 	private AutoCompleteTextView mEmailView;
 	private EditText mPasswordView;
 	private Switch swRememberMe;
-	private ArrayAdapter<String> adapterEmail;
+	private ArrayAdapter<CharSequence> adapterEmail;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
@@ -47,14 +47,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 		btnSignIn.setOnClickListener(this);
 		btnSignUp.setOnClickListener(this);
 
-		adapterEmail.createFromResource(getActivity(), R.array.email_autocomplete_full,
-				android.R.layout.simple_dropdown_item_1line);
+		adapterEmail = ArrayAdapter.createFromResource(getActivity(),
+				R.array.email_autocomplete_full, android.R.layout.simple_dropdown_item_1line);
 
 //        setupActionBar();
 		// Set up the login form.
 		mEmailView = (AutoCompleteTextView) v.findViewById(R.id.email);
 		mEmailView.setAdapter(adapterEmail);
-		//mEmailView.showDropDown();
 		//populateAutoComplete();
 
 		mPasswordView = (EditText) v.findViewById(R.id.password);
@@ -75,6 +74,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 					Intent intent = new Intent(getActivity(), TestActivity.class);
 					Log.d(LOG_TAG, "Intent is starting");
 					startActivity(intent);
+					//mEmailView.showDropDown();
 				}
 				else
 				{
