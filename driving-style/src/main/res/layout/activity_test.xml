@@ -19,76 +19,11 @@
 			android:layout_marginRight="@dimen/activity_horizontal_margin"
 			android:orientation="vertical">
 
-			<TextView
-				style="@style/LargeTextStyle"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/accelerometer_title"/>
-
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:orientation="horizontal">
-
-				<TextView
-					style="@style/MediumInactiveTextStyle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/tvAlpha"/>
-
-				<SeekBar
-					android:id="@+id/sbAlpha"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_margin="@dimen/activity_vertical_margin"
-					android:layout_weight="1"
-					android:max="100"
-					android:progress="80"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:orientation="horizontal">
-
-				<TextView
-					style="@style/MediumInactiveTextStyle"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:text="@string/accelerometer_sensor"/>
-
-				<ToggleButton
-					android:id="@+id/tbAccelerometer"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal">
-
-				<TextView
-					style="@style/MediumTextStyle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/acc_values"/>
-
-				<TextView
-					android:id="@+id/tvAccValues"
-					style="@style/MediumTextStyle"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:text="0.0\n0.0\n0.0"/>
-
-			</LinearLayout>
+				android:orientation="vertical"
+				android:id="@+id/llAccelerometerFragment"/>
 
 			<View
 				android:layout_width="match_parent"

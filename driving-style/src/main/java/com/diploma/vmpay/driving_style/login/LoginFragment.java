@@ -85,7 +85,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 				}
 				break;
 			case R.id.btnSignUp:
-				Fragment registrationFragment = new RegistrationFragment();
+				RegistrationFragment registrationFragment = new RegistrationFragment();
 				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 				fragmentTransaction.replace(R.id.fragmentLoginActivity, registrationFragment);
 				fragmentTransaction.addToBackStack(null);
@@ -171,7 +171,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 	public void onTextChanged(CharSequence s, int start, int before, int count)
 	{
 		//Log.d(LOG_TAG, "LoginFragment: onTextChange s = " + s);
-		String string = s.toString().substring((s.length()-1));
+		String string = "";
+		if (s.length()>0)
+			string = s.toString().substring((s.length()-1));
 		Log.d(LOG_TAG, "Last char = " + string);
 		if (string.equals("@"))
 		{
