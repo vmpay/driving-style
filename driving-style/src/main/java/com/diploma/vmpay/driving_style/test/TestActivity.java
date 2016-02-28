@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.sensors.AccelerometerFragment;
 
 public class TestActivity extends AppCompatActivity
 {
@@ -17,6 +18,7 @@ public class TestActivity extends AppCompatActivity
 		Log.d(LOG_TAG, "onCreate() TestActivity");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
+		//TODO: check sensors availability
 
 		AccelerometerFragment accelerometerFragment = new AccelerometerFragment();
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

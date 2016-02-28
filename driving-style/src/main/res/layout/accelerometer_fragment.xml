@@ -17,10 +17,16 @@
 		android:orientation="horizontal">
 
 		<TextView
+		style="@style/MediumInactiveTextStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/tvAlpha"/>
+
+		<TextView
 			style="@style/MediumInactiveTextStyle"
+			android:id="@+id/tvAlpha"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/tvAlpha"/>
+			android:layout_height="wrap_content"/>
 
 		<SeekBar
 			android:id="@+id/sbAlpha"
