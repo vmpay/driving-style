@@ -55,10 +55,10 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 							" user_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.USER_ID) +
 							" start_time " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.START_TIME) +
 							" finish_time " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.FINISH_TIME) +
-							"\nmark " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.MARK) +
+							" mark " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.MARK) +
 							//" acc_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_ID) +
 							" time_stamp " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.TIME_STAMP) +
-							"\nacc_x " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_X) +
+							" acc_x " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_X) +
 							" acc_Y " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_Y) +
 							" acc_Z " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_Z));
 				}

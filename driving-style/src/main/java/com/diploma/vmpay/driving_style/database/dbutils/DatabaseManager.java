@@ -36,13 +36,13 @@ public class DatabaseManager
 
 	public boolean addTrip(TripEntity tripEntity)
 	{
-		Log.d("DB", "INSERT user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
+		Log.d("DB", "INSERT trip user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
 				+ " mark " + tripEntity.mark);
 		parentModel = new TripModel(tripEntity);
 		long success = databaseAccess.insert(parentModel);
 		if(success > 0)
 		{
-			Log.d("DB", "Transaction successful");
+			Log.d("DB", "Transaction successful trip_id = " + success);
 			return true;
 		}
 		Log.d("DB", "Transaction failed");
@@ -54,7 +54,7 @@ public class DatabaseManager
 		Log.d("DB", "INSERT user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
 				+ " mark " + tripEntity.mark);
 		parentModel = new TripModel(tripEntity);
-		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "=" + tripEntity.start_time);
+		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "='" + tripEntity.start_time + "'");
 		long success = databaseAccess.insert(parentModel);
 		if(success > 0)
 		{
@@ -100,7 +100,7 @@ public class DatabaseManager
 	{
 		Log.d(LOG_TAG, "getTrip: start_time = " + start_time);
 		parentModel = new TripModel();
-		//parentModel.setWhereClause(TripModel.TripNames.START_TIME + "=" + start_time);
+		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "='" + start_time + "'");
 		List<ContentValues> results = databaseAccess.select(parentModel);
 		Log.d("DA", "SELECT Trip");
 		return results;
@@ -110,12 +110,12 @@ public class DatabaseManager
 
 	public boolean addAccData(AccDataEntity accDataEntity)
 	{
-		Log.d("DB", "INSERT trip_id " + accDataEntity.trip_id + " time_stamp " + accDataEntity.time_stamp);
+		Log.d("DB", "INSERT accData trip_id " + accDataEntity.trip_id + " time_stamp " + accDataEntity.time_stamp);
 		parentModel = new AccDataModel(accDataEntity);
 		long success = databaseAccess.insert(parentModel);
 		if(success > 0)
 		{
-			Log.d("DB", "Transaction successful");
+			Log.d("DB", "Transaction successful acc_id = " + success);
 			return true;
 		}
 		Log.d("DB", "Transaction failed");

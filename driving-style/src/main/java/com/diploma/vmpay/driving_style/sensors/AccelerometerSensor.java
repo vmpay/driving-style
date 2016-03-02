@@ -84,9 +84,9 @@ public class AccelerometerSensor implements SensorEventListener
 		else
 			list += "\n\t";
 		list += abs(linear_acceleration[2]);
-		Log.d(LOG_TAG, list);
+		//Log.d(LOG_TAG, list);
 		textView.setText(list);
-		accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss_dd-MM-yyyy").format(new Date()),
+		accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
 				linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
 		databaseManager.addAccData(accDataEntity);
 	}
@@ -107,5 +107,6 @@ public class AccelerometerSensor implements SensorEventListener
 	public void Stop()
 	{
 		mSensorManager.unregisterListener(this);
+		Log.d(LOG_TAG, "AccSensor: unregisterListener");
 	}
 }

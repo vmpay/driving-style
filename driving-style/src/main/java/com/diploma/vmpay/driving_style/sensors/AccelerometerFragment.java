@@ -34,11 +34,12 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	private ToggleButton tbLaunch;
 	private double alpha = 0.8;
 	private AccelerometerSensor accelerometerSensor;
-	private SimpleDateFormat start_time, finish_time;
+	private SimpleDateFormat simpleDateFormat;
 	private DatabaseManager databaseManager;
 	private TripEntity tripEntity;
 	private List<ContentValues> resultTable;
 	private long trip_id = -1;
+	private Date startDate, finishDate;
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,13 +87,14 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	{
 		Log.d(LOG_TAG, "AccFragment: onCheckedChanged isChecked = " + isChecked);
 		databaseManager = new DatabaseManager(getActivity());
+		simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy");
 		if(isChecked)
 		{
+			startDate = new Date();
 			accelerometerSensor = new AccelerometerSensor(alpha, getActivity(), tvAccValues);
-			start_time = new SimpleDateFormat("HH:mm:ss_dd-MM-yyyy");
-			tripEntity = new TripEntity(0, start_time.format(new Date()), start_time.format(new Date()), -1);
+			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
 			databaseManager.addTrip(tripEntity);
-			resultTable = databaseManager.getTrip(start_time.format(new Date()));
+			resultTable = databaseManager.getTrip(simpleDateFormat.format(startDate));
 			if (resultTable.size() != 0)
 				trip_id = resultTable.get(0).getAsLong(TripModel.TripNames.ID);
 			accelerometerSensor.Start(trip_id);
@@ -101,8 +103,9 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		else
 		{
 			accelerometerSensor.Stop();
-			finish_time = new SimpleDateFormat("HH:mm:ss_dd-MM-yyyy");
-			tripEntity = new TripEntity(0, start_time.format(new Date()), finish_time.format(new Date()), -1);
+			finishDate = new Date();
+			tripEntity = new TripEntity(0, simpleDateFormat.format(new Date()),
+					simpleDateFormat.format(finishDate), -1);
 			databaseManager.addTrip(tripEntity);
 			sbAlpha.setEnabled(true);
 		}
