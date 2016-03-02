@@ -8,6 +8,13 @@ import android.hardware.SensorManager;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.TextView;
+
+import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static java.lang.Math.abs;
 
@@ -23,13 +30,17 @@ public class AccelerometerSensor implements SensorEventListener
 	private String list = "";
 	private double gravity[] = {0,0,0}, linear_acceleration[] = {0,0,0};
 	private double alpha = (double)0.8;
-	private AccelerometerFragment accelerometerFragment;
 	private Context context;
+	private TextView textView;
+	private DatabaseManager databaseManager;
+	private AccDataEntity accDataEntity;
+	private long trip_id = -1;
 
-	AccelerometerSensor(double alpha, Context context)
+	AccelerometerSensor(double alpha, Context context, TextView textView)
 	{
 		this.alpha = alpha;
 		this.context = context;
+		this.textView = textView;
 		mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 		// Use the accelerometer.
 		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
@@ -41,7 +52,7 @@ public class AccelerometerSensor implements SensorEventListener
 			//TODO: delete this stuff after checking
 			Log.d(LOG_TAG, "Sorry, there are no accelerometers on your device.");
 		}
-		accelerometerFragment = new AccelerometerFragment();
+		databaseManager = new DatabaseManager(context);
 	}
 
 	@Override
@@ -57,27 +68,27 @@ public class AccelerometerSensor implements SensorEventListener
 		linear_acceleration[1] = event.values[1] - gravity[1];
 		linear_acceleration[2] = event.values[2] - gravity[2];
 
-		list = "Accelerometer\nx=";
+		list = "";
 		if (linear_acceleration[0]<0)
 			list += "-\t";
 		else
 			list += "\t";
 		list += abs(linear_acceleration[0]);
-		list += "\ny=";
 		if (linear_acceleration[1]<0)
-			list += "-\t";
+			list += "\n-\t";
 		else
-			list += "\t";
+			list += "\n\t";
 		list += abs(linear_acceleration[1]);
-		list += "\nz=";
 		if (linear_acceleration[2]<0)
-			list += "-\t";
+			list += "\n-\t";
 		else
-			list += "\t";
+			list += "\n\t";
 		list += abs(linear_acceleration[2]);
 		Log.d(LOG_TAG, list);
-		accelerometerFragment.updateTextView(list);
-		//updateTextView(list);
+		textView.setText(list);
+		accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss_dd-MM-yyyy").format(new Date()),
+				linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
+		databaseManager.addAccData(accDataEntity);
 	}
 
 	@Override
@@ -87,8 +98,9 @@ public class AccelerometerSensor implements SensorEventListener
 	}
 
 
-	public void Start()
+	public void Start(long trip_id)
 	{
+		this.trip_id = trip_id;
 		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
 	}
 
