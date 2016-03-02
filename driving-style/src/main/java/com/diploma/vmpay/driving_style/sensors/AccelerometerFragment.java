@@ -104,9 +104,9 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		{
 			accelerometerSensor.Stop();
 			finishDate = new Date();
-			tripEntity = new TripEntity(0, simpleDateFormat.format(new Date()),
+			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate),
 					simpleDateFormat.format(finishDate), -1);
-			databaseManager.addTrip(tripEntity);
+			//databaseManager.addTrip(tripEntity);
 			sbAlpha.setEnabled(true);
 		}
 	}

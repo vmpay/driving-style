@@ -28,7 +28,7 @@ public class TripDataView extends ParentModel
 		public final static String ACC_Y = "acc_y";
 		public final static String ACC_Z = "acc_z";
 
-		public final static String TABLENAME = "TripDataView";
+		public final static String TABLENAME = "tripdataview";
 		public final static String CREATE_TABLE = "CREATE VIEW " + TABLENAME +
 				" AS SELECT " +
 				//TripModel.TripNames.ID + ", " +

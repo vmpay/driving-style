@@ -1,6 +1,7 @@
 package com.diploma.vmpay.driving_style.database.dbmodels;
 
 import android.content.ContentValues;
+import android.util.Log;
 
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
 
@@ -22,7 +23,7 @@ public class TripModel extends ParentModel
 		public final static String FINISH_TIME = "finish_time";
 		public final static String MARK = "mark";
 
-		public final static String TABLENAME = "TripTable";
+		public final static String TABLENAME = "triptable";
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
 				" (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				USER_ID + " INTEGER NOT NULL, " +

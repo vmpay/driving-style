@@ -24,7 +24,7 @@ public class AccDataModel extends ParentModel
 		public final static String ACC_Y = "acc_y";
 		public final static String ACC_Z = "acc_z";
 
-		public final static String TABLENAME = "AccDataTable";
+		public final static String TABLENAME = "accdatatable";
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
 				" (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				TRIP_ID + " INTEGER NOT NULL, " +

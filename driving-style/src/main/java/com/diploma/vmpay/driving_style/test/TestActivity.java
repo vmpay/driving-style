@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
+import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
 import com.diploma.vmpay.driving_style.sensors.AccelerometerFragment;
 
@@ -19,7 +21,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 {
 	private final String LOG_TAG = "TestActivity";
 
-	private Button btnStart;
+	private Button btnStart, btnStop;
 	private List<ContentValues> tripDataView;
 	private DatabaseManager databaseManager;
 
@@ -32,8 +34,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		//TODO: check sensors availability
 
 		btnStart = (Button) findViewById(R.id.btnStartRecording);
+		btnStop = (Button) findViewById(R.id.btnStopRecording);
 
 		btnStart.setOnClickListener(this);
+		btnStop.setOnClickListener(this);
+		databaseManager = new DatabaseManager(this);
 
 		AccelerometerFragment accelerometerFragment = new AccelerometerFragment();
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -47,11 +52,20 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		switch(v.getId())
 		{
 			case R.id.btnStartRecording:
-				databaseManager = new DatabaseManager(this);
-				tripDataView = databaseManager.getTripData();
+				tripDataView = databaseManager.getAllTrips();
 				for (int i = 0; i < tripDataView.size(); i++)
 				{
-					Log.d(LOG_TAG, "TA: trip_id " + //tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ID) +
+					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(TripModel.TripNames.ID) +
+							" user_id " + tripDataView.get(i).getAsLong(TripModel.TripNames.USER_ID) +
+							" start_time " + tripDataView.get(i).getAsString(TripModel.TripNames.START_TIME) +
+							" finish_time " + tripDataView.get(i).getAsString(TripModel.TripNames.FINISH_TIME) +
+							" mark " + tripDataView.get(i).getAsLong(TripModel.TripNames.MARK));
+				}
+				/*tripDataView = databaseManager.getTripData();
+				for (int i = 0; i < tripDataView.size(); i++)
+				{
+					Log.d(LOG_TAG, "TA: i = " + i +
+							//" trip_id " +tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ID) +
 							" user_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.USER_ID) +
 							" start_time " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.START_TIME) +
 							" finish_time " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.FINISH_TIME) +
@@ -61,6 +75,18 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 							" acc_x " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_X) +
 							" acc_Y " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_Y) +
 							" acc_Z " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_Z));
+				}*/
+				break;
+			case R.id.btnStopRecording:
+				tripDataView = databaseManager.getAccData();
+				for (int i = 0; i < tripDataView.size(); i++)
+				{
+					Log.d(LOG_TAG, " acc_id " + tripDataView.get(i).getAsLong(AccDataModel.AccDataNames.ID) +
+							" trip_id " + tripDataView.get(i).getAsLong(AccDataModel.AccDataNames.TRIP_ID) +
+							" time_stamp " + tripDataView.get(i).getAsString(AccDataModel.AccDataNames.TIME_STAMP) +
+							" acc_x " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_X) +
+							" acc_Y " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_Y) +
+							" acc_Z " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_Z));
 				}
 				break;
 		}
