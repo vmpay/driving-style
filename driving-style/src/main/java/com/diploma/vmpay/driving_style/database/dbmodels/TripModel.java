@@ -17,7 +17,7 @@ public class TripModel extends ParentModel
 
 	public static class TripNames
 	{
-		public final static String ID = "id";
+		public final static String ID = "trip_id";
 		public final static String USER_ID = "user_id";
 		public final static String START_TIME = "start_time";
 		public final static String FINISH_TIME = "finish_time";

@@ -6,9 +6,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
@@ -35,6 +35,7 @@ public class AccelerometerSensor implements SensorEventListener
 	private DatabaseManager databaseManager;
 	private AccDataEntity accDataEntity;
 	private long trip_id = -1;
+	private boolean recordingFlag = false, sensorListenerFlag = false;
 
 	AccelerometerSensor(double alpha, Context context, TextView textView)
 	{
@@ -86,9 +87,12 @@ public class AccelerometerSensor implements SensorEventListener
 		list += abs(linear_acceleration[2]);
 		//Log.d(LOG_TAG, list);
 		textView.setText(list);
-		accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
-				linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
-		databaseManager.addAccData(accDataEntity);
+		if (recordingFlag)
+		{
+			accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
+					linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
+			databaseManager.addAccData(accDataEntity);
+		}
 	}
 
 	@Override
@@ -102,11 +106,38 @@ public class AccelerometerSensor implements SensorEventListener
 	{
 		this.trip_id = trip_id;
 		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
+		sensorListenerFlag = true;
 	}
 
 	public void Stop()
 	{
+		if (recordingFlag)
+		{
+			recordingFlag = false;
+			Toast.makeText(context, "Recording stopped", Toast.LENGTH_SHORT).show();
+		}
 		mSensorManager.unregisterListener(this);
+		sensorListenerFlag = false;
 		Log.d(LOG_TAG, "AccSensor: unregisterListener");
+
+	}
+
+	public boolean StartRecording()
+	{
+		if (sensorListenerFlag)
+		{
+			recordingFlag = true;
+			return true;
+		} else
+		{
+			Toast.makeText(context, "Turn on acc sensor first", Toast.LENGTH_SHORT).show();
+			//Snackbar.make(null, "Snackbar test", Snackbar.LENGTH_SHORT).show();
+			return false;
+		}
+	}
+
+	public void StopRecording()
+	{
+		recordingFlag = false;
 	}
 }

@@ -39,7 +39,8 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	private TripEntity tripEntity;
 	private List<ContentValues> resultTable;
 	private long trip_id = -1;
-	private Date startDate, finishDate;
+	private Date startDate, finishDate, oldStartDate;
+	private boolean startRecordingFlag = false;
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +59,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 
 		tvAlpha.setText("0.80");
 
-		//accelerometerSensor = new AccelerometerSensor(alpha, getActivity(), tvAccValues);
+		accelerometerSensor = new AccelerometerSensor(alpha, getActivity(), tvAccValues);
 
 		return v;
 	}
@@ -91,6 +92,8 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		if(isChecked)
 		{
 			startDate = new Date();
+			finishDate = startDate;
+			oldStartDate = startDate;
 			accelerometerSensor = new AccelerometerSensor(alpha, getActivity(), tvAccValues);
 			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
 			databaseManager.addTrip(tripEntity);
@@ -103,12 +106,38 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		else
 		{
 			accelerometerSensor.Stop();
+			if (startRecordingFlag)
+			{
+				StopRecording();
+			}
+			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate),
+					simpleDateFormat.format(oldStartDate), -1);
+			databaseManager.deleteTrip(tripEntity);
+			sbAlpha.setEnabled(true);
+		}
+	}
+
+	public void StartRecording()
+	{
+		if (accelerometerSensor.StartRecording())
+		{
+			startRecordingFlag = true;
+			startDate = new Date();
+		}
+	}
+
+	public void StopRecording()
+	{
+		accelerometerSensor.StopRecording();
+		if (startRecordingFlag)
+		{
 			finishDate = new Date();
 			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate),
 					simpleDateFormat.format(finishDate), -1);
-			//databaseManager.addTrip(tripEntity);
-			sbAlpha.setEnabled(true);
+			databaseManager.updateTrip(trip_id, tripEntity);
+			startRecordingFlag = false;
 		}
+
 	}
 
 }

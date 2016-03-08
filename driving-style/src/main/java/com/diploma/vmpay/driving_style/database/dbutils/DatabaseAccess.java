@@ -93,7 +93,7 @@ public class DatabaseAccess
 
 	public long update(ParentModel parentModel)
 	{
-		long success = database.update(parentModel.getTableName(), parentModel.getContentValues(), parentModel.getWhereClause(), null);
+		long success = database.update(parentModel.getTableName(), parentModel.getInsert(), parentModel.getWhereClause(), null);
 		return success;
 	}
 

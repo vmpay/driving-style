@@ -51,11 +51,26 @@ public class DatabaseManager
 
 	public boolean updateTrip(TripEntity tripEntity)
 	{
-		Log.d("DB", "INSERT user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
+		Log.d("DB", "UPDATE user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
 				+ " mark " + tripEntity.mark);
 		parentModel = new TripModel(tripEntity);
 		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "='" + tripEntity.start_time + "'");
-		long success = databaseAccess.insert(parentModel);
+		long success = databaseAccess.update(parentModel);
+		if(success > 0)
+		{
+			Log.d("DB", "Transaction successful");
+			return true;
+		}
+		Log.d("DB", "Transaction failed");
+		return false;
+	}
+
+	public boolean updateTrip(long index, TripEntity tripEntity)
+	{
+		Log.d("DB", "UPDATE trip_id " + index);
+		parentModel = new TripModel(tripEntity);
+		parentModel.setWhereClause(TripModel.TripNames.ID + "=" + index);
+		long success = databaseAccess.update(parentModel);
 		if(success > 0)
 		{
 			Log.d("DB", "Transaction successful");
@@ -67,9 +82,25 @@ public class DatabaseManager
 
 	public boolean deleteTrip(TripEntity tripEntity)
 	{
-		Log.d("DB", "DELETE id " + tripEntity.user_id);
+		Log.d("DB", "DELETE finish_time " + tripEntity.finish_time);
 		parentModel = new TripModel(tripEntity);
-		parentModel.setWhereClause(TripModel.TripNames.USER_ID + "=" + tripEntity.user_id);
+		parentModel.setWhereClause(TripModel.TripNames.FINISH_TIME + "='" + tripEntity.finish_time + "'");
+		long success = databaseAccess.delete(parentModel);
+		if(success > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean deleteTrip(long index)
+	{
+		Log.d("DB", "DELETE ID " + index);
+		parentModel = new TripModel();
+		parentModel.setWhereClause(TripModel.TripNames.ID + "=" + index);
 		long success = databaseAccess.delete(parentModel);
 		if(success > 0)
 		{

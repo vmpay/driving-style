@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
@@ -24,6 +23,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 	private Button btnStart, btnStop;
 	private List<ContentValues> tripDataView;
 	private DatabaseManager databaseManager;
+	private AccelerometerFragment accelerometerFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,7 +40,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		btnStop.setOnClickListener(this);
 		databaseManager = new DatabaseManager(this);
 
-		AccelerometerFragment accelerometerFragment = new AccelerometerFragment();
+		accelerometerFragment = new AccelerometerFragment();
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.replace(R.id.llAccelerometerFragment, accelerometerFragment, "SettingsMainFragment");
 		fragmentTransaction.commit();
@@ -52,6 +52,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		switch(v.getId())
 		{
 			case R.id.btnStartRecording:
+				Log.d(LOG_TAG, "TA: Start recording");
+				accelerometerFragment.StartRecording();
 				tripDataView = databaseManager.getAllTrips();
 				for (int i = 0; i < tripDataView.size(); i++)
 				{
@@ -78,16 +80,33 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				}*/
 				break;
 			case R.id.btnStopRecording:
-				tripDataView = databaseManager.getAccData();
+				Log.d(LOG_TAG, "TA: Finish recording");
+				accelerometerFragment.StopRecording();
+//				tripDataView = databaseManager.getAccData();
+//				for (int i = 0; i < tripDataView.size(); i++)
+//				{
+//					Log.d(LOG_TAG, " acc_id " + tripDataView.get(i).getAsLong(AccDataModel.AccDataNames.ID) +
+//							" trip_id " + tripDataView.get(i).getAsLong(AccDataModel.AccDataNames.TRIP_ID) +
+//							" time_stamp " + tripDataView.get(i).getAsString(AccDataModel.AccDataNames.TIME_STAMP) +
+//							" acc_x " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_X) +
+//							" acc_Y " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_Y) +
+//							" acc_Z " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_Z));
+//				}
+				/*tripDataView = databaseManager.getTripData();
 				for (int i = 0; i < tripDataView.size(); i++)
 				{
-					Log.d(LOG_TAG, " acc_id " + tripDataView.get(i).getAsLong(AccDataModel.AccDataNames.ID) +
-							" trip_id " + tripDataView.get(i).getAsLong(AccDataModel.AccDataNames.TRIP_ID) +
-							" time_stamp " + tripDataView.get(i).getAsString(AccDataModel.AccDataNames.TIME_STAMP) +
-							" acc_x " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_X) +
-							" acc_Y " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_Y) +
-							" acc_Z " + tripDataView.get(i).getAsDouble(AccDataModel.AccDataNames.ACC_Z));
-				}
+					Log.d(LOG_TAG, "TA: i = " + i +
+							" trip_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ID) +
+							" user_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.USER_ID) +
+							" start_time " + tripDataView.get(i).getAsString(TripDataView.TripDataNames.START_TIME) +
+							" finish_time " + tripDataView.get(i).getAsString(TripDataView.TripDataNames.FINISH_TIME) +
+							" mark " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.MARK) +
+							//" acc_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_ID) +
+							" time_stamp " + tripDataView.get(i).getAsString(TripDataView.TripDataNames.TIME_STAMP) +
+							" acc_x " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_X) +
+							" acc_Y " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Y) +
+							" acc_Z " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Z));
+				}*/
 				break;
 		}
 	}
