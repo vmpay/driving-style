@@ -20,10 +20,10 @@
 			android:orientation="vertical">
 
 			<LinearLayout
+				android:id="@+id/llAccelerometerFragment"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:id="@+id/llAccelerometerFragment"/>
+				android:orientation="vertical"/>
 
 			<View
 				android:layout_width="match_parent"
@@ -31,53 +31,11 @@
 				android:layout_margin="@dimen/view_margin"
 				android:background="@color/textInactive"/>
 
-			<TextView
-				style="@style/LargeTextStyle"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/gps_title"/>
-
 			<LinearLayout
+				android:id="@+id/llGpsFragment"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:orientation="horizontal">
-
-				<TextView
-					style="@style/MediumInactiveTextStyle"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:text="@string/gps_sensor"/>
-
-				<ToggleButton
-					android:id="@+id/tbGPS"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal">
-
-				<TextView
-					style="@style/MediumTextStyle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/gps_values"/>
-
-				<TextView
-					android:id="@+id/tvGpsValues"
-					style="@style/MediumTextStyle"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1"
-					android:text="0.0\n0.0\n0.0"/>
-
-			</LinearLayout>
+				android:orientation="vertical"/>
 
 			<View
 				android:layout_width="match_parent"

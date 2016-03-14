@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 
 	private TextView tvAlpha, tvAccValues;
 	private SeekBar sbAlpha;
-	private ToggleButton tbLaunch;
+	public ToggleButton tbLaunch;
 	private double alpha = 0.8;
 	private AccelerometerSensor accelerometerSensor;
 	private SimpleDateFormat simpleDateFormat;
@@ -102,6 +103,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 				trip_id = resultTable.get(0).getAsLong(TripModel.TripNames.ID);
 			accelerometerSensor.Start(trip_id);
 			sbAlpha.setEnabled(false);
+			getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 		else
 		{
@@ -114,6 +116,11 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 					simpleDateFormat.format(oldStartDate), -1);
 			databaseManager.deleteTrip(tripEntity);
 			sbAlpha.setEnabled(true);
+			GpsFragment gpsFragment = (GpsFragment) getFragmentManager().findFragmentById(R.id.llGpsFragment);
+			if (!gpsFragment.tbLaunch.isChecked())
+			{
+				getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			}
 		}
 	}
 

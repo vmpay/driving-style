@@ -74,17 +74,20 @@ public class AccelerometerSensor implements SensorEventListener
 			list += "-\t";
 		else
 			list += "\t";
-		list += abs(linear_acceleration[0]);
+		list += String.format(
+				"%1$.4f", abs(linear_acceleration[0]));
 		if (linear_acceleration[1]<0)
 			list += "\n-\t";
 		else
 			list += "\n\t";
-		list += abs(linear_acceleration[1]);
+		list += String.format(
+				"%1$.4f", abs(linear_acceleration[1]));
 		if (linear_acceleration[2]<0)
 			list += "\n-\t";
 		else
 			list += "\n\t";
-		list += abs(linear_acceleration[2]);
+		list += String.format(
+				"%1$.4f", abs(linear_acceleration[2]));
 		//Log.d(LOG_TAG, list);
 		textView.setText(list);
 		if (recordingFlag)

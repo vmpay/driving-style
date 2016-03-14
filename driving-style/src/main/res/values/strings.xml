@@ -37,6 +37,7 @@
 	<string name="db_recording">DATABASE RECORDING</string>
 	<string name="gps_title">GPS</string>
 	<string name="gps_sensor">GPS sensor</string>
+	<string name="gps_status">unavailable</string>
 	<string name="gps_values">Latitude\nLongitude \nElevation</string>
 
 

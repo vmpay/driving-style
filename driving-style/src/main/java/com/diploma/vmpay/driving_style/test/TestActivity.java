@@ -13,6 +13,7 @@ import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
 import com.diploma.vmpay.driving_style.sensors.AccelerometerFragment;
+import com.diploma.vmpay.driving_style.sensors.GpsFragment;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 	private List<ContentValues> tripDataView;
 	private DatabaseManager databaseManager;
 	private AccelerometerFragment accelerometerFragment;
+	private GpsFragment gpsFragment;
+	private FragmentTransaction fragmentTransaction;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -41,8 +44,10 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		databaseManager = new DatabaseManager(this);
 
 		accelerometerFragment = new AccelerometerFragment();
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-		fragmentTransaction.replace(R.id.llAccelerometerFragment, accelerometerFragment, "SettingsMainFragment");
+		gpsFragment = new GpsFragment();
+		fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.replace(R.id.llAccelerometerFragment, accelerometerFragment, "AccelerometerFragment");
+		fragmentTransaction.replace(R.id.llGpsFragment, gpsFragment, "GpsFragment");
 		fragmentTransaction.commit();
 	}
 
