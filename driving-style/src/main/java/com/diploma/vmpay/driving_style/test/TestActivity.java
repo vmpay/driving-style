@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
@@ -77,24 +78,51 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				startDate = new Date();
 				tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
 				trip_id = databaseManager.addTrip(tripEntity);
-				accelerometerFragment.StartRecording(trip_id);
+				accelerometerFragment.startRecording(trip_id);
+				gpsFragment.startRecording(trip_id);
 				break;
 			case R.id.btnStopRecording:
 				Log.d(LOG_TAG, "TA: Finish recording");
 				finishDate = new Date();
 				tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(finishDate), -1);
 				databaseManager.updateTrip(trip_id, tripEntity);
-				accelerometerFragment.StopRecording();
+				accelerometerFragment.stopRecording();
+				gpsFragment.stopRecording();
 				break;
 			case R.id.tvDatabaseRecording:
-				tripDataView = databaseManager.getAllTrips();
+//				tripDataView = databaseManager.getAllTrips();
+//				for (int i = 0; i < tripDataView.size(); i++)
+//				{
+//					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(TripModel.TripNames.ID) +
+//							" user_id " + tripDataView.get(i).getAsLong(TripModel.TripNames.USER_ID) +
+//							" start_time " + tripDataView.get(i).getAsString(TripModel.TripNames.START_TIME) +
+//							" finish_time " + tripDataView.get(i).getAsString(TripModel.TripNames.FINISH_TIME) +
+//							" mark " + tripDataView.get(i).getAsLong(TripModel.TripNames.MARK));
+//				}
+//				tripDataView = databaseManager.getTripData();
+//				for (int i = 0; i < tripDataView.size(); i++)
+//				{
+//					Log.d(LOG_TAG, "TA: i = " + i +
+//							" trip_id " +tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ID) +
+//							" user_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.USER_ID) +
+//							" start_time " + tripDataView.get(i).getAsString(TripDataView.TripDataNames.START_TIME) +
+//							" finish_time " + tripDataView.get(i).getAsString(TripDataView.TripDataNames.FINISH_TIME) +
+//							" mark " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.MARK) +
+//							//" acc_id " + tripDataView.get(i).getAsLong(TripDataView.TripDataNames.ACC_ID) +
+//							" time_stamp " + tripDataView.get(i).getAsString(TripDataView.TripDataNames.TIME_STAMP) +
+//							" acc_x " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_X) +
+//							" acc_Y " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Y) +
+//							" acc_Z " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Z));
+//				}
+				tripDataView = databaseManager.getGpsData();
 				for (int i = 0; i < tripDataView.size(); i++)
 				{
-					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(TripModel.TripNames.ID) +
-							" user_id " + tripDataView.get(i).getAsLong(TripModel.TripNames.USER_ID) +
-							" start_time " + tripDataView.get(i).getAsString(TripModel.TripNames.START_TIME) +
-							" finish_time " + tripDataView.get(i).getAsString(TripModel.TripNames.FINISH_TIME) +
-							" mark " + tripDataView.get(i).getAsLong(TripModel.TripNames.MARK));
+					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(GpsDataModel.GpsDataNames.ID) +
+							" time_stamp " + tripDataView.get(i).getAsString(GpsDataModel.GpsDataNames.TIME_STAMP) +
+							" latitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LATITUDE) +
+							" longitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LONGITUDE) +
+							" altitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.ALTITUDE) +
+							" speed " + tripDataView.get(i).getAsFloat(GpsDataModel.GpsDataNames.SPEED));
 				}
 				break;
 		}

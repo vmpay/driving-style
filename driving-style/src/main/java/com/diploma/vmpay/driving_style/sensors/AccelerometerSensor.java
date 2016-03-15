@@ -124,14 +124,14 @@ public class AccelerometerSensor implements SensorEventListener
 
 	}
 
-	public boolean StartRecording(long trip_id)
+	public boolean startRecording(long trip_id)
 	{
 		this.trip_id = trip_id;
 		recordingFlag = true;
 		return true;
 	}
 
-	public void StopRecording()
+	public void stopRecording()
 	{
 		recordingFlag = false;
 	}

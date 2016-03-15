@@ -117,18 +117,14 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		}
 	}
 
-	public void StartRecording(long trip_id)
+	public void startRecording(long trip_id)
 	{
-		if (accelerometerSensor.StartRecording(trip_id))
-		{
-			startRecordingFlag = true;
-			startDate = new Date();
-		}
+		accelerometerSensor.startRecording(trip_id);
 	}
 
-	public void StopRecording()
+	public void stopRecording()
 	{
-		accelerometerSensor.StopRecording();
+		accelerometerSensor.stopRecording();
 	}
 
 }

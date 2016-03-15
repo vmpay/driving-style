@@ -8,9 +8,16 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.diploma.vmpay.driving_style.database.dbentities.GpsDataEntity;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -21,6 +28,10 @@ public class GpsSensor
 	private LocationManager locationManager;
 	private TextView tvEnabledGPS, tvStatusGPS, tvLocationGPS;
 	private Context context;
+	private boolean recordingFlag = false;
+	private long trip_id = -1;
+	private GpsDataEntity gpsDataEntity;
+	private DatabaseManager databaseManager;
 
 	public GpsSensor(Context context, TextView tvStatusGPS, TextView tvLocationGPS)
 	{
@@ -79,6 +90,14 @@ public class GpsSensor
 		public void onLocationChanged(Location location)
 		{
 			showLocation(location);
+			if (recordingFlag)
+			{
+				gpsDataEntity = new GpsDataEntity(
+						trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
+						location.getLatitude(), location.getLongitude(), location.getAltitude(),
+						location.getSpeed());
+				databaseManager.addGpsData(gpsDataEntity);
+			}
 		}
 
 		@Override
@@ -158,10 +177,16 @@ public class GpsSensor
 //			context.startActivity(new Intent(
 //					android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 		}
-//		tvEnabledGPS.setText("Enabled: "
-//				+ locationManager
-//				.isProviderEnabled(LocationManager.GPS_PROVIDER));
 	}
 
+	public void startRecording(long trip_id)
+	{
+		this.trip_id = trip_id;
+		recordingFlag = true;
+	}
 
+	public void stopRecording()
+	{
+		recordingFlag = false;
+	}
 }
