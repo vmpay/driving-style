@@ -39,7 +39,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	private DatabaseManager databaseManager;
 	private TripEntity tripEntity;
 	private List<ContentValues> resultTable;
-	private long trip_id = -1;
+//	private long trip_id = -1;
 	private Date startDate, finishDate, oldStartDate;
 	private boolean startRecordingFlag = false;
 
@@ -92,29 +92,22 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy");
 		if(isChecked)
 		{
-			startDate = new Date();
-			finishDate = startDate;
-			oldStartDate = startDate;
+//			startDate = new Date();
+//			finishDate = startDate;
+//			oldStartDate = startDate;
+//			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
+//			databaseManager.addTrip(tripEntity);
+//			resultTable = databaseManager.getTrip(simpleDateFormat.format(startDate));
+//			if (resultTable.size() != 0)
+//				trip_id = resultTable.get(0).getAsLong(TripModel.TripNames.ID);
 			accelerometerSensor = new AccelerometerSensor(alpha, getActivity(), tvAccValues);
-			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
-			databaseManager.addTrip(tripEntity);
-			resultTable = databaseManager.getTrip(simpleDateFormat.format(startDate));
-			if (resultTable.size() != 0)
-				trip_id = resultTable.get(0).getAsLong(TripModel.TripNames.ID);
-			accelerometerSensor.Start(trip_id);
+			accelerometerSensor.Start();
 			sbAlpha.setEnabled(false);
 			getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 		else
 		{
 			accelerometerSensor.Stop();
-			if (startRecordingFlag)
-			{
-				StopRecording();
-			}
-			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate),
-					simpleDateFormat.format(oldStartDate), -1);
-			databaseManager.deleteTrip(tripEntity);
 			sbAlpha.setEnabled(true);
 			GpsFragment gpsFragment = (GpsFragment) getFragmentManager().findFragmentById(R.id.llGpsFragment);
 			if (!gpsFragment.tbLaunch.isChecked())
@@ -124,9 +117,9 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		}
 	}
 
-	public void StartRecording()
+	public void StartRecording(long trip_id)
 	{
-		if (accelerometerSensor.StartRecording())
+		if (accelerometerSensor.StartRecording(trip_id))
 		{
 			startRecordingFlag = true;
 			startDate = new Date();
@@ -136,15 +129,6 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	public void StopRecording()
 	{
 		accelerometerSensor.StopRecording();
-		if (startRecordingFlag)
-		{
-			finishDate = new Date();
-			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate),
-					simpleDateFormat.format(finishDate), -1);
-			databaseManager.updateTrip(trip_id, tripEntity);
-			startRecordingFlag = false;
-		}
-
 	}
 
 }

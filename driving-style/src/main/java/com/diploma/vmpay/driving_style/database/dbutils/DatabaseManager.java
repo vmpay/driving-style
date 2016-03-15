@@ -34,7 +34,7 @@ public class DatabaseManager
 
 	// TRIP
 
-	public boolean addTrip(TripEntity tripEntity)
+	public long addTrip(TripEntity tripEntity)
 	{
 		Log.d("DB", "INSERT trip user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
 				+ " mark " + tripEntity.mark);
@@ -43,10 +43,10 @@ public class DatabaseManager
 		if(success > 0)
 		{
 			Log.d("DB", "Transaction successful trip_id = " + success);
-			return true;
+			return success;
 		}
 		Log.d("DB", "Transaction failed");
-		return false;
+		return success;
 	}
 
 	public boolean updateTrip(TripEntity tripEntity)
