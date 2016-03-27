@@ -39,6 +39,7 @@ public class GpsSensor
 		this.context = context;
 		this.tvLocationGPS = tvLocationGPS;
 		this.tvStatusGPS = tvStatusGPS;
+		databaseManager = new DatabaseManager(this.context);
 	}
 
 	public boolean start()
@@ -57,7 +58,7 @@ public class GpsSensor
 			return false;
 		}
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				1000 * 10, 10, locationListener);
+				1000 * 1, 1, locationListener);
 //		locationManager.requestLocationUpdates(
 //				LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
 		checkEnabled();
