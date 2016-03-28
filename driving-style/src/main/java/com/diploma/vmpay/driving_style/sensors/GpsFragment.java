@@ -60,4 +60,14 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 			}
 		}
 	}
+
+	public void startRecording(long trip_id)
+	{
+		gpsSensor.startRecording(trip_id);
+	}
+
+	public void stopRecording()
+	{
+		gpsSensor.stopRecording();
+	}
 }

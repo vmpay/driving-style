@@ -19,13 +19,41 @@ public class AuthActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_auth);
 
-		Log.d(LOG_TAG, "onCreate() MainActivity");
+		Log.d(LOG_TAG, "AuthActivity: onCreate()");
 		//Fragment loginFragment = new LoginFragment();
 		LoginFragment loginFragment = new LoginFragment();
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.add(R.id.fragmentLoginActivity, loginFragment);
 		//fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		Log.d(LOG_TAG, "AuthActivity: onResume()");
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		Log.d(LOG_TAG, "AuthActivity: onPause()");
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		Log.d(LOG_TAG, "AuthActivity: onStop()");
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		Log.d(LOG_TAG, "AuthActivity: onDestroy()");
 	}
 
 	@Override

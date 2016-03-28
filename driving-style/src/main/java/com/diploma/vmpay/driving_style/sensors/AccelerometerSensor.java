@@ -105,9 +105,8 @@ public class AccelerometerSensor implements SensorEventListener
 	}
 
 
-	public void Start(long trip_id)
+	public void Start()
 	{
-		this.trip_id = trip_id;
 		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
 		sensorListenerFlag = true;
 	}
@@ -125,21 +124,14 @@ public class AccelerometerSensor implements SensorEventListener
 
 	}
 
-	public boolean StartRecording()
+	public boolean startRecording(long trip_id)
 	{
-		if (sensorListenerFlag)
-		{
-			recordingFlag = true;
-			return true;
-		} else
-		{
-			Toast.makeText(context, "Turn on acc sensor first", Toast.LENGTH_SHORT).show();
-			//Snackbar.make(null, "Snackbar test", Snackbar.LENGTH_SHORT).show();
-			return false;
-		}
+		this.trip_id = trip_id;
+		recordingFlag = true;
+		return true;
 	}
 
-	public void StopRecording()
+	public void stopRecording()
 	{
 		recordingFlag = false;
 	}

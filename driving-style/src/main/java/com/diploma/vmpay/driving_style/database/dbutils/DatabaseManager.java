@@ -5,8 +5,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
+import com.diploma.vmpay.driving_style.database.dbentities.GpsDataEntity;
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
 import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
@@ -34,7 +36,7 @@ public class DatabaseManager
 
 	// TRIP
 
-	public boolean addTrip(TripEntity tripEntity)
+	public long addTrip(TripEntity tripEntity)
 	{
 		Log.d("DB", "INSERT trip user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
 				+ " mark " + tripEntity.mark);
@@ -43,10 +45,10 @@ public class DatabaseManager
 		if(success > 0)
 		{
 			Log.d("DB", "Transaction successful trip_id = " + success);
-			return true;
+			return success;
 		}
 		Log.d("DB", "Transaction failed");
-		return false;
+		return success;
 	}
 
 	public boolean updateTrip(TripEntity tripEntity)
@@ -194,4 +196,50 @@ public class DatabaseManager
 		return results;
 	}
 
+	// GPS DATA
+
+	public boolean addGpsData(GpsDataEntity gpsDataEntity)
+	{
+		Log.d("DB", "INSERT accData trip_id " + gpsDataEntity.trip_id + " time_stamp " + gpsDataEntity.time_stamp);
+		parentModel = new GpsDataModel(gpsDataEntity);
+		long success = databaseAccess.insert(parentModel);
+		if(success > 0)
+		{
+			Log.d("DB", "Transaction successful acc_id = " + success);
+			return true;
+		}
+		Log.d("DB", "Transaction failed");
+		return false;
+	}
+
+	public boolean deleteGpsData(GpsDataEntity gpsDataEntity)
+	{
+		Log.d("DB", "DELETE id " + gpsDataEntity.trip_id);
+		parentModel = new GpsDataModel(gpsDataEntity);
+		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID+ "=" + gpsDataEntity.trip_id);
+		long success = databaseAccess.delete(parentModel);
+		if(success > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public long deleteAllGpsDatas()
+	{
+		parentModel = new GpsDataModel();
+		long success = databaseAccess.delete(parentModel);
+		return success;
+	}
+
+	public List<ContentValues> getGpsData()
+	{
+		parentModel = new GpsDataModel();
+		List<ContentValues> results = databaseAccess.select(parentModel);
+		Log.d("DA", "SELECT AccData");
+		return results;
+	}
 }

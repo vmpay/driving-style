@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
@@ -27,7 +28,7 @@ public class DatabaseAccess
 	public DatabaseAccess(Context mContext)
 	{
 		this.mContext = mContext;
-		this.DATABASE_VERSION = 1;
+		this.DATABASE_VERSION = 2;
 		openDatabase();
 	}
 
@@ -49,6 +50,7 @@ public class DatabaseAccess
 			sqLiteDatabase.execSQL(TripModel.TripNames.CREATE_TABLE);
 			sqLiteDatabase.execSQL(AccDataModel.AccDataNames.CREATE_TABLE);
 			sqLiteDatabase.execSQL(TripDataView.TripDataNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(GpsDataModel.GpsDataNames.CREATE_TABLE);
 		}
 
 		@Override
@@ -57,8 +59,9 @@ public class DatabaseAccess
 			//TODO: refactor if we need to save previous data
 			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripModel.TripNames.TABLENAME);
 			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AccDataModel.AccDataNames.TABLENAME);
-			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
-			onCreate(database);
+			sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GpsDataModel.GpsDataNames.TABLENAME);
+			onCreate(sqLiteDatabase);
 		}
 	}
 
@@ -80,7 +83,7 @@ public class DatabaseAccess
 		try
 		{
 			success = database.insertWithOnConflict(parentModel.getTableName(), null,
-					contentValues, SQLiteDatabase.CONFLICT_REPLACE);//SQLiteDatabase.CONFLICT_IGNORE);
+					contentValues, SQLiteDatabase.CONFLICT_IGNORE);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();

@@ -54,6 +54,7 @@
 		android:background="@color/textInactive"/>
 
 	<TextView
+		android:id="@+id/tvDatabaseRecording"
 		style="@style/MediumTextStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
