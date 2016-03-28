@@ -16,6 +16,7 @@ import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.main.ScenarioFragment;
 import com.diploma.vmpay.driving_style.sensors.AccelerometerFragment;
 import com.diploma.vmpay.driving_style.sensors.GpsFragment;
 
@@ -33,6 +34,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 	private DatabaseManager databaseManager;
 	private AccelerometerFragment accelerometerFragment;
 	private GpsFragment gpsFragment;
+	private ScenarioFragment scenarioFragment;
 	private FragmentTransaction fragmentTransaction;
 	private SimpleDateFormat simpleDateFormat;
 	private Date startDate, finishDate;
@@ -59,6 +61,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		databaseManager = new DatabaseManager(this);
 		simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy");
 
+		scenarioFragment = new ScenarioFragment();
 		accelerometerFragment = new AccelerometerFragment();
 		gpsFragment = new GpsFragment();
 		fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -80,6 +83,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				trip_id = databaseManager.addTrip(tripEntity);
 				accelerometerFragment.startRecording(trip_id);
 				gpsFragment.startRecording(trip_id);
+				fragmentTransaction = getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.llScenario, scenarioFragment, "ScenarioFragment");
+				fragmentTransaction.commit();
 				break;
 			case R.id.btnStopRecording:
 				Log.d(LOG_TAG, "TA: Finish recording");
@@ -88,6 +94,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				databaseManager.updateTrip(trip_id, tripEntity);
 				accelerometerFragment.stopRecording();
 				gpsFragment.stopRecording();
+				fragmentTransaction = getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.remove(scenarioFragment);
+				fragmentTransaction.commit();
 				break;
 			case R.id.tvDatabaseRecording:
 //				tripDataView = databaseManager.getAllTrips();

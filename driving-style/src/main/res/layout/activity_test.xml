@@ -43,6 +43,12 @@
 				android:layout_margin="@dimen/view_margin"
 				android:background="@color/textInactive"/>
 
+			<LinearLayout
+				android:id="@+id/llScenario"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"/>
+
 		</LinearLayout>
 
 	</ScrollView>
