@@ -2,6 +2,7 @@ package com.diploma.vmpay.driving_style.database.dbutils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
@@ -194,6 +195,15 @@ public class DatabaseManager
 		List<ContentValues> results = databaseAccess.select(parentModel);
 		Log.d("DA", "SELECT TripData");
 		return results;
+	}
+
+	public boolean exportTripData()
+	{
+		parentModel = new TripDataView();
+		Cursor cursor = databaseAccess.selectCursor(parentModel);
+		boolean result = databaseAccess.exportToCSV(cursor, "TripData");
+		Log.d("DA", "SELECT CURSOR TripData success "  + result);
+		return result;
 	}
 
 	// GPS DATA

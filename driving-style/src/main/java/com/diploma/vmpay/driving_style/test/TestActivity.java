@@ -123,16 +123,17 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 //							" acc_Y " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Y) +
 //							" acc_Z " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Z));
 //				}
-				tripDataView = databaseManager.getGpsData();
-				for (int i = 0; i < tripDataView.size(); i++)
-				{
-					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(GpsDataModel.GpsDataNames.ID) +
-							" time_stamp " + tripDataView.get(i).getAsString(GpsDataModel.GpsDataNames.TIME_STAMP) +
-							" latitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LATITUDE) +
-							" longitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LONGITUDE) +
-							" altitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.ALTITUDE) +
-							" speed " + tripDataView.get(i).getAsFloat(GpsDataModel.GpsDataNames.SPEED));
-				}
+				Log.d(LOG_TAG, "exporting success " + databaseManager.exportTripData());
+//				tripDataView = databaseManager.getGpsData();
+//				for (int i = 0; i < tripDataView.size(); i++)
+//				{
+//					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(GpsDataModel.GpsDataNames.ID) +
+//							" time_stamp " + tripDataView.get(i).getAsString(GpsDataModel.GpsDataNames.TIME_STAMP) +
+//							" latitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LATITUDE) +
+//							" longitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LONGITUDE) +
+//							" altitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.ALTITUDE) +
+//							" speed " + tripDataView.get(i).getAsFloat(GpsDataModel.GpsDataNames.SPEED));
+//				}
 				break;
 		}
 	}
