@@ -16,6 +16,7 @@ import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.main.ScenarioFragment;
 import com.diploma.vmpay.driving_style.sensors.AccelerometerFragment;
 import com.diploma.vmpay.driving_style.sensors.GpsFragment;
 
@@ -27,12 +28,13 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 {
 	private final String LOG_TAG = "TestActivity";
 
-	private TextView tvDbRecording;
-	private Button btnStart, btnStop;
+//	private TextView tvDbRecording;
+	private Button btnStart, btnStop, btnExport;
 	private List<ContentValues> tripDataView;
 	private DatabaseManager databaseManager;
 	private AccelerometerFragment accelerometerFragment;
 	private GpsFragment gpsFragment;
+	private ScenarioFragment scenarioFragment;
 	private FragmentTransaction fragmentTransaction;
 	private SimpleDateFormat simpleDateFormat;
 	private Date startDate, finishDate;
@@ -47,18 +49,21 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		setContentView(R.layout.activity_test);
 		//TODO: check sensors availability
 
-		tvDbRecording = (TextView) findViewById(R.id.tvDatabaseRecording);
+//		tvDbRecording = (TextView) findViewById(R.id.tvDatabaseRecording);
 		btnStart = (Button) findViewById(R.id.btnStartRecording);
 		btnStop = (Button) findViewById(R.id.btnStopRecording);
+		btnExport = (Button) findViewById(R.id.btnExport);
 
-		tvDbRecording.setClickable(true);
+//		tvDbRecording.setClickable(true);
 
-		tvDbRecording.setOnClickListener(this);
+//		tvDbRecording.setOnClickListener(this);
 		btnStart.setOnClickListener(this);
 		btnStop.setOnClickListener(this);
+		btnExport.setOnClickListener(this);
 		databaseManager = new DatabaseManager(this);
 		simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy");
 
+		scenarioFragment = new ScenarioFragment();
 		accelerometerFragment = new AccelerometerFragment();
 		gpsFragment = new GpsFragment();
 		fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -80,6 +85,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				trip_id = databaseManager.addTrip(tripEntity);
 				accelerometerFragment.startRecording(trip_id);
 				gpsFragment.startRecording(trip_id);
+//				fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//				fragmentTransaction.replace(R.id.llScenario, scenarioFragment, "ScenarioFragment");
+//				fragmentTransaction.commit();
 				break;
 			case R.id.btnStopRecording:
 				Log.d(LOG_TAG, "TA: Finish recording");
@@ -88,8 +96,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				databaseManager.updateTrip(trip_id, tripEntity);
 				accelerometerFragment.stopRecording();
 				gpsFragment.stopRecording();
+//				fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//				fragmentTransaction.remove(scenarioFragment);
+//				fragmentTransaction.commit();
 				break;
-			case R.id.tvDatabaseRecording:
+//			case R.id.tvDatabaseRecording:
 //				tripDataView = databaseManager.getAllTrips();
 //				for (int i = 0; i < tripDataView.size(); i++)
 //				{
@@ -114,16 +125,20 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 //							" acc_Y " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Y) +
 //							" acc_Z " + tripDataView.get(i).getAsDouble(TripDataView.TripDataNames.ACC_Z));
 //				}
-				tripDataView = databaseManager.getGpsData();
-				for (int i = 0; i < tripDataView.size(); i++)
-				{
-					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(GpsDataModel.GpsDataNames.ID) +
-							" time_stamp " + tripDataView.get(i).getAsString(GpsDataModel.GpsDataNames.TIME_STAMP) +
-							" latitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LATITUDE) +
-							" longitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LONGITUDE) +
-							" altitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.ALTITUDE) +
-							" speed " + tripDataView.get(i).getAsFloat(GpsDataModel.GpsDataNames.SPEED));
-				}
+//				Log.d(LOG_TAG, "exporting success " + databaseManager.exportTripData());
+//				tripDataView = databaseManager.getGpsData();
+//				for (int i = 0; i < tripDataView.size(); i++)
+//				{
+//					Log.d(LOG_TAG, " trip_id " + tripDataView.get(i).getAsLong(GpsDataModel.GpsDataNames.ID) +
+//							" time_stamp " + tripDataView.get(i).getAsString(GpsDataModel.GpsDataNames.TIME_STAMP) +
+//							" latitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LATITUDE) +
+//							" longitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.LONGITUDE) +
+//							" altitude " + tripDataView.get(i).getAsDouble(GpsDataModel.GpsDataNames.ALTITUDE) +
+//							" speed " + tripDataView.get(i).getAsFloat(GpsDataModel.GpsDataNames.SPEED));
+//				}
+//				break;
+			case R.id.btnExport:
+				Log.d(LOG_TAG, "exporting success " + databaseManager.exportTripData());
 				break;
 		}
 	}

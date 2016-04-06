@@ -2,6 +2,7 @@ package com.diploma.vmpay.driving_style.database.dbutils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,8 +15,13 @@ import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.opencsv.CSVWriter;
 
 /**
  * Created by Andrew on 01.03.2016.
@@ -96,7 +102,8 @@ public class DatabaseAccess
 
 	public long update(ParentModel parentModel)
 	{
-		long success = database.update(parentModel.getTableName(), parentModel.getInsert(), parentModel.getWhereClause(), null);
+		long success = database.update(parentModel.getTableName(), parentModel.getInsert(),
+				parentModel.getWhereClause(), null);
 		return success;
 	}
 
@@ -108,7 +115,8 @@ public class DatabaseAccess
 
 	public List<ContentValues> select(ParentModel parentModel)
 	{
-		Cursor cursor = database.query(parentModel.getTableName(), parentModel.getColumns(), parentModel.getWhereClause(), null, null, null, null);
+		Cursor cursor = database.query(parentModel.getTableName(), parentModel.getColumns(),
+				parentModel.getWhereClause(), null, null, null, null);
 		List<ContentValues> results = null;
 
 		if(cursor != null)
@@ -135,5 +143,66 @@ public class DatabaseAccess
 			Log.d("DB", "null cursor");
 		}
 		return results;
+	}
+
+	public Cursor selectCursor(ParentModel parentModel)
+	{
+		return database.query(parentModel.getTableName(), parentModel.getColumns(),
+				parentModel.getWhereClause(), null, null, null, null);
+	}
+
+	/**
+	 * Export data from db table to CSV file
+	 *
+	 * @param cursor data to export into @link{fileName}
+	 * @param fileName name of file to export into
+	 * @return
+	 */
+	public boolean exportToCSV(Cursor cursor, String fileName) {
+		ContextWrapper contextWrapper = new ContextWrapper(mContext);
+		String path = contextWrapper.getFilesDir() + File.separator + fileName + ".csv";
+		Log.d("DB", "Path: " + path);
+		File file = new File(path);
+		try {
+			if (!file.exists()) {
+				if (!file.createNewFile()) {
+					return false;
+				}
+			}
+			CSVWriter writer = new CSVWriter(new FileWriter(path));
+			int columnCount = cursor.getColumnCount();
+			String[] columnNames = cursor.getColumnNames();
+			writer.writeNext(columnNames);
+			if (cursor.getCount() == 0) {
+				writer.close();
+				cursor.close();
+				return false;
+			}
+			cursor.moveToFirst();
+			do {
+				String[] rows = new String[columnCount];
+				for (int i = 0; i < columnCount; i++) {
+					switch (cursor.getType(i)) {
+						case Cursor.FIELD_TYPE_INTEGER:
+							rows[i] = String.valueOf(cursor.getInt(i));
+							break;
+						case Cursor.FIELD_TYPE_FLOAT:
+							rows[i] = String.valueOf(cursor.getFloat(i));
+							break;
+						case Cursor.FIELD_TYPE_STRING:
+							rows[i] = cursor.getString(i);
+							break;
+					}
+				}
+				writer.writeNext(rows);
+			} while (cursor.moveToNext());
+			writer.close();
+			cursor.close();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			cursor.close();
+			return false;
+		}
 	}
 }
