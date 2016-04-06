@@ -35,6 +35,7 @@
 	<string name="accelerometer_sensor">Accelerometer sensor</string>
 	<string name="acc_values">x = \ny = \nz = </string>
 	<string name="db_recording">DATABASE RECORDING</string>
+	<string name="export_db">Export results</string>
 	<string name="gps_title">GPS</string>
 	<string name="gps_sensor">GPS sensor</string>
 	<string name="gps_status">unavailable</string>

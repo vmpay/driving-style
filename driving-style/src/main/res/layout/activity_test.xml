@@ -56,9 +56,16 @@
 	<View
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
-		android:layout_marginBottom="@dimen/view_margin"
 		android:background="@color/textInactive"/>
 
+	<Button
+		android:id="@+id/btnExport"
+		style="?android:attr/buttonBarButtonStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/export_db"/>
+
+	<!--
 	<TextView
 		android:id="@+id/tvDatabaseRecording"
 		style="@style/MediumTextStyle"
@@ -67,6 +74,7 @@
 		android:gravity="center"
 		android:text="@string/db_recording"
 		android:textColor="@color/colorAccent"/>
+	-->
 
 	<View
 		android:layout_width="match_parent"
