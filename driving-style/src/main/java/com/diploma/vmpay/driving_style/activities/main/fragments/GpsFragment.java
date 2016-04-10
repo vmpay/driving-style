@@ -29,7 +29,7 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
-		Log.d(LOG_TAG, "onCreateView() GpsFragment");
+		Log.d(LOG_TAG, "GpsFragment onCreateView()");
 		View v = inflater.inflate(R.layout.gps_fragment, container, false);
 
 		tvStatusGps = (TextView) v.findViewById(R.id.tvGpsStatus);

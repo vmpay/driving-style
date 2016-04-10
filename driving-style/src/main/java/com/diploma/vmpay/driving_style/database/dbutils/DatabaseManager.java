@@ -126,7 +126,7 @@ public class DatabaseManager
 	{
 		parentModel = new TripModel();
 		List<ContentValues> results = databaseAccess.select(parentModel);
-		Log.d("DA", "SELECT Trips");
+		Log.d("DM", "SELECT Trips");
 		return results;
 	}
 
@@ -136,8 +136,17 @@ public class DatabaseManager
 		parentModel = new TripModel();
 		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "='" + start_time + "'");
 		List<ContentValues> results = databaseAccess.select(parentModel);
-		Log.d("DA", "SELECT Trip");
+		Log.d("DM", "SELECT Trip");
 		return results;
+	}
+
+	public boolean exportTrips(String fileName)
+	{
+		parentModel = new TripModel();
+		Cursor cursor = databaseAccess.selectCursor(parentModel);
+		boolean result = databaseAccess.exportToCSV(cursor, fileName);
+		Log.d("DM", "EXPORT TripModel to " + fileName + ".CSV successfully " + result);
+		return result;
 	}
 
 	// ACC DATA
@@ -160,7 +169,7 @@ public class DatabaseManager
 	{
 		Log.d("DB", "DELETE id " + accDataEntity.trip_id);
 		parentModel = new AccDataModel(accDataEntity);
-		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID+ "=" + accDataEntity.trip_id);
+		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID + "=" + accDataEntity.trip_id);
 		long success = databaseAccess.delete(parentModel);
 		if(success > 0)
 		{
@@ -183,8 +192,17 @@ public class DatabaseManager
 	{
 		parentModel = new AccDataModel();
 		List<ContentValues> results = databaseAccess.select(parentModel);
-		Log.d("DA", "SELECT AccData");
+		Log.d("DM", "SELECT AccData");
 		return results;
+	}
+
+	public boolean exportAccData(String fileName)
+	{
+		parentModel = new AccDataModel();
+		Cursor cursor = databaseAccess.selectCursor(parentModel);
+		boolean result = databaseAccess.exportToCSV(cursor, fileName);
+		Log.d("DM", "EXPORT AccDataModel to " + fileName + ".CSV successfully " + result);
+		return result;
 	}
 
 	// TRIP DATA VIEW
@@ -193,16 +211,16 @@ public class DatabaseManager
 	{
 		parentModel = new TripDataView();
 		List<ContentValues> results = databaseAccess.select(parentModel);
-		Log.d("DA", "SELECT TripData");
+		Log.d("DM", "SELECT TripData");
 		return results;
 	}
 
-	public boolean exportTripData()
+	public boolean exportTripData(String filename)
 	{
 		parentModel = new TripDataView();
 		Cursor cursor = databaseAccess.selectCursor(parentModel);
-		boolean result = databaseAccess.exportToCSV(cursor, "TripData");
-		Log.d("DA", "SELECT CURSOR TripData success "  + result);
+		boolean result = databaseAccess.exportToCSV(cursor, filename);
+		Log.d("DM", "EXPORT TripData success "  + result);
 		return result;
 	}
 
@@ -226,7 +244,7 @@ public class DatabaseManager
 	{
 		Log.d("DB", "DELETE id " + gpsDataEntity.trip_id);
 		parentModel = new GpsDataModel(gpsDataEntity);
-		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID+ "=" + gpsDataEntity.trip_id);
+		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID + "=" + gpsDataEntity.trip_id);
 		long success = databaseAccess.delete(parentModel);
 		if(success > 0)
 		{
@@ -249,7 +267,16 @@ public class DatabaseManager
 	{
 		parentModel = new GpsDataModel();
 		List<ContentValues> results = databaseAccess.select(parentModel);
-		Log.d("DA", "SELECT AccData");
+		Log.d("DM", "SELECT AccData");
 		return results;
+	}
+
+	public boolean exportGpsData(String fileName)
+	{
+		parentModel = new GpsDataModel();
+		Cursor cursor = databaseAccess.selectCursor(parentModel);
+		boolean result = databaseAccess.exportToCSV(cursor, fileName);
+		Log.d("DM", "EXPORT GpsDataModel to " + fileName + ".CSV successfully " + result);
+		return result;
 	}
 }

@@ -47,7 +47,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
-		Log.d(LOG_TAG, "onCreateView() AccelerometerFragment");
+		Log.d(LOG_TAG, "AccelerometerFragment onCreateView()");
 		View v = inflater.inflate(R.layout.accelerometer_fragment, container, false);
 
 		tvAlpha = (TextView) v.findViewById(R.id.tvAlpha);

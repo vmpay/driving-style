@@ -40,7 +40,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		Log.d(LOG_TAG, "onCreate() TestActivity");
+		Log.d(LOG_TAG, "TestActivity onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
 		//TODO: check sensors availability
