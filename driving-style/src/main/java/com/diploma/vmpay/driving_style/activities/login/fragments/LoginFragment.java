@@ -1,10 +1,9 @@
-package com.diploma.vmpay.driving_style.login;
+package com.diploma.vmpay.driving_style.activities.login.fragments;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,7 +19,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.test.TestActivity;
+import com.diploma.vmpay.driving_style.activities.test.TestActivity;
 
 /**
  * Created by Andrew on 10.02.2016.

@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.sensors;
+package com.diploma.vmpay.driving_style.activities.main.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.widget.ToggleButton;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
-import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.sensors.AccelerometerSensor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

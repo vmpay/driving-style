@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.login;
+package com.diploma.vmpay.driving_style.activities.login.fragments;
 
 
 import android.os.Bundle;

@@ -40,6 +40,14 @@
 	<string name="gps_sensor">GPS sensor</string>
 	<string name="gps_status">unavailable</string>
 	<string name="gps_values">Latitude\nLongitude \nElevation</string>
+	<string name="export_title">Export</string>
+	<string name="etFileName_hint">File name</string>
+	<string name="export_items_title">Items:</string>
+	<string name="cb_users_title">Users table (*_users.csv)</string>
+	<string name="cb_trips_title">Trips table (*_trips.csv)</string>
+	<string name="cb_acc_data_title">Accelerometer data table (*_acc.csv)</string>
+	<string name="cb_gps_data_title">GPS data table (*_gps.csv)</string>
+	<string name="btn_back_title"><![CDATA[< Back]]></string>
 
 
 	<!-- StartActivity resources -->

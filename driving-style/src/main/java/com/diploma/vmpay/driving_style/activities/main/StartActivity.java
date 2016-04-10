@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style;
+package com.diploma.vmpay.driving_style.activities.main;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -7,7 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.diploma.vmpay.driving_style.main.MainFragmentPagerAdapter;
+import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.activities.main.fragments.MainFragmentPagerAdapter;
 
 
 /**

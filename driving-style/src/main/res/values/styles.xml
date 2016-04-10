@@ -70,4 +70,15 @@
 		<item name="android:background">@drawable/shared_button_bg</item>
 	</style>
 
+	<style name="BorderlessButtonStyle">
+		<item name="android:textColor">@color/colorAccent</item>
+		<item name="android:background">@drawable/padding_pattern</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:textSize">@dimen/small_font_size</item>
+	</style>
+
+	<style name="CheckBoxStyle" parent="@android:style/Widget.Holo.CompoundButton.CheckBox">
+		<item name="android:textSize">@dimen/small_font_size</item>
+	</style>
+
 </resources>

@@ -1,12 +1,12 @@
-package com.diploma.vmpay.driving_style;
+package com.diploma.vmpay.driving_style.activities.login;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.diploma.vmpay.driving_style.login.LoginFragment;
+import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.activities.login.fragments.LoginFragment;
 
 public class AuthActivity extends AppCompatActivity
 {

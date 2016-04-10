@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:context="com.diploma.vmpay.driving_style.test.TestActivity">
+	tools:context=".activities.test.TestActivity">
 
 	<ScrollView
 		android:layout_width="match_parent"
@@ -60,7 +60,7 @@
 
 	<Button
 		android:id="@+id/btnExport"
-		style="?android:attr/buttonBarButtonStyle"
+		style="@style/BorderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/export_db"/>

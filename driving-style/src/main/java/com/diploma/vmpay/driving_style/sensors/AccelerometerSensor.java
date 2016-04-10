@@ -37,7 +37,7 @@ public class AccelerometerSensor implements SensorEventListener
 	private long trip_id = -1;
 	private boolean recordingFlag = false, sensorListenerFlag = false;
 
-	AccelerometerSensor(double alpha, Context context, TextView textView)
+	public AccelerometerSensor(double alpha, Context context, TextView textView)
 	{
 		this.alpha = alpha;
 		this.context = context;

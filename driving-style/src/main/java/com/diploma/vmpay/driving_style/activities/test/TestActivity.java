@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.test;
+package com.diploma.vmpay.driving_style.activities.test;
 
 import android.content.ContentValues;
 import android.support.v4.app.FragmentTransaction;
@@ -7,18 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.activities.main.fragments.ExportDialog;
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
-import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
-import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
-import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
-import com.diploma.vmpay.driving_style.main.ScenarioFragment;
-import com.diploma.vmpay.driving_style.sensors.AccelerometerFragment;
-import com.diploma.vmpay.driving_style.sensors.GpsFragment;
+import com.diploma.vmpay.driving_style.activities.main.fragments.ScenarioFragment;
+import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
+import com.diploma.vmpay.driving_style.activities.main.fragments.GpsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -138,7 +134,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 //				}
 //				break;
 			case R.id.btnExport:
-				Log.d(LOG_TAG, "exporting success " + databaseManager.exportTripData());
+//				Log.d(LOG_TAG, "exporting success " + databaseManager.exportTripData());
+				fragmentTransaction = getSupportFragmentManager().beginTransaction();
+				ExportDialog exportDialog = new ExportDialog();
+				exportDialog.show(fragmentTransaction, "ExportingDialog");
+
 				break;
 		}
 	}
