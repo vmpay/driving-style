@@ -76,6 +76,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		{
 			case R.id.btnStartRecording:
 				Log.d(LOG_TAG, "TA: Start recording");
+				btnExport.setEnabled(false);
 				startDate = new Date();
 				tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
 				trip_id = databaseManager.addTrip(tripEntity);
@@ -87,6 +88,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				break;
 			case R.id.btnStopRecording:
 				Log.d(LOG_TAG, "TA: Finish recording");
+				btnExport.setEnabled(true);
 				finishDate = new Date();
 				tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(finishDate), -1);
 				databaseManager.updateTrip(trip_id, tripEntity);

@@ -94,14 +94,13 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 		etFileName.setError(null);
 		tvExportResult.setText("");
 		View focusView = null;
-		boolean cancel = false;
 		String fileName = "";
 		if(etFileName.getText().toString().contains("[^a-zA-Z0-9.-]")
 				|| etFileName.getText().toString().isEmpty())
 		{
-			cancel = true;
 			focusView = etFileName;
 			etFileName.setError("Invalid filename");
+			focusView.requestFocus();
 		}
 		else
 		{
@@ -110,21 +109,13 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 
 		if(!cbUsers.isChecked() && !cbTrips.isChecked() && !cbAcc.isChecked() && !cbGps.isChecked())
 		{
-			cancel = true;
-//			focusView = cbUsers;
-//			cbUsers.setError("Check at least one option");
 			tvExportResult.setText("Check at least one option");
-		}
-
-		if(cancel)
-		{
-//			focusView.requestFocus();
 		}
 		else
 		{
 			DatabaseManager databaseManager = new DatabaseManager(getActivity());
 			//TODO: export data
-			cancel = false;
+			boolean cancel = false;
 			String error = "Exporting failure\n";
 			if(cbUsers.isChecked())
 			{
@@ -133,41 +124,35 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 
 			if(cbTrips.isChecked())
 			{
-				if(!databaseManager.exportTripData(fileName + "_trips"))
+				if(!databaseManager.exportTrips(fileName + "_trips"))
 				{
 					cancel = true;
 					error += fileName + "_trips.csv\n";
-//					focusView = cbTrips;
-//					cbTrips.setError("Export failed");
 				}
 			}
 
 			if(cbAcc.isChecked())
 			{
-				if(!databaseManager.exportTripData(fileName + "_acc"))
+				if(!databaseManager.exportAccData(fileName + "_acc"))
 				{
 					cancel = true;
 					error += fileName + "_acc.csv\n";
-//					focusView = cbAcc;
-//					cbAcc.setError("Export failed");
 				}
 			}
 
 			if(cbGps.isChecked())
 			{
-				if(!databaseManager.exportTripData(fileName + "_gps"))
+				databaseManager.getGpsData();
+				if(!databaseManager.exportGpsData(fileName + "_gps"))
 				{
 					cancel = true;
 					error += fileName + "_gps.csv\n";
-//					focusView = cbGps;
-//					cbGps.setError("Export failed");
 				}
 			}
 
 			if(cancel)
 			{
 				tvExportResult.setText(error);
-				focusView.requestFocus();
 			}
 			else
 			{

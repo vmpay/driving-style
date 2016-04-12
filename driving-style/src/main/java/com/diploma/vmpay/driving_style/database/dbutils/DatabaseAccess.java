@@ -161,10 +161,11 @@ public class DatabaseAccess
 	public boolean exportToCSV(Cursor cursor, String fileName) {
 		ContextWrapper contextWrapper = new ContextWrapper(mContext);
 		String path = contextWrapper.getFilesDir() + File.separator + fileName + ".csv";
+//		String path = contextWrapper.getExternalCacheDir() + File.separator + fileName + ".csv";
 		Log.d("DB", "Path: " + path);
 		File file = new File(path);
 		try {
-			if (!file.exists()) {
+			if (file.exists()) {
 				if (!file.createNewFile()) {
 					return false;
 				}
