@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.sensors;
+package com.diploma.vmpay.driving_style.activities.main.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
+import com.diploma.vmpay.driving_style.sensors.GpsSensor;
 
 /**
  * Created by Andrew on 14.03.2016.
@@ -27,7 +29,7 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
-		Log.d(LOG_TAG, "onCreateView() GpsFragment");
+		Log.d(LOG_TAG, "GpsFragment onCreateView()");
 		View v = inflater.inflate(R.layout.gps_fragment, container, false);
 
 		tvStatusGps = (TextView) v.findViewById(R.id.tvGpsStatus);

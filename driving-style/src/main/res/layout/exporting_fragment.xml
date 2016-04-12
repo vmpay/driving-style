@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<Button
+				android:id="@+id/btnBack"
+				style="@style/BorderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/btn_back_title"/>
+
+			<View
+				android:layout_width="1dp"
+				android:layout_height="match_parent"
+				android:background="@color/textInactive"/>
+
+			<Button
+				android:id="@+id/btnExport"
+				style="@style/BorderlessButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/export_title"/>
+
+		</LinearLayout>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/textInactive"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="@dimen/view_margin"
+			android:layout_marginRight="@dimen/view_margin"
+			android:orientation="vertical">
+
+
+			<TextView
+				style="@style/MediumInactiveTextStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/export_items_title"/>
+
+			<CheckBox
+				android:id="@+id/cbUsers"
+				style="@style/CheckBoxStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/cb_users_title"/>
+
+			<CheckBox
+				android:id="@+id/cbTrips"
+				style="@style/CheckBoxStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/cb_trips_title"/>
+
+			<CheckBox
+				android:id="@+id/cbAccData"
+				style="@style/CheckBoxStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/cb_acc_data_title"/>
+
+			<CheckBox
+				android:id="@+id/cbGpsData"
+				style="@style/CheckBoxStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/cb_gps_data_title"/>
+
+			<android.support.design.widget.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<EditText
+					android:id="@+id/etFileName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/etFileName_hint"
+					android:imeActionLabel="@string/export_title"
+					android:imeActionId="@+id/etFileName"
+					android:imeOptions="actionSend"
+					android:inputType="text"
+					android:maxLines="1"
+					android:singleLine="true"/>
+
+			</android.support.design.widget.TextInputLayout>
+
+			<TextView
+				android:id="@+id/tvExportResult"
+				style="@style/MediumTextStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</ScrollView>

@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.sensors;
+package com.diploma.vmpay.driving_style.activities.main.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.widget.ToggleButton;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
-import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.sensors.AccelerometerSensor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +47,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
-		Log.d(LOG_TAG, "onCreateView() AccelerometerFragment");
+		Log.d(LOG_TAG, "AccelerometerFragment onCreateView()");
 		View v = inflater.inflate(R.layout.accelerometer_fragment, container, false);
 
 		tvAlpha = (TextView) v.findViewById(R.id.tvAlpha);

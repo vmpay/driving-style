@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:drawable="@drawable/shared_button_bg"
+		android:left="@dimen/button_padding"
+		android:right="@dimen/button_padding"
+		android:top="@dimen/button_padding"
+		android:bottom="@dimen/button_padding"/>
+</layer-list>
