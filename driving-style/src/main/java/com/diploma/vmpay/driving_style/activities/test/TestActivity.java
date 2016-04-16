@@ -78,6 +78,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				Log.d(LOG_TAG, "TA: Start recording");
 				btnExport.setEnabled(false);
 				startDate = new Date();
+				//TODO: update user id
 				tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
 				trip_id = databaseManager.addTrip(tripEntity);
 				accelerometerFragment.startRecording(trip_id);
@@ -90,6 +91,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				Log.d(LOG_TAG, "TA: Finish recording");
 				btnExport.setEnabled(true);
 				finishDate = new Date();
+				//TODO: update user id & mark
 				tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(finishDate), -1);
 				databaseManager.updateTrip(trip_id, tripEntity);
 				accelerometerFragment.stopRecording();

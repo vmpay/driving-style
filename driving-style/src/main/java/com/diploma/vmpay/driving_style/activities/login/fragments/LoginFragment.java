@@ -70,7 +70,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 		{
 			case R.id.btnSignIn:
 				Log.d(LOG_TAG, "Toggle Button is on = " + swRememberMe.isChecked());
-				if(swRememberMe.isChecked())
+//				if(swRememberMe.isChecked())
+				if(true)
 				{
 					//Intent intent = new Intent(getActivity(), StartActivity.class);
 					Intent intent = new Intent(getActivity(), TestActivity.class);

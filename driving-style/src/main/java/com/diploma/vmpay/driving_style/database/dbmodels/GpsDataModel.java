@@ -26,7 +26,7 @@ public class GpsDataModel  extends ParentModel
 		public final static String ALTITUDE = "altitude";
 		public final static String SPEED = "speed";
 
-		public final static String TABLENAME = "gpsdatatable";
+		public final static String TABLENAME = "GPS_DATA_TABLE";
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
 				" (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				TRIP_ID + " INTEGER NOT NULL, " +

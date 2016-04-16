@@ -23,7 +23,7 @@ public class TripModel extends ParentModel
 		public final static String FINISH_TIME = "finish_time";
 		public final static String MARK = "mark";
 
-		public final static String TABLENAME = "triptable";
+		public final static String TABLENAME = "TRIP_TABLE";
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
 				" (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				USER_ID + " INTEGER NOT NULL, " +
