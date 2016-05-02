@@ -2,11 +2,11 @@ package com.diploma.vmpay.driving_style.database.dbutils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
@@ -90,9 +90,6 @@ public class DatabaseAccess
 		{
 			success = database.insertWithOnConflict(parentModel.getTableName(), null,
 					contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-		} catch(SQLException e)
-		{
-			e.printStackTrace();
 		} catch(RuntimeException e)
 		{
 			e.printStackTrace();
@@ -102,15 +99,13 @@ public class DatabaseAccess
 
 	public long update(ParentModel parentModel)
 	{
-		long success = database.update(parentModel.getTableName(), parentModel.getInsert(),
+		return (long) database.update(parentModel.getTableName(), parentModel.getInsert(),
 				parentModel.getWhereClause(), null);
-		return success;
 	}
 
 	public int delete(ParentModel parentModel)
 	{
-		int success = database.delete(parentModel.getTableName(), parentModel.getWhereClause(), null);
-		return success;
+		return database.delete(parentModel.getTableName(), parentModel.getWhereClause(), null);
 	}
 
 	public List<ContentValues> select(ParentModel parentModel)
@@ -154,36 +149,41 @@ public class DatabaseAccess
 	/**
 	 * Export data from db table to CSV file
 	 *
-	 * @param cursor data to export into @link{fileName}
+	 * @param cursor   data to export into @link{fileName}
 	 * @param fileName name of file to export into
 	 * @return
 	 */
-	public boolean exportToCSV(Cursor cursor, String fileName) {
-		ContextWrapper contextWrapper = new ContextWrapper(mContext);
-		String path = contextWrapper.getFilesDir() + File.separator + fileName + ".csv";
-//		String path = contextWrapper.getExternalCacheDir() + File.separator + fileName + ".csv";
+	public boolean exportToCSV(Cursor cursor, String fileName)
+	{
+		String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator + fileName + ".csv";
 		Log.d("DB", "Path: " + path);
 		File file = new File(path);
-		try {
-			if (file.exists()) {
-				if (!file.createNewFile()) {
+		try
+		{
+			if(file.exists())
+			{
+				if(!file.createNewFile())
+				{
 					return false;
 				}
+			}
+			if(cursor.getCount() == 0)
+			{
+				cursor.close();
+				return false;
 			}
 			CSVWriter writer = new CSVWriter(new FileWriter(path));
 			int columnCount = cursor.getColumnCount();
 			String[] columnNames = cursor.getColumnNames();
 			writer.writeNext(columnNames);
-			if (cursor.getCount() == 0) {
-				writer.close();
-				cursor.close();
-				return false;
-			}
 			cursor.moveToFirst();
-			do {
+			do
+			{
 				String[] rows = new String[columnCount];
-				for (int i = 0; i < columnCount; i++) {
-					switch (cursor.getType(i)) {
+				for(int i = 0; i < columnCount; i++)
+				{
+					switch(cursor.getType(i))
+					{
 						case Cursor.FIELD_TYPE_INTEGER:
 							rows[i] = String.valueOf(cursor.getInt(i));
 							break;
@@ -196,11 +196,12 @@ public class DatabaseAccess
 					}
 				}
 				writer.writeNext(rows);
-			} while (cursor.moveToNext());
+			} while(cursor.moveToNext());
 			writer.close();
 			cursor.close();
 			return true;
-		} catch (IOException e) {
+		} catch(IOException e)
+		{
 			e.printStackTrace();
 			cursor.close();
 			return false;

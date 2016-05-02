@@ -1,7 +1,6 @@
 package com.diploma.vmpay.driving_style.database.dbmodels;
 
 import android.content.ContentValues;
-import android.util.Log;
 
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
 
@@ -53,7 +52,7 @@ public class TripModel extends ParentModel
 	@Override
 	public ContentValues getInsert()
 	{
-		ContentValues contentValues = new ContentValues();
+		contentValues = new ContentValues();
 		contentValues.put(TripNames.USER_ID, user_id);
 		contentValues.put(TripNames.START_TIME, start_time);
 		contentValues.put(TripNames.FINISH_TIME, finish_time);

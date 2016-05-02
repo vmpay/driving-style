@@ -56,7 +56,7 @@ public class AccDataModel extends ParentModel
 	@Override
 	public ContentValues getInsert()
 	{
-		ContentValues contentValues = new ContentValues();
+		contentValues = new ContentValues();
 		contentValues.put(AccDataNames.TRIP_ID, trip_id);
 		contentValues.put(AccDataNames.TIME_STAMP, time_stamp);
 		contentValues.put(AccDataNames.ACC_X, acc_x);

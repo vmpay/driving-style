@@ -62,7 +62,7 @@ public class GpsDataModel  extends ParentModel
 	@Override
 	public ContentValues getInsert()
 	{
-		ContentValues contentValues = new ContentValues();
+		contentValues = new ContentValues();
 		contentValues.put(GpsDataNames.TRIP_ID, trip_id);
 		contentValues.put(GpsDataNames.TIME_STAMP, time_stamp);
 		contentValues.put(GpsDataNames.LATITUDE, latitude);

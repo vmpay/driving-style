@@ -16,6 +16,7 @@
 	<string name="error_invalid_password">Error invalid password</string>
 	<string name="error_field_required">Error filed required</string>
 	<string name="error_invalid_email">Error invalid email</string>
+	<string name="error_invalid_same_email">Error email is already in use</string>
 	<string name="prompt_email">E-mail:</string>
 	<string name="prompt_password">Password:</string>
 	<string name="action_sign_in_short">action_sign_in_short:</string>

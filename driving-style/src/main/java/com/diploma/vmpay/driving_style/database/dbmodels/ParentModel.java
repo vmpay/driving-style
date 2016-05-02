@@ -40,4 +40,5 @@ public abstract class ParentModel
 	public void setContentValues(ContentValues contentValues) { this.contentValues = contentValues; }
 
 	public abstract ContentValues getInsert();
+
 }
