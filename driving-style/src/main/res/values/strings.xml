@@ -50,6 +50,15 @@
 	<string name="cb_gps_data_title">GPS data table (*_gps.csv)</string>
 	<string name="btn_back_title"><![CDATA[< Back]]></string>
 
+	<!-- ExportFragment resources -->
+	<string name="cb_error">Check at least one option</string>
+	<string name="result_msg">Exported successfully</string>
+	<string name="filename_error">Invalid filename</string>
+
+	<!-- GpsSensor resources -->
+	<string name="unavailable">unavailable</string>
+	<string name="temporarily_unavailable">temporarily unavailable</string>
+	<string name="available">available</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">

@@ -26,7 +26,6 @@ public class DatabaseManager
 
 	DatabaseAccess databaseAccess;
 	ParentModel parentModel;
-	SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 	Context mContext;
 
 	public DatabaseManager(Context mContext)
@@ -37,9 +36,10 @@ public class DatabaseManager
 
 	// TRIP
 
+	@Deprecated
 	public long addTrip(TripEntity tripEntity)
 	{
-		Log.d("DB", "INSERT trip user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
+		Log.d("DB", "INSERT trip user_id " + tripEntity.userId + " start_time " + tripEntity.startTime
 				+ " mark " + tripEntity.mark);
 		parentModel = new TripModel(tripEntity);
 		long success = databaseAccess.insert(parentModel);
@@ -52,12 +52,13 @@ public class DatabaseManager
 		return success;
 	}
 
+	@Deprecated
 	public boolean updateTrip(TripEntity tripEntity)
 	{
-		Log.d("DB", "UPDATE user_id " + tripEntity.user_id + " start_time " + tripEntity.start_time
+		Log.d("DB", "UPDATE user_id " + tripEntity.userId + " start_time " + tripEntity.startTime
 				+ " mark " + tripEntity.mark);
 		parentModel = new TripModel(tripEntity);
-		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "='" + tripEntity.start_time + "'");
+		parentModel.setWhereClause(TripModel.TripNames.START_TIME + "='" + tripEntity.startTime + "'");
 		long success = databaseAccess.update(parentModel);
 		if(success > 0)
 		{
@@ -68,6 +69,7 @@ public class DatabaseManager
 		return false;
 	}
 
+	@Deprecated
 	public boolean updateTrip(long index, TripEntity tripEntity)
 	{
 		Log.d("DB", "UPDATE trip_id " + index);
@@ -83,45 +85,34 @@ public class DatabaseManager
 		return false;
 	}
 
+	@Deprecated
 	public boolean deleteTrip(TripEntity tripEntity)
 	{
-		Log.d("DB", "DELETE finish_time " + tripEntity.finish_time);
+		Log.d("DB", "DELETE finish_time " + tripEntity.finishTime);
 		parentModel = new TripModel(tripEntity);
-		parentModel.setWhereClause(TripModel.TripNames.FINISH_TIME + "='" + tripEntity.finish_time + "'");
+		parentModel.setWhereClause(TripModel.TripNames.FINISH_TIME + "='" + tripEntity.finishTime + "'");
 		long success = databaseAccess.delete(parentModel);
-		if(success > 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return success > 0;
 	}
 
+	@Deprecated
 	public boolean deleteTrip(long index)
 	{
 		Log.d("DB", "DELETE ID " + index);
 		parentModel = new TripModel();
 		parentModel.setWhereClause(TripModel.TripNames.ID + "=" + index);
 		long success = databaseAccess.delete(parentModel);
-		if(success > 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return success > 0;
 	}
 
+	@Deprecated
 	public long deleteAllTrips()
-		{
+	{
 		parentModel = new TripModel();
-		long success = databaseAccess.delete(parentModel);
-		return success;
+		return (long) databaseAccess.delete(parentModel);
 	}
 
+	@Deprecated
 	public List<ContentValues> getAllTrips()
 	{
 		parentModel = new TripModel();
@@ -130,6 +121,7 @@ public class DatabaseManager
 		return results;
 	}
 
+	@Deprecated
 	public List<ContentValues> getTrip(String start_time)
 	{
 		Log.d(LOG_TAG, "getTrip: start_time = " + start_time);
@@ -140,6 +132,7 @@ public class DatabaseManager
 		return results;
 	}
 
+	@Deprecated
 	public boolean exportTrips(String fileName)
 	{
 		parentModel = new TripModel();
@@ -151,9 +144,10 @@ public class DatabaseManager
 
 	// ACC DATA
 
+	@Deprecated
 	public boolean addAccData(AccDataEntity accDataEntity)
 	{
-		Log.d("DB", "INSERT accData trip_id " + accDataEntity.trip_id + " time_stamp " + accDataEntity.time_stamp);
+		Log.d("DB", "INSERT accData trip_id " + accDataEntity.tripId + " time_stamp " + accDataEntity.timeStamp);
 		parentModel = new AccDataModel(accDataEntity);
 		long success = databaseAccess.insert(parentModel);
 		if(success > 0)
@@ -165,9 +159,10 @@ public class DatabaseManager
 		return false;
 	}
 
+	@Deprecated
 	public boolean addAccDataAsync(AccDataEntity accDataEntity)
 	{
-		Log.d("DB", "INSERT accData trip_id " + accDataEntity.trip_id + " time_stamp " + accDataEntity.time_stamp);
+		Log.d("DB", "INSERT accData trip_id " + accDataEntity.tripId + " time_stamp " + accDataEntity.timeStamp);
 		parentModel = new AccDataModel(accDataEntity);
 		long success = databaseAccess.insert(parentModel);
 		if(success > 0)
@@ -179,29 +174,24 @@ public class DatabaseManager
 		return false;
 	}
 
+	@Deprecated
 	public boolean deleteAccData(AccDataEntity accDataEntity)
 	{
-		Log.d("DB", "DELETE id " + accDataEntity.trip_id);
+		Log.d("DB", "DELETE id " + accDataEntity.tripId);
 		parentModel = new AccDataModel(accDataEntity);
-		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID + "=" + accDataEntity.trip_id);
+		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID + "=" + accDataEntity.tripId);
 		long success = databaseAccess.delete(parentModel);
-		if(success > 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return success > 0;
 	}
 
+	@Deprecated
 	public long deleteAllAccDatas()
 	{
 		parentModel = new AccDataModel();
-		long success = databaseAccess.delete(parentModel);
-		return success;
+		return (long) databaseAccess.delete(parentModel);
 	}
 
+	@Deprecated
 	public List<ContentValues> getAccData()
 	{
 		parentModel = new AccDataModel();
@@ -210,6 +200,7 @@ public class DatabaseManager
 		return results;
 	}
 
+	@Deprecated
 	public boolean exportAccData(String fileName)
 	{
 		parentModel = new AccDataModel();
@@ -240,9 +231,10 @@ public class DatabaseManager
 
 	// GPS DATA
 
+	@Deprecated
 	public boolean addGpsData(GpsDataEntity gpsDataEntity)
 	{
-		Log.d("DB", "INSERT accData trip_id " + gpsDataEntity.trip_id + " time_stamp " + gpsDataEntity.time_stamp);
+		Log.d("DB", "INSERT accData trip_id " + gpsDataEntity.tripId + " time_stamp " + gpsDataEntity.timeStamp);
 		parentModel = new GpsDataModel(gpsDataEntity);
 		long success = databaseAccess.insert(parentModel);
 		if(success > 0)
@@ -254,29 +246,24 @@ public class DatabaseManager
 		return false;
 	}
 
+	@Deprecated
 	public boolean deleteGpsData(GpsDataEntity gpsDataEntity)
 	{
-		Log.d("DB", "DELETE id " + gpsDataEntity.trip_id);
+		Log.d("DB", "DELETE id " + gpsDataEntity.tripId);
 		parentModel = new GpsDataModel(gpsDataEntity);
-		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID + "=" + gpsDataEntity.trip_id);
+		parentModel.setWhereClause(AccDataModel.AccDataNames.TRIP_ID + "=" + gpsDataEntity.tripId);
 		long success = databaseAccess.delete(parentModel);
-		if(success > 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return success > 0;
 	}
 
+	@Deprecated
 	public long deleteAllGpsDatas()
 	{
 		parentModel = new GpsDataModel();
-		long success = databaseAccess.delete(parentModel);
-		return success;
+		return (long) databaseAccess.delete(parentModel);
 	}
 
+	@Deprecated
 	public List<ContentValues> getGpsData()
 	{
 		parentModel = new GpsDataModel();
@@ -285,6 +272,7 @@ public class DatabaseManager
 		return results;
 	}
 
+	@Deprecated
 	public boolean exportGpsData(String fileName)
 	{
 		parentModel = new GpsDataModel();

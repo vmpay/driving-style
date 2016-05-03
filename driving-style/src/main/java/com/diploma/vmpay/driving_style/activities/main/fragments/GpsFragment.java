@@ -72,4 +72,10 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 	{
 		gpsSensor.stopRecording();
 	}
+
+	@Override
+	public void onDestroy()
+	{
+		gpsSensor.stop();
+	}
 }

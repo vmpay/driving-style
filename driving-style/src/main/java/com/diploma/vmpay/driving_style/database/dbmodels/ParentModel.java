@@ -12,6 +12,9 @@ public abstract class ParentModel
 	protected String whereClause = null;
 	protected ContentValues contentValues;
 
+	private long id;
+	public static final String ID = "id";
+
 	public String getTableName()
 	{
 		return tableName;
@@ -41,4 +44,13 @@ public abstract class ParentModel
 
 	public abstract ContentValues getInsert();
 
+	public long getId()
+	{
+		return id;
+	}
+
+	public void setId(long id)
+	{
+		this.id = id;
+	}
 }

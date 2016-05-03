@@ -3,10 +3,8 @@ package com.diploma.vmpay.driving_style.database.dbutils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.opencsv.CSVWriter;
 
 /**
@@ -54,6 +53,7 @@ public class DatabaseAccess
 		@Override
 		public void onCreate(SQLiteDatabase sqLiteDatabase)
 		{
+			sqLiteDatabase.execSQL(UserModel.UserNames.CREATE_TABLE);
 			sqLiteDatabase.execSQL(TripModel.TripNames.CREATE_TABLE);
 			sqLiteDatabase.execSQL(AccDataModel.AccDataNames.CREATE_TABLE);
 			sqLiteDatabase.execSQL(TripDataView.TripDataNames.CREATE_TABLE);
@@ -64,12 +64,14 @@ public class DatabaseAccess
 		public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
 		{
 			//TODO: refactor if we need to save previous data
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserModel.UserNames.TABLENAME);
 			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripModel.TripNames.TABLENAME);
 			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AccDataModel.AccDataNames.TABLENAME);
 			sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
 			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GpsDataModel.GpsDataNames.TABLENAME);
 			onCreate(sqLiteDatabase);
 		}
+
 	}
 
 	public void openDatabase()
@@ -152,7 +154,7 @@ public class DatabaseAccess
 	 *
 	 * @param cursor   data to export into @link{fileName}
 	 * @param fileName name of file to export into
-	 * @return
+	 * @return boolean result of the transaction
 	 */
 	public boolean exportToCSV(Cursor cursor, String fileName)
 	{

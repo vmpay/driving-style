@@ -15,10 +15,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 
 
 /**
@@ -80,7 +84,6 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 	{
 		boolean handled = false;
 		Log.d(LOG_TAG, "onEditorAction actionId " + actionId);
-//		if (actionId == EditorInfo.IME_ACTION_SEND) {
 		if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
 		{
 			exportData();
@@ -99,7 +102,7 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 				|| etFileName.getText().toString().isEmpty())
 		{
 			focusView = etFileName;
-			etFileName.setError("Invalid filename");
+			etFileName.setError(getResources().getString(R.string.filename_error));
 			focusView.requestFocus();
 		}
 		else
@@ -109,44 +112,50 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 
 		if(!cbUsers.isChecked() && !cbTrips.isChecked() && !cbAcc.isChecked() && !cbGps.isChecked())
 		{
-			tvExportResult.setText("Check at least one option");
+			tvExportResult.setText(getResources().getString(R.string.cb_error));
 		}
 		else
 		{
-			DatabaseManager databaseManager = new DatabaseManager(getActivity());
-			//TODO: export data
+			DatabaseAccess databaseAccess = new DatabaseAccess(getActivity());
 			boolean cancel = false;
 			String error = "Exporting failure\n";
 			if(cbUsers.isChecked())
 			{
-				//TODO: add users table
+				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+						new UserModel()), fileName + AppConstants.ExportFileNames.USER))
+				{
+					cancel = true;
+					error += fileName + AppConstants.ExportFileNames.USER + "\n";
+				}
 			}
 
 			if(cbTrips.isChecked())
 			{
-				if(!databaseManager.exportTrips(fileName + "_trips"))
+				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+						new TripModel()), fileName + AppConstants.ExportFileNames.TRIP))
 				{
 					cancel = true;
-					error += fileName + "_trips.csv\n";
+					error += fileName + AppConstants.ExportFileNames.TRIP + "\n";
 				}
 			}
 
 			if(cbAcc.isChecked())
 			{
-				if(!databaseManager.exportAccData(fileName + "_acc"))
+				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+						new AccDataModel()), fileName + AppConstants.ExportFileNames.ACCELEROMETER))
 				{
 					cancel = true;
-					error += fileName + "_acc.csv\n";
+					error += fileName + AppConstants.ExportFileNames.ACCELEROMETER + "\n";
 				}
 			}
 
 			if(cbGps.isChecked())
 			{
-				databaseManager.getGpsData();
-				if(!databaseManager.exportGpsData(fileName + "_gps"))
+				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+						new GpsDataModel()), fileName + AppConstants.ExportFileNames.GPS))
 				{
 					cancel = true;
-					error += fileName + "_gps.csv\n";
+					error += fileName + AppConstants.ExportFileNames.GPS + "\n";
 				}
 			}
 
@@ -156,10 +165,9 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 			}
 			else
 			{
-				tvExportResult.setText("Exported successfully");
+				tvExportResult.setText(getResources().getString(R.string.result_msg));
 			}
 		}
-		return;
 	}
 
 	@Override

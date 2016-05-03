@@ -10,14 +10,13 @@ import java.util.List;
  */
 public class UserModel extends ParentModel
 {
-	private long id;
 	private String login;
 	private String password;
 	private double averageMark;
 
 	public static class UserNames
 	{
-		public final static String ID = "id";
+		public final static String ID = ParentModel.ID;
 		public final static String LOGIN = "login";
 		public final static String PASSWORD = "password";
 		public final static String AVERAGE_MARK = "average_mark";
@@ -39,9 +38,7 @@ public class UserModel extends ParentModel
 
 	public UserModel(String login, String password, double averageMark)
 	{
-		tableName = UserNames.TABLENAME;
-		columns = new String[] { UserNames.ID, UserNames.LOGIN, UserNames.PASSWORD,
-				UserNames.AVERAGE_MARK };
+		this();
 		this.login = login;
 		this.password = password;
 		this.averageMark = averageMark;
@@ -79,11 +76,6 @@ public class UserModel extends ParentModel
 		return contentValues;
 	}
 
-	public long getId()
-	{
-		return id;
-	}
-
 	public String getLogin()
 	{
 		return login;
@@ -97,11 +89,6 @@ public class UserModel extends ParentModel
 	public double getAverageMark()
 	{
 		return averageMark;
-	}
-
-	public void setId(long id)
-	{
-		this.id = id;
 	}
 
 	public void setLogin(String login)

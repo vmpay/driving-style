@@ -35,13 +35,6 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	public ToggleButton tbLaunch;
 	private double alpha = 0.8;
 	private AccelerometerSensor accelerometerSensor;
-	private SimpleDateFormat simpleDateFormat;
-	private DatabaseManager databaseManager;
-	private TripEntity tripEntity;
-	private List<ContentValues> resultTable;
-//	private long trip_id = -1;
-	private Date startDate, finishDate, oldStartDate;
-	private boolean startRecordingFlag = false;
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,26 +81,16 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
 	{
 		Log.d(LOG_TAG, "AccFragment: onCheckedChanged isChecked = " + isChecked);
-		databaseManager = new DatabaseManager(getActivity());
-		simpleDateFormat = new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy");
 		if(isChecked)
 		{
-//			startDate = new Date();
-//			finishDate = startDate;
-//			oldStartDate = startDate;
-//			tripEntity = new TripEntity(0, simpleDateFormat.format(startDate), simpleDateFormat.format(startDate), -1);
-//			databaseManager.addTrip(tripEntity);
-//			resultTable = databaseManager.getTrip(simpleDateFormat.format(startDate));
-//			if (resultTable.size() != 0)
-//				trip_id = resultTable.get(0).getAsLong(TripModel.TripNames.ID);
 			accelerometerSensor = new AccelerometerSensor(alpha, getActivity(), tvAccValues);
-			accelerometerSensor.Start();
+			accelerometerSensor.start();
 			sbAlpha.setEnabled(false);
 			getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 		else
 		{
-			accelerometerSensor.Stop();
+			accelerometerSensor.stop();
 			sbAlpha.setEnabled(true);
 			GpsFragment gpsFragment = (GpsFragment) getFragmentManager().findFragmentById(R.id.llGpsFragment);
 			if (!gpsFragment.tbLaunch.isChecked())
@@ -127,4 +110,9 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 		accelerometerSensor.stopRecording();
 	}
 
+	@Override
+	public void onDestroy()
+	{
+		accelerometerSensor.stop();
+	}
 }
