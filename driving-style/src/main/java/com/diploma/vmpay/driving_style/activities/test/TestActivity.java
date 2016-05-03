@@ -54,6 +54,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		btnStop.setEnabled(false);
 
 		databaseAccess = new DatabaseAccess(this);
+		databaseAccess.setCallback(this);
 
 		scenarioFragment = new ScenarioFragment();
 		accelerometerFragment = new AccelerometerFragment();
@@ -87,14 +88,10 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				break;
 			case R.id.btnStopRecording:
 				Log.d(LOG_TAG, "TA: Finish recording");
-//				btnExport.setEnabled(true);
-//				btnStart.setEnabled(true);
-//				btnStop.setEnabled(false);
 				finishDate = new Date();
 				//TODO: update user id & mark
 				tripModel.setFinishTime(finishDate.getTime());
 				tripModel.setWhereClause(TripModel.TripNames.ID + "=" + tripModel.getId());
-//				databaseAccess.update(tripModel);
 				databaseAccess.asyncInsert(tripModel);
 				accelerometerFragment.stopRecording();
 				gpsFragment.stopRecording();
@@ -115,5 +112,12 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		btnExport.setEnabled(true);
 		btnStart.setEnabled(true);
 		btnStop.setEnabled(false);
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		databaseAccess.removeCallback();
 	}
 }

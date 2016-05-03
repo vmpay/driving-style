@@ -76,6 +76,7 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 	@Override
 	public void onDestroy()
 	{
+		super.onDestroy();
 		gpsSensor.stop();
 	}
 }

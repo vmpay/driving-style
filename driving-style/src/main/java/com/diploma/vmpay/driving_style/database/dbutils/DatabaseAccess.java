@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-import com.diploma.vmpay.driving_style.activities.test.TestActivity;
 import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
@@ -25,6 +24,7 @@ import java.util.List;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 import com.opencsv.CSVWriter;
+
 
 /**
  * Created by Andrew on 01.03.2016.
@@ -44,6 +44,7 @@ public class DatabaseAccess
 	private DbHelper dbHelper;
 	public SQLiteDatabase database;
 	private Context mContext;
+	private DatabaseInterface mCallback;
 
 	class DbHelper extends SQLiteOpenHelper
 	{
@@ -225,7 +226,7 @@ public class DatabaseAccess
 		@Override
 		protected ParentModel doInBackground(ParentModel... params)
 		{
-			if (insert(params[0]) < 0)
+			if(insert(params[0]) < 0)
 			{
 				params[0].setWhereClause(params[0].ID + "=" + params[0].getId());
 				update(params[0]);
@@ -236,16 +237,23 @@ public class DatabaseAccess
 		@Override
 		protected void onPostExecute(ParentModel parentModel)
 		{
-			try
+			if (parentModel instanceof TripModel)
 			{
-				if(((TripModel) parentModel).getFinishTime() != 1)
+				if (mCallback != null)
 				{
-					DatabaseInterface databaseInterface = new TestActivity();
-					databaseInterface.onAsyncInsertFinished();
+					mCallback.onAsyncInsertFinished();
 				}
-			}catch(Exception exception)
-			{
 			}
 		}
+	}
+
+	public void setCallback(DatabaseInterface callback)
+	{
+		mCallback= callback;
+	}
+
+	public void removeCallback()
+	{
+		mCallback = null;
 	}
 }

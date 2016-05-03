@@ -106,6 +106,7 @@ public class AccelerometerFragment extends Fragment implements SeekBar.OnSeekBar
 	@Override
 	public void onDestroy()
 	{
+		super.onDestroy();
 		accelerometerSensor.stop();
 	}
 }
