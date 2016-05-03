@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.diploma.vmpay.driving_style.activities.test.TestActivity;
 import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
+import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 import com.opencsv.CSVWriter;
 
 /**
@@ -98,6 +101,11 @@ public class DatabaseAccess
 			e.printStackTrace();
 		}
 		return success;
+	}
+
+	public void asyncInsert(ParentModel parentModel)
+	{
+		new AsyncInsert().execute(parentModel);
 	}
 
 	public long update(ParentModel parentModel)
@@ -208,6 +216,36 @@ public class DatabaseAccess
 			e.printStackTrace();
 			cursor.close();
 			return false;
+		}
+	}
+
+	public class AsyncInsert extends AsyncTask<ParentModel, Void, ParentModel>
+	{
+
+		@Override
+		protected ParentModel doInBackground(ParentModel... params)
+		{
+			if (insert(params[0]) < 0)
+			{
+				params[0].setWhereClause(params[0].ID + "=" + params[0].getId());
+				update(params[0]);
+			}
+			return params[0];
+		}
+
+		@Override
+		protected void onPostExecute(ParentModel parentModel)
+		{
+			try
+			{
+				if(((TripModel) parentModel).getFinishTime() != 1)
+				{
+					DatabaseInterface databaseInterface = new TestActivity();
+					databaseInterface.onAsyncInsertFinished();
+				}
+			}catch(Exception exception)
+			{
+			}
 		}
 	}
 }

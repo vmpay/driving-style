@@ -1,6 +1,5 @@
 package com.diploma.vmpay.driving_style.activities.main.fragments;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,13 +13,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
-import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
 import com.diploma.vmpay.driving_style.sensors.AccelerometerSensor;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Andrew on 28.02.2016.

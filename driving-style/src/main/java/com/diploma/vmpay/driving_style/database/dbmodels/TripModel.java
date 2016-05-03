@@ -113,4 +113,9 @@ public class TripModel extends ParentModel
 	{
 		this.mark = mark;
 	}
+
+	public long getFinishTime()
+	{
+		return finishTime;
+	}
 }

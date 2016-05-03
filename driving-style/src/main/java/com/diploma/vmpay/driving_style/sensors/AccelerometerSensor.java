@@ -107,8 +107,9 @@ public class AccelerometerSensor implements SensorEventListener
 		{
 			AccDataModel accDataModel = new AccDataModel(trip_id, new Date().getTime(),
 					linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
-			AsyncDatabaseAccess asyncDatabaseAccess = new AsyncDatabaseAccess();
-			asyncDatabaseAccess.execute(accDataModel);
+			databaseAccess.asyncInsert(accDataModel);
+//			AsyncDatabaseAccess asyncDatabaseAccess = new AsyncDatabaseAccess();
+//			asyncDatabaseAccess.execute(accDataModel);
 		}
 	}
 
@@ -149,14 +150,14 @@ public class AccelerometerSensor implements SensorEventListener
 		recordingFlag = false;
 	}
 
-	public class AsyncDatabaseAccess extends AsyncTask<AccDataModel, Void, Void>
-	{
-
-		@Override
-		protected Void doInBackground(AccDataModel... params)
-		{
-			databaseAccess.insert(params[0]);
-			return null;
-		}
-	}
+//	public class AsyncDatabaseAccess extends AsyncTask<AccDataModel, Void, Void>
+//	{
+//
+//		@Override
+//		protected Void doInBackground(AccDataModel... params)
+//		{
+//			databaseAccess.insert(params[0]);
+//			return null;
+//		}
+//	}
 }

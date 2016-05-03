@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ExportDialog;
@@ -14,11 +15,12 @@ import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ScenarioFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.GpsFragment;
+import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TestActivity extends AppCompatActivity implements View.OnClickListener
+public class TestActivity extends AppCompatActivity implements View.OnClickListener, DatabaseInterface
 {
 	private final String LOG_TAG = "TestActivity";
 
@@ -31,6 +33,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 	private FragmentTransaction fragmentTransaction;
 	private Date startDate, finishDate;
 	private long trip_id = -1;
+	private ProgressBar pbTransaction;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +46,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		btnStart = (Button) findViewById(R.id.btnStartRecording);
 		btnStop = (Button) findViewById(R.id.btnStopRecording);
 		btnExport = (Button) findViewById(R.id.btnExport);
+		pbTransaction = (ProgressBar) findViewById(R.id.pbTransaction);
 
 		btnStart.setOnClickListener(this);
 		btnStop.setOnClickListener(this);
@@ -68,6 +72,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		{
 			case R.id.btnStartRecording:
 				Log.d(LOG_TAG, "TA: Start recording");
+				pbTransaction.setVisibility(View.VISIBLE);
 				btnExport.setEnabled(false);
 				btnStart.setEnabled(false);
 				btnStop.setEnabled(true);
@@ -82,14 +87,15 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				break;
 			case R.id.btnStopRecording:
 				Log.d(LOG_TAG, "TA: Finish recording");
-				btnExport.setEnabled(true);
-				btnStart.setEnabled(true);
-				btnStop.setEnabled(false);
+//				btnExport.setEnabled(true);
+//				btnStart.setEnabled(true);
+//				btnStop.setEnabled(false);
 				finishDate = new Date();
 				//TODO: update user id & mark
 				tripModel.setFinishTime(finishDate.getTime());
 				tripModel.setWhereClause(TripModel.TripNames.ID + "=" + tripModel.getId());
-				databaseAccess.update(tripModel);
+//				databaseAccess.update(tripModel);
+				databaseAccess.asyncInsert(tripModel);
 				accelerometerFragment.stopRecording();
 				gpsFragment.stopRecording();
 				break;
@@ -99,5 +105,15 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				exportDialog.show(fragmentTransaction, "ExportingDialog");
 				break;
 		}
+	}
+
+	@Override
+	public void onAsyncInsertFinished()
+	{
+		Log.d(LOG_TAG, "TestActivity interface received");
+		pbTransaction.setVisibility(View.GONE);
+		btnExport.setEnabled(true);
+		btnStart.setEnabled(true);
+		btnStop.setEnabled(false);
 	}
 }

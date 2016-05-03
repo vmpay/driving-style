@@ -58,12 +58,26 @@
 		android:layout_height="1dp"
 		android:background="@color/textInactive"/>
 
-	<Button
-		android:id="@+id/btnExport"
-		style="@style/BorderlessButtonStyle"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/export_db"/>
+		android:layout_height="wrap_content">
+
+		<Button
+			android:id="@+id/btnExport"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/export_db"/>
+
+		<ProgressBar
+			android:layout_marginLeft="@dimen/view_margin"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/pbTransaction"
+			android:indeterminate="true"
+			android:visibility="gone"/>
+	</RelativeLayout>
+
 
 	<!--
 	<TextView
