@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,7 +96,9 @@ public class AccelerometerSensor implements SensorEventListener
 		{
 			accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
 					linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
-			databaseManager.addAccData(accDataEntity);
+			AsyncDatabaseAccess asyncDatabaseAccess = new AsyncDatabaseAccess();
+			asyncDatabaseAccess.execute(accDataEntity);
+//			databaseManager.addAccData(accDataEntity);
 		}
 	}
 
@@ -107,7 +111,7 @@ public class AccelerometerSensor implements SensorEventListener
 
 	public void Start()
 	{
-		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
+		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
 		sensorListenerFlag = true;
 	}
 
@@ -134,5 +138,16 @@ public class AccelerometerSensor implements SensorEventListener
 	public void stopRecording()
 	{
 		recordingFlag = false;
+	}
+
+	public class AsyncDatabaseAccess extends AsyncTask<AccDataEntity, Void, Void>
+	{
+
+		@Override
+		protected Void doInBackground(AccDataEntity... params)
+		{
+			databaseManager.addAccData(params[0]);
+			return null;
+		}
 	}
 }

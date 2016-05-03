@@ -165,6 +165,20 @@ public class DatabaseManager
 		return false;
 	}
 
+	public boolean addAccDataAsync(AccDataEntity accDataEntity)
+	{
+		Log.d("DB", "INSERT accData trip_id " + accDataEntity.trip_id + " time_stamp " + accDataEntity.time_stamp);
+		parentModel = new AccDataModel(accDataEntity);
+		long success = databaseAccess.insert(parentModel);
+		if(success > 0)
+		{
+			Log.d("DB", "Transaction successful acc_id = " + success);
+			return true;
+		}
+		Log.d("DB", "Transaction failed");
+		return false;
+	}
+
 	public boolean deleteAccData(AccDataEntity accDataEntity)
 	{
 		Log.d("DB", "DELETE id " + accDataEntity.trip_id);
