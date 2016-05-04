@@ -7,36 +7,68 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-
 		android:orientation="vertical">
 
-		<LinearLayout
+		<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
+			android:layout_height="wrap_content">
 
-			<Button
-				android:id="@+id/btnBack"
-				style="@style/BorderlessButtonStyle"
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="@string/btn_back_title"/>
+				android:orientation="horizontal">
 
-			<View
-				android:layout_width="1dp"
-				android:layout_height="match_parent"
-				android:background="@color/textInactive"/>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"/>
 
-			<Button
-				android:id="@+id/btnExport"
-				style="@style/BorderlessButtonStyle"
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:gravity="center">
+
+					<ProgressBar
+						android:id="@+id/pbExporting"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:indeterminate="true"
+						android:visibility="gone"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="@string/export_title"/>
+				android:orientation="horizontal">
 
-		</LinearLayout>
+				<Button
+					android:id="@+id/btnBack"
+					style="@style/BorderlessButtonStyle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/btn_back_title"/>
+
+				<View
+					android:layout_width="1dp"
+					android:layout_height="match_parent"
+					android:background="@color/textInactive"/>
+
+				<Button
+					android:id="@+id/btnExport"
+					style="@style/BorderlessButtonStyle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/export_title"/>
+
+			</LinearLayout>
+
+		</RelativeLayout>
 
 		<View
 			android:layout_width="match_parent"
@@ -94,8 +126,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:hint="@string/etFileName_hint"
-					android:imeActionLabel="@string/export_title"
 					android:imeActionId="@+id/etFileName"
+					android:imeActionLabel="@string/export_title"
 					android:imeOptions="actionSend"
 					android:inputType="text"
 					android:maxLines="1"

@@ -9,9 +9,9 @@ import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
  */
 public class TripDataView extends ParentModel
 {
-	private long user_id;
-	private String start_time;
-	private String finish_time;
+	private long userId;
+	private long startTime;
+	private long finishTime;
 	private double mark;
 
 	public static class TripDataNames
@@ -28,7 +28,7 @@ public class TripDataView extends ParentModel
 		public final static String ACC_Y = "acc_y";
 		public final static String ACC_Z = "acc_z";
 
-		public final static String TABLENAME = "TRIP_DATA_VIEW";
+		public final static String TABLENAME = "trip_data_view";
 		public final static String CREATE_TABLE = "CREATE VIEW " + TABLENAME +
 				" AS SELECT " +
 				TripModel.TripNames.TABLENAME + "." + TripModel.TripNames.ID + ", " +
@@ -63,9 +63,9 @@ public class TripDataView extends ParentModel
 		columns = new String[] { TripDataNames.ID, TripDataNames.USER_ID, TripDataNames.START_TIME,
 				TripDataNames.FINISH_TIME, TripDataNames.MARK, TripDataNames.ACC_ID, TripDataNames.TIME_STAMP,
 				TripDataNames.ACC_X, TripDataNames.ACC_Y, TripDataNames.ACC_Z };
-		this.user_id = tripEntity.user_id;
-		this.start_time = tripEntity.start_time;
-		this.finish_time = tripEntity.finish_time;
+		this.userId = tripEntity.userId;
+		this.startTime = tripEntity.startTime;
+		this.finishTime = tripEntity.finishTime;
 		this.mark = tripEntity.mark;
 	}
 	

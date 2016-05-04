@@ -14,17 +14,25 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.database.dbentities.AsyncExportEntity;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
+import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 
 
 /**
  * Created by Andrew on 10.04.2016.
  */
-public class ExportDialog extends DialogFragment implements View.OnClickListener, TextView.OnEditorActionListener, TextWatcher
+public class ExportDialog extends DialogFragment implements View.OnClickListener,
+		TextView.OnEditorActionListener, TextWatcher, DatabaseInterface
 {
 	private final String LOG_TAG = "TestActivity";
 
@@ -32,6 +40,8 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 	private CheckBox cbUsers, cbTrips, cbAcc, cbGps;
 	private EditText etFileName;
 	private TextView tvExportResult;
+	private ProgressBar pbExport;
+	private DatabaseAccess databaseAccess;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
@@ -42,6 +52,7 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 
 		btnBack = (Button) v.findViewById(R.id.btnBack);
 		btnExport = (Button) v.findViewById(R.id.btnExport);
+		pbExport = (ProgressBar) v.findViewById(R.id.pbExporting);
 
 		btnBack.setOnClickListener(this);
 		btnExport.setOnClickListener(this);
@@ -57,6 +68,9 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 
 		etFileName.addTextChangedListener(this);
 		etFileName.setOnEditorActionListener(this);
+
+		databaseAccess = new DatabaseAccess(getActivity());
+		databaseAccess.setCallback(this);
 
 		return v;
 	}
@@ -80,7 +94,6 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 	{
 		boolean handled = false;
 		Log.d(LOG_TAG, "onEditorAction actionId " + actionId);
-//		if (actionId == EditorInfo.IME_ACTION_SEND) {
 		if(actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
 		{
 			exportData();
@@ -99,7 +112,7 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 				|| etFileName.getText().toString().isEmpty())
 		{
 			focusView = etFileName;
-			etFileName.setError("Invalid filename");
+			etFileName.setError(getResources().getString(R.string.filename_error));
 			focusView.requestFocus();
 		}
 		else
@@ -109,45 +122,58 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 
 		if(!cbUsers.isChecked() && !cbTrips.isChecked() && !cbAcc.isChecked() && !cbGps.isChecked())
 		{
-			tvExportResult.setText("Check at least one option");
+			tvExportResult.setText(getResources().getString(R.string.cb_error));
 		}
 		else
 		{
-			DatabaseManager databaseManager = new DatabaseManager(getActivity());
-			//TODO: export data
 			boolean cancel = false;
 			String error = "Exporting failure\n";
 			if(cbUsers.isChecked())
 			{
-				//TODO: add users table
+//				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+//						new UserModel()), fileName + AppConstants.ExportFileNames.USER))
+//				{
+//					cancel = true;
+//					error += fileName + AppConstants.ExportFileNames.USER + "\n";
+//				}
+				databaseAccess.exportAsyncToCSV(databaseAccess.selectCursor(
+						new UserModel()), fileName + AppConstants.ExportFileNames.USER);
 			}
 
 			if(cbTrips.isChecked())
 			{
-				if(!databaseManager.exportTrips(fileName + "_trips"))
-				{
-					cancel = true;
-					error += fileName + "_trips.csv\n";
-				}
+//				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+//						new TripModel()), fileName + AppConstants.ExportFileNames.TRIP))
+//				{
+//					cancel = true;
+//					error += fileName + AppConstants.ExportFileNames.TRIP + "\n";
+//				}
+				databaseAccess.exportAsyncToCSV(databaseAccess.selectCursor(
+						new TripModel()), fileName + AppConstants.ExportFileNames.TRIP);
 			}
 
 			if(cbAcc.isChecked())
 			{
-				if(!databaseManager.exportAccData(fileName + "_acc"))
-				{
-					cancel = true;
-					error += fileName + "_acc.csv\n";
-				}
+//				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+//						new AccDataModel()), fileName + AppConstants.ExportFileNames.ACCELEROMETER))
+//				{
+//					cancel = true;
+//					error += fileName + AppConstants.ExportFileNames.ACCELEROMETER + "\n";
+//				}
+				databaseAccess.exportAsyncToCSV(databaseAccess.selectCursor(
+						new AccDataModel()), fileName + AppConstants.ExportFileNames.ACCELEROMETER);
 			}
 
 			if(cbGps.isChecked())
 			{
-				databaseManager.getGpsData();
-				if(!databaseManager.exportGpsData(fileName + "_gps"))
-				{
-					cancel = true;
-					error += fileName + "_gps.csv\n";
-				}
+//				if(!databaseAccess.exportToCSV(databaseAccess.selectCursor(
+//						new GpsDataModel()), fileName + AppConstants.ExportFileNames.GPS))
+//				{
+//					cancel = true;
+//					error += fileName + AppConstants.ExportFileNames.GPS + "\n";
+//				}
+				databaseAccess.exportAsyncToCSV(databaseAccess.selectCursor(
+						new GpsDataModel()), fileName + AppConstants.ExportFileNames.GPS);
 			}
 
 			if(cancel)
@@ -156,10 +182,9 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 			}
 			else
 			{
-				tvExportResult.setText("Exported successfully");
+				tvExportResult.setText(getResources().getString(R.string.result_msg));
 			}
 		}
-		return;
 	}
 
 	@Override
@@ -176,5 +201,44 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 	@Override
 	public void afterTextChanged(Editable s)
 	{
+	}
+
+	@Override
+	public void onAsyncInsertFinished()
+	{
+	}
+
+	@Override
+	public void onAsyncExportFinished(AsyncExportEntity asyncExportEntity)
+	{
+		String tmp = tvExportResult.getText().toString();
+		if (!asyncExportEntity.isResult())
+		{
+			if (tmp.equals(getResources().getString(R.string.result_msg)))
+			{
+				tmp = "Exporting failure\n" + asyncExportEntity.getFileName() + ".csv";
+			}
+			else
+			{
+				tmp += "\n" + asyncExportEntity.getFileName();
+			}
+		}
+		tvExportResult.setText(tmp);
+		pbExport.setVisibility(View.GONE);
+		btnExport.setEnabled(true);
+	}
+
+	@Override
+	public void onAsyncExportStarted()
+	{
+		pbExport.setVisibility(View.VISIBLE);
+		btnExport.setEnabled(false);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		databaseAccess.removeCallback();
 	}
 }

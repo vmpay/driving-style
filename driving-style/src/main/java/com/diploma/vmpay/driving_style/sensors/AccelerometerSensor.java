@@ -7,15 +7,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
-import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static java.lang.Math.abs;
@@ -30,12 +28,11 @@ public class AccelerometerSensor implements SensorEventListener
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
 	private String list = "";
-	private double gravity[] = {0,0,0}, linear_acceleration[] = {0,0,0};
-	private double alpha = (double)0.8;
+	private double gravity[] = { 0, 0, 0 }, linear_acceleration[] = { 0, 0, 0 };
+	private double alpha = (double) 0.8;
 	private Context context;
 	private TextView textView;
-	private DatabaseManager databaseManager;
-	private AccDataEntity accDataEntity;
+	private DatabaseAccess databaseAccess;
 	private long trip_id = -1;
 	private boolean recordingFlag = false, sensorListenerFlag = false;
 
@@ -46,16 +43,19 @@ public class AccelerometerSensor implements SensorEventListener
 		this.textView = textView;
 		mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 		// Use the accelerometer.
-		if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
+		if(mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null)
+		{
 			mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		}
-		else{
+		else
+		{
 			// Sorry, there are no accelerometers on your device.
 			// You can't play this game.
 			//TODO: delete this stuff after checking
 			Log.d(LOG_TAG, "Sorry, there are no accelerometers on your device.");
 		}
-		databaseManager = new DatabaseManager(context);
+//		databaseManager = new DatabaseManager(context);
+		databaseAccess = new DatabaseAccess(context);
 	}
 
 	@Override
@@ -72,52 +72,62 @@ public class AccelerometerSensor implements SensorEventListener
 		linear_acceleration[2] = event.values[2] - gravity[2];
 
 		list = "";
-		if (linear_acceleration[0]<0)
+		if(linear_acceleration[0] < 0)
+		{
 			list += "-\t";
+		}
 		else
+		{
 			list += "\t";
+		}
 		list += String.format(
 				"%1$.4f", abs(linear_acceleration[0]));
-		if (linear_acceleration[1]<0)
+		if(linear_acceleration[1] < 0)
+		{
 			list += "\n-\t";
+		}
 		else
+		{
 			list += "\n\t";
+		}
 		list += String.format(
 				"%1$.4f", abs(linear_acceleration[1]));
-		if (linear_acceleration[2]<0)
+		if(linear_acceleration[2] < 0)
+		{
 			list += "\n-\t";
+		}
 		else
+		{
 			list += "\n\t";
+		}
 		list += String.format(
 				"%1$.4f", abs(linear_acceleration[2]));
-		//Log.d(LOG_TAG, list);
 		textView.setText(list);
-		if (recordingFlag)
+		if(recordingFlag)
 		{
-			accDataEntity = new AccDataEntity(trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
+			AccDataModel accDataModel = new AccDataModel(trip_id, new Date().getTime(),
 					linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
-			AsyncDatabaseAccess asyncDatabaseAccess = new AsyncDatabaseAccess();
-			asyncDatabaseAccess.execute(accDataEntity);
-//			databaseManager.addAccData(accDataEntity);
+			databaseAccess.asyncInsert(accDataModel);
+//			AsyncDatabaseAccess asyncDatabaseAccess = new AsyncDatabaseAccess();
+//			asyncDatabaseAccess.execute(accDataModel);
 		}
 	}
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy)
 	{
-
 	}
 
 
-	public void Start()
+	public void start()
 	{
-		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
 		sensorListenerFlag = true;
 	}
 
-	public void Stop()
+	public void stop()
 	{
-		if (recordingFlag)
+		if(recordingFlag)
 		{
 			recordingFlag = false;
 			Toast.makeText(context, "Recording stopped", Toast.LENGTH_SHORT).show();
@@ -140,14 +150,14 @@ public class AccelerometerSensor implements SensorEventListener
 		recordingFlag = false;
 	}
 
-	public class AsyncDatabaseAccess extends AsyncTask<AccDataEntity, Void, Void>
-	{
-
-		@Override
-		protected Void doInBackground(AccDataEntity... params)
-		{
-			databaseManager.addAccData(params[0]);
-			return null;
-		}
-	}
+//	public class AsyncDatabaseAccess extends AsyncTask<AccDataModel, Void, Void>
+//	{
+//
+//		@Override
+//		protected Void doInBackground(AccDataModel... params)
+//		{
+//			databaseAccess.insert(params[0]);
+//			return null;
+//		}
+//	}
 }

@@ -8,15 +8,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.diploma.vmpay.driving_style.database.dbentities.GpsDataEntity;
-import com.diploma.vmpay.driving_style.database.dbutils.DatabaseManager;
+import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -30,8 +29,7 @@ public class GpsSensor
 	private Context context;
 	private boolean recordingFlag = false;
 	private long trip_id = -1;
-	private GpsDataEntity gpsDataEntity;
-	private DatabaseManager databaseManager;
+	private DatabaseAccess databaseAccess;
 
 	public GpsSensor(Context context, TextView tvStatusGPS, TextView tvLocationGPS)
 	{
@@ -39,7 +37,7 @@ public class GpsSensor
 		this.context = context;
 		this.tvLocationGPS = tvLocationGPS;
 		this.tvStatusGPS = tvStatusGPS;
-		databaseManager = new DatabaseManager(this.context);
+		databaseAccess = new DatabaseAccess(this.context);
 	}
 
 	public boolean start()
@@ -59,8 +57,6 @@ public class GpsSensor
 		}
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				1000 * 1, 1, locationListener);
-//		locationManager.requestLocationUpdates(
-//				LocationManager.NETWORK_PROVIDER, 1000 * 10, 10, locationListener);
 		checkEnabled();
 		return true;
 	}
@@ -93,11 +89,9 @@ public class GpsSensor
 			showLocation(location);
 			if (recordingFlag)
 			{
-				gpsDataEntity = new GpsDataEntity(
-						trip_id, new SimpleDateFormat("HH:mm:ss:SSS_dd-MM-yyyy").format(new Date()),
+				databaseAccess.insert(new GpsDataModel(trip_id, new Date().getTime(),
 						location.getLatitude(), location.getLongitude(), location.getAltitude(),
-						location.getSpeed());
-				databaseManager.addGpsData(gpsDataEntity);
+						location.getSpeed()));
 			}
 		}
 
@@ -110,7 +104,6 @@ public class GpsSensor
 		@Override
 		public void onProviderEnabled(String provider)
 		{
-//			checkEnabled();
 			if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
 					!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context,
 					Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -132,17 +125,16 @@ public class GpsSensor
 		{
 			if(provider.equals(LocationManager.GPS_PROVIDER))
 			{
-//				tvStatusGPS.setText("Status: " + String.valueOf(status));
 				switch(status)
 				{
 					case 0:
-						tvStatusGPS.setText("unavailable");
+						tvStatusGPS.setText(context.getResources().getString(R.string.unavailable));
 						break;
 					case 1:
-						tvStatusGPS.setText("temporarily unavailable");
+						tvStatusGPS.setText(context.getResources().getString(R.string.temporarily_unavailable));
 						break;
 					case 2:
-						tvStatusGPS.setText("available");
+						tvStatusGPS.setText(context.getResources().getString(R.string.available));
 						break;
 				}
 
@@ -175,8 +167,8 @@ public class GpsSensor
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
 			Toast.makeText(context, "Enable GPS service, please.", Toast.LENGTH_SHORT).show();
-//			context.startActivity(new Intent(
-//					android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+			context.startActivity(new Intent(
+					android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 		}
 	}
 
