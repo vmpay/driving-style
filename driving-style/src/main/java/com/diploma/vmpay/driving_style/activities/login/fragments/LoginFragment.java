@@ -171,14 +171,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 			{
 				if (userModelList.get(0).getPassword().equals(userModel.getPassword()))
 				{
+					SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+					SharedPreferences.Editor ed = sharedPreferences.edit();
 					if (swRememberMe.isChecked())
 					{
-						SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-						SharedPreferences.Editor ed = sharedPreferences.edit();
 						ed.putString(AppConstants.SharedPreferencesNames.EMAIL, userModel.getLogin());
 						ed.putString(AppConstants.SharedPreferencesNames.PASSWORD, userModel.getPassword());
-						ed.commit();
 					}
+					else
+					{
+						ed.putString(AppConstants.SharedPreferencesNames.EMAIL, "");
+						ed.putString(AppConstants.SharedPreferencesNames.PASSWORD, "");
+					}
+					ed.commit();
 					Intent intent = new Intent(getActivity(), TestActivity.class);
 					Log.d(LOG_TAG, "Intent is starting");
 					startActivity(intent);
