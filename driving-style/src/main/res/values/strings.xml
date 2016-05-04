@@ -59,6 +59,8 @@
 	<string name="unavailable">unavailable</string>
 	<string name="temporarily_unavailable">temporarily unavailable</string>
 	<string name="available">available</string>
+	<string name="wrong_password">Wrong password</string>
+	<string name="wrong_email">There is no such user registered</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">

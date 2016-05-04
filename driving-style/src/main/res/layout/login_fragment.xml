@@ -28,10 +28,13 @@
 					android:id="@+id/email"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					android:dropDownAnchor="@id/email"
 					android:hint="@string/prompt_email"
+					android:imeActionId="@+id/login"
+					android:imeActionLabel="@string/action_sign_in_short"
+					android:imeOptions="actionUnspecified"
 					android:inputType="textEmailAddress"
 					android:maxLines="1"
-					android:dropDownAnchor="@id/email"
 					android:singleLine="true"/>
 
 			</android.support.design.widget.TextInputLayout>

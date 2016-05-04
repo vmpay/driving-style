@@ -2,6 +2,7 @@ package com.diploma.vmpay.driving_style.activities.login.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 
 /**
@@ -104,19 +107,19 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);*/
 
-//			UserModel userModel = new UserModel(email, password1, -1);
-//			if (databaseAccess.insert(userModel)<0)
-//			{
-//				etLogin.setError(getString(R.string.error_invalid_same_email));
-//				focusView = etLogin;
-//				cancel = true;
-//				focusView.requestFocus();
-//			}
-//			else
-//			{
-//				Toast.makeText(getActivity(), "Sign up successfully", Toast.LENGTH_SHORT).show();
-//				super.onBackPressed();
-//			}
+			UserModel userModel = new UserModel(email, password1, -1);
+			if (databaseAccess.insert(userModel)<0)
+			{
+				etLogin.setError(getString(R.string.error_invalid_same_email));
+				focusView = etLogin;
+				focusView.requestFocus();
+			}
+			else
+			{
+				Toast.makeText(getActivity(), "Sign up successfully", Toast.LENGTH_SHORT).show();
+				getFragmentManager().popBackStack();
+				getFragmentManager().beginTransaction().commit();
+			}
 		}
 	}
 

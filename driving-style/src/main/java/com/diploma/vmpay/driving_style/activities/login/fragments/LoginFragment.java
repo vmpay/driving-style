@@ -1,7 +1,9 @@
 package com.diploma.vmpay.driving_style.activities.login.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,8 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.test.TestActivity;
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
+import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
+
+import java.util.List;
 
 /**
  * Created by Andrew on 10.02.2016.
@@ -34,6 +41,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 	private EditText mPasswordView;
 	private Switch swRememberMe;
 	private ArrayAdapter<CharSequence> adapterEmail;
+	private DatabaseAccess databaseAccess;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
@@ -60,6 +68,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 
 		mPasswordView = (EditText) v.findViewById(R.id.password);
 
+		databaseAccess = new DatabaseAccess(getActivity());
+
+		SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+		String email = sharedPreferences.getString(AppConstants.SharedPreferencesNames.EMAIL, "");
+		String password = sharedPreferences.getString(AppConstants.SharedPreferencesNames.PASSWORD, "");
+
+		if (!email.isEmpty() && !password.isEmpty())
+		{
+			mEmailView.setText(email);
+			mPasswordView.setText(password);
+			swRememberMe.setChecked(true);
+		}
+
 		return v;
 	}
 
@@ -70,19 +91,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 		{
 			case R.id.btnSignIn:
 				Log.d(LOG_TAG, "Toggle Button is on = " + swRememberMe.isChecked());
-				if(swRememberMe.isChecked())
-//				if(true)
-				{
-					//Intent intent = new Intent(getActivity(), StartActivity.class);
-					Intent intent = new Intent(getActivity(), TestActivity.class);
-					Log.d(LOG_TAG, "Intent is starting");
-					startActivity(intent);
-					//mEmailView.showDropDown();
-				}
-				else
-				{
-					attemptLogin();
-				}
+				attemptLogin();
+//				if(swRememberMe.isChecked())
+////				if(true)
+//				{
+//					//Intent intent = new Intent(getActivity(), StartActivity.class);
+//					Intent intent = new Intent(getActivity(), TestActivity.class);
+//					Log.d(LOG_TAG, "Intent is starting");
+//					startActivity(intent);
+//					//mEmailView.showDropDown();
+//				}
+//				else
+//				{
+//					attemptLogin();
+//				}
 				break;
 			case R.id.btnSignUp:
 				RegistrationFragment registrationFragment = new RegistrationFragment();
@@ -141,11 +163,45 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 		}
 		else
 		{
+			UserModel userModel = new UserModel(email, password, -1);
+			userModel.setWhereClause(UserModel.UserNames.LOGIN + "='" + userModel.getLogin() + "'");
+			List<UserModel> userModelList = UserModel.buildFromContentValuesList(
+					databaseAccess.select(userModel));
+			if (userModelList.size() > 0)
+			{
+				if (userModelList.get(0).getPassword().equals(userModel.getPassword()))
+				{
+					if (swRememberMe.isChecked())
+					{
+						SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+						SharedPreferences.Editor ed = sharedPreferences.edit();
+						ed.putString(AppConstants.SharedPreferencesNames.EMAIL, userModel.getLogin());
+						ed.putString(AppConstants.SharedPreferencesNames.PASSWORD, userModel.getPassword());
+						ed.commit();
+					}
+					Intent intent = new Intent(getActivity(), TestActivity.class);
+					Log.d(LOG_TAG, "Intent is starting");
+					startActivity(intent);
+				}
+				else
+				{
+					mPasswordView.setError(getString(R.string.wrong_password));
+					focusView = mPasswordView;
+					focusView.requestFocus();
+				}
+			}
+			else
+			{
+				mEmailView.setError(getString(R.string.wrong_email));
+				focusView = mEmailView;
+				focusView.requestFocus();
+			}
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
             /*showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);*/
+
 		}
 	}
 
