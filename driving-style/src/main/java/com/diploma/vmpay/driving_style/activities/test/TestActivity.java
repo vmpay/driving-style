@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ExportDialog;
+import com.diploma.vmpay.driving_style.database.dbentities.AsyncExportEntity;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ScenarioFragment;
@@ -17,7 +18,6 @@ import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFr
 import com.diploma.vmpay.driving_style.activities.main.fragments.GpsFragment;
 import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener, DatabaseInterface
@@ -112,6 +112,16 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		btnExport.setEnabled(true);
 		btnStart.setEnabled(true);
 		btnStop.setEnabled(false);
+	}
+
+	@Override
+	public void onAsyncExportFinished(AsyncExportEntity asyncExportEntity)
+	{
+	}
+
+	@Override
+	public void onAsyncExportStarted()
+	{
 	}
 
 	@Override

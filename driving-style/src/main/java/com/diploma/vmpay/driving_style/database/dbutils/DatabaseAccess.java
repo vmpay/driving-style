@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.diploma.vmpay.driving_style.database.dbentities.AsyncExportEntity;
 import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
@@ -220,7 +222,14 @@ public class DatabaseAccess
 		}
 	}
 
-	public class AsyncInsert extends AsyncTask<ParentModel, Void, ParentModel>
+	public void exportAsyncToCSV(Cursor cursor, String fileName)
+	{
+		AsyncExportEntity asyncExportEntity = new AsyncExportEntity(cursor, fileName);
+		AsyncExport asyncExport = new AsyncExport();
+		asyncExport.execute(asyncExportEntity);
+	}
+
+	private class AsyncInsert extends AsyncTask<ParentModel, Void, ParentModel>
 	{
 
 		@Override
@@ -247,6 +256,80 @@ public class DatabaseAccess
 		}
 	}
 
+	private class AsyncExport extends AsyncTask<AsyncExportEntity, Void, AsyncExportEntity>
+	{
+		private Cursor cursor;
+		private String fileName;
+
+		@Override
+		protected AsyncExportEntity doInBackground(AsyncExportEntity... params)
+		{
+			cursor = params[0].getCursor();
+			fileName = params[0].getFileName();
+			String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator + fileName + ".csv";
+			Log.d("DB", "Path: " + path);
+			File file = new File(path);
+			try
+			{
+				if(file.exists())
+				{
+					if(!file.createNewFile())
+					{
+						return params[0];
+					}
+				}
+				if(cursor.getCount() == 0)
+				{
+					cursor.close();
+					return params[0];
+				}
+				CSVWriter writer = new CSVWriter(new FileWriter(path));
+				int columnCount = cursor.getColumnCount();
+				String[] columnNames = cursor.getColumnNames();
+				writer.writeNext(columnNames);
+				cursor.moveToFirst();
+				do
+				{
+					String[] rows = new String[columnCount];
+					for(int i = 0; i < columnCount; i++)
+					{
+						switch(cursor.getType(i))
+						{
+							case Cursor.FIELD_TYPE_INTEGER:
+								rows[i] = String.valueOf(cursor.getInt(i));
+								break;
+							case Cursor.FIELD_TYPE_FLOAT:
+								rows[i] = String.valueOf(cursor.getFloat(i));
+								break;
+							case Cursor.FIELD_TYPE_STRING:
+								rows[i] = cursor.getString(i);
+								break;
+						}
+					}
+					writer.writeNext(rows);
+				} while(cursor.moveToNext());
+				writer.close();
+				cursor.close();
+				params[0].setResult(true);
+				return params[0];
+			} catch(IOException e)
+			{
+				e.printStackTrace();
+				cursor.close();
+				return params[0];
+			}
+		}
+
+		@Override
+		protected void onPostExecute(AsyncExportEntity asyncExportEntity)
+		{
+			if (mCallback != null)
+			{
+				mCallback.onAsyncExportFinished(asyncExportEntity);
+			}
+		}
+	}
+
 	public void setCallback(DatabaseInterface callback)
 	{
 		mCallback= callback;
@@ -256,4 +339,5 @@ public class DatabaseAccess
 	{
 		mCallback = null;
 	}
+
 }
