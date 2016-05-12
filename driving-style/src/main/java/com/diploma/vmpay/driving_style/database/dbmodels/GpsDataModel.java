@@ -91,6 +91,7 @@ public class GpsDataModel  extends ParentModel
 		gpsDataModel.setLongitude(contentValues.getAsDouble(GpsDataNames.LONGITUDE));
 		gpsDataModel.setAltitude(contentValues.getAsDouble(GpsDataNames.ALTITUDE));
 		gpsDataModel.setSpeed(contentValues.getAsDouble(GpsDataNames.SPEED));
+		gpsDataModel.setTimeStamp(contentValues.getAsLong(GpsDataNames.TIME_STAMP));
 
 		return gpsDataModel;
 	}

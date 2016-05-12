@@ -29,8 +29,8 @@ public class TripModel extends ParentModel
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
 				" (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				USER_ID + " INTEGER NOT NULL, " +
-				START_TIME + " INTEGER UNIQUE NOT NULL, " +
-				FINISH_TIME + " INTEGER NOT NULL, " +
+				START_TIME + " TEXT UNIQUE NOT NULL, " +
+				FINISH_TIME + " TEXT NOT NULL, " +
 				MARK + " REAL NOT NULL);";
 	}
 

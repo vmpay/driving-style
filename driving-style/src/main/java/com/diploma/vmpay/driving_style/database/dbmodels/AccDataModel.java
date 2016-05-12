@@ -31,7 +31,7 @@ public class AccDataModel extends ParentModel
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
 				" (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				TRIP_ID + " INTEGER NOT NULL, " +
-				TIME_STAMP + " INTEGER NOT NULL, " +
+				TIME_STAMP + " TEXT NOT NULL, " +
 				ACC_X + " REAL NOT NULL, " +
 				ACC_Y + " REAL NOT NULL, " +
 				ACC_Z + " REAL NOT NULL);";
@@ -82,9 +82,9 @@ public class AccDataModel extends ParentModel
 		accDataModel.setId(contentValues.getAsLong(AccDataNames.ID));
 		accDataModel.setTripId(contentValues.getAsLong(AccDataNames.TRIP_ID));
 		accDataModel.setTimeStamp(contentValues.getAsLong(AccDataNames.TIME_STAMP));
-		accDataModel.setAccX(contentValues.getAsLong(AccDataNames.ACC_X));
-		accDataModel.setAccY(contentValues.getAsLong(AccDataNames.ACC_Y));
-		accDataModel.setAccZ(contentValues.getAsLong(AccDataNames.ACC_Z));
+		accDataModel.setAccX(contentValues.getAsDouble(AccDataNames.ACC_X));
+		accDataModel.setAccY(contentValues.getAsDouble(AccDataNames.ACC_Y));
+		accDataModel.setAccZ(contentValues.getAsDouble(AccDataNames.ACC_Z));
 
 		return accDataModel;
 	}
