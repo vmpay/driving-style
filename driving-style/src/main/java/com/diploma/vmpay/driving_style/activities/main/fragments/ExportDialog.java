@@ -220,7 +220,7 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
 			}
 			else
 			{
-				tmp += "\n" + asyncExportEntity.getFileName();
+				tmp += "\n" + asyncExportEntity.getFileName() + ".csv";
 			}
 		}
 		tvExportResult.setText(tmp);

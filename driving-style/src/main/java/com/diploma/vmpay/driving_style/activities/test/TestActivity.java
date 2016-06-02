@@ -16,6 +16,7 @@ import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ScenarioFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.GpsFragment;
+import com.diploma.vmpay.driving_style.database.dbutils.RequestExternalStorage;
 import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 
 import java.util.Date;
@@ -63,6 +64,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		fragmentTransaction.replace(R.id.llAccelerometerFragment, accelerometerFragment, "AccelerometerFragment");
 		fragmentTransaction.replace(R.id.llGpsFragment, gpsFragment, "GpsFragment");
 		fragmentTransaction.commit();
+
+		RequestExternalStorage.verifyStoragePermissions(this);
 	}
 
 	@Override
