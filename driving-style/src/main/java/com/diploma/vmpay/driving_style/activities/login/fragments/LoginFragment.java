@@ -25,7 +25,18 @@ import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.test.TestActivity;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.internal.CallbackManagerImpl;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,11 +53,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 	private Switch swRememberMe;
 	private ArrayAdapter<CharSequence> adapterEmail;
 	private DatabaseAccess databaseAccess;
+	private LoginButton loginButton;
+	private CallbackManager callbackManager;
+	private ProfileTracker profileTracker;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
 		Log.d(LOG_TAG, "onCreateView() LoginFragment");
+		FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 		View v = inflater.inflate(R.layout.login_fragment, container, false);
 
 		swRememberMe = (Switch) v.findViewById(R.id.switchRememberMe);
@@ -81,7 +96,65 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 			swRememberMe.setChecked(true);
 		}
 
+		loginButton = (LoginButton) v.findViewById(R.id.login_button);
+		loginButton.setReadPermissions("user_friends");
+		// If using in a fragment
+		loginButton.setFragment(this);
+		// Other app specific specialization
+
+		// Callback registration
+
+		callbackManager = CallbackManager.Factory.create();
+		loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+			@Override
+			public void onSuccess(LoginResult loginResult) {
+				// App code
+				Log.d(LOG_TAG, "onSuccess Token " + loginResult.getAccessToken()
+						+ " Permissions" + loginResult.getRecentlyGrantedPermissions());
+//				LoginManager.getInstance().logInWithPublishPermissions(
+//						getActivity(),  Arrays.asList("public_profile", "user_friends"));
+			}
+
+			@Override
+			public void onCancel() {
+				// App code
+				Log.d(LOG_TAG, "onCancel");
+			}
+
+			@Override
+			public void onError(FacebookException exception) {
+				// App code
+				Log.d(LOG_TAG, "onError");
+			}
+		});
+
+		profileTracker = new ProfileTracker() {
+			@Override
+			protected void onCurrentProfileChanged(
+					Profile oldProfile,
+					Profile currentProfile) {
+				// App code
+				if (currentProfile != null)
+				{
+					Log.d(LOG_TAG, "onCurrentProfileChanged " + currentProfile.getName());
+				}
+			}
+		};
+
 		return v;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		callbackManager.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		profileTracker.stopTracking();
 	}
 
 	@Override
