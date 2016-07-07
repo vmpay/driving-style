@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -29,12 +30,17 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.internal.CallbackManagerImpl;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,7 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 
 		databaseAccess = new DatabaseAccess(getActivity());
 
-		SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 		String email = sharedPreferences.getString(AppConstants.SharedPreferencesNames.EMAIL, "");
 		String password = sharedPreferences.getString(AppConstants.SharedPreferencesNames.PASSWORD, "");
 
@@ -97,7 +103,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 		}
 
 		loginButton = (LoginButton) v.findViewById(R.id.login_button);
-		loginButton.setReadPermissions("user_friends");
+		loginButton.setReadPermissions(Arrays.asList("user_friends", "email"));
 		// If using in a fragment
 		loginButton.setFragment(this);
 		// Other app specific specialization
@@ -111,6 +117,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 				// App code
 				Log.d(LOG_TAG, "onSuccess Token " + loginResult.getAccessToken()
 						+ " Permissions" + loginResult.getRecentlyGrantedPermissions());
+				GraphRequest request = GraphRequest.newMeRequest(
+						loginResult.getAccessToken(),
+						new GraphRequest.GraphJSONObjectCallback() {
+							@Override
+							public void onCompleted(JSONObject object, GraphResponse response) {
+								Log.v(LOG_TAG, "onCompleted " + response.toString());
+
+								// Application code
+								try
+								{
+									String email = object.getString("email");
+									String name  = object.getString("name");
+									facebookLogin(email);
+								} catch(JSONException e)
+								{
+									e.printStackTrace();
+								}
+							}
+						});
+				Bundle parameters = new Bundle();
+				parameters.putString("fields", "name,email");
+				request.setParameters(parameters);
+				request.executeAsync();
 //				LoginManager.getInstance().logInWithPublishPermissions(
 //						getActivity(),  Arrays.asList("public_profile", "user_friends"));
 			}
@@ -186,6 +215,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 				fragmentTransaction.addToBackStack(null);
 				fragmentTransaction.commit();
 				break;
+		}
+	}
+
+	private void facebookLogin(String email)
+	{
+		UserModel userModel = new UserModel(email, "facebook", -1);
+		userModel.setWhereClause(UserModel.UserNames.LOGIN + "='" + userModel.getLogin() + "'");
+		List<UserModel> userModelList = UserModel.buildFromContentValuesList(
+				databaseAccess.select(userModel));
+		if (userModelList.size() > 0)
+		{
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+			SharedPreferences.Editor ed = sharedPreferences.edit();
+			ed.putString(AppConstants.SharedPreferencesNames.EMAIL, email);
+			ed.commit();
+			Intent intent = new Intent(getActivity(), TestActivity.class);
+			Log.d(LOG_TAG, "Intent is starting");
+			startActivity(intent);
+		}
+		else
+		{
+			databaseAccess.insert(userModel);
+			facebookLogin(email);
 		}
 	}
 

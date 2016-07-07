@@ -51,7 +51,6 @@ public class AuthActivity extends AppCompatActivity
 //
 //		} catch(NoSuchAlgorithmException e)
 //		{
-
 //		}
 	}
 
