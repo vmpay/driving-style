@@ -1,5 +1,8 @@
 package com.diploma.vmpay.driving_style.activities.test;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,10 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ExportDialog;
 import com.diploma.vmpay.driving_style.database.dbentities.AsyncExportEntity;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ScenarioFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
@@ -20,6 +25,7 @@ import com.diploma.vmpay.driving_style.database.dbutils.RequestExternalStorage;
 import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
 
 import java.util.Date;
+import java.util.List;
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener, DatabaseInterface
 {
@@ -33,7 +39,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 	private ScenarioFragment scenarioFragment;
 	private FragmentTransaction fragmentTransaction;
 	private Date startDate, finishDate;
-	private long trip_id = -1;
+	private long trip_id = -1, userId = -1;
 	private ProgressBar pbTransaction;
 
 	@Override
@@ -66,6 +72,17 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 		fragmentTransaction.commit();
 
 		RequestExternalStorage.verifyStoragePermissions(this);
+
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		String email = sharedPreferences.getString(AppConstants.SharedPreferencesNames.EMAIL, "");
+		UserModel userModel = new UserModel();
+		userModel.setWhereClause(UserModel.UserNames.LOGIN + "='" + email + "'");
+		List<UserModel> userModelList = UserModel.buildFromContentValuesList(
+				databaseAccess.select(userModel));
+		if (userModelList.size() > 0)
+		{
+			userId = userModelList.get(0).getId();
+		}
 	}
 
 	@Override
@@ -82,7 +99,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 				btnStop.setEnabled(true);
 				startDate = new Date();
 				//TODO: update user id
-				long userId = 0;
+				userId = 0;
 				tripModel = new TripModel(userId, startDate.getTime(), 1, -1);
 				trip_id = databaseAccess.insert(tripModel);
 				tripModel.setId(trip_id);
