@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.diploma.vmpay.driving_style.activities.main.fragments.StartFragment;
-
 /**
  * Created by Andrew on 11.02.2016.
  */
