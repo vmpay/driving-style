@@ -12,8 +12,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.diploma.vmpay.driving_style.R;
-import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
-import com.diploma.vmpay.driving_style.sensors.GpsSensor;
+import com.diploma.vmpay.driving_style.sensors.LocationSensor;
 
 /**
  * Created by Andrew on 14.03.2016.
@@ -24,7 +23,7 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 
 	private TextView tvStatusGps, tvLocationGps;
 	public ToggleButton tbLaunch;
-	private GpsSensor gpsSensor;
+	private LocationSensor locationSensor;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
@@ -39,7 +38,7 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 
 		tbLaunch.setOnCheckedChangeListener(this);
 
-		gpsSensor = new GpsSensor(getActivity(), tvStatusGps, tvLocationGps);
+		locationSensor = new LocationSensor(getActivity(), tvStatusGps, tvLocationGps);
 
 		return v;
 	}
@@ -49,11 +48,11 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 	{
 		if(isChecked)
 		{
-			gpsSensor.start();
+			locationSensor.start();
 			getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}else
 		{
-			gpsSensor.stop();
+			locationSensor.stop();
 			AccelerometerFragment accelerometerFragment = (AccelerometerFragment) getFragmentManager()
 					.findFragmentById(R.id.llAccelerometerFragment);
 			if (!accelerometerFragment.tbLaunch.isChecked())
@@ -65,18 +64,18 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 
 	public void startRecording(long trip_id)
 	{
-		gpsSensor.startRecording(trip_id);
+		locationSensor.startRecording(trip_id);
 	}
 
 	public void stopRecording()
 	{
-		gpsSensor.stopRecording();
+		locationSensor.stopRecording();
 	}
 
 	@Override
 	public void onDestroy()
 	{
 		super.onDestroy();
-		gpsSensor.stop();
+		locationSensor.stop();
 	}
 }

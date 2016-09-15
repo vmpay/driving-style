@@ -56,12 +56,13 @@
 	<string name="result_msg">Exported successfully</string>
 	<string name="filename_error">Invalid filename</string>
 
-	<!-- GpsSensor resources -->
+	<!-- LocationSensor resources -->
 	<string name="unavailable">unavailable</string>
 	<string name="temporarily_unavailable">temporarily unavailable</string>
 	<string name="available">available</string>
 	<string name="wrong_password">Wrong password</string>
 	<string name="wrong_email">There is no such user registered</string>
+	<string name="enable_gps">Enable GPS service, please</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">

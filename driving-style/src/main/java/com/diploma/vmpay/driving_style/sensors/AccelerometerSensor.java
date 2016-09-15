@@ -6,15 +6,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
-import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
-
-import java.util.Date;
+import com.diploma.vmpay.driving_style.controller.ContextWrapper;
+import com.diploma.vmpay.driving_style.interfaces.IAccelerometerListener;
+import com.diploma.vmpay.driving_style.utils.ListenerList;
 
 import static java.lang.Math.abs;
 
@@ -23,7 +21,7 @@ import static java.lang.Math.abs;
  */
 public class AccelerometerSensor implements SensorEventListener
 {
-	private final String LOG_TAG = "SensorDataLog";
+	private final String LOG_TAG = "AccelerometerSensor";
 
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
@@ -32,10 +30,26 @@ public class AccelerometerSensor implements SensorEventListener
 	private double alpha = (double) 0.8;
 	private Context context;
 	private TextView textView;
-	private DatabaseAccess databaseAccess;
 	private long trip_id = -1;
 	private boolean recordingFlag = false, sensorListenerFlag = false;
 
+	private ContextWrapper contextWrapper;
+	private ListenerList<IAccelerometerListener> accelerometerSensorListenerList;
+
+	public AccelerometerSensor(ContextWrapper contextWrapper, ListenerList<IAccelerometerListener> accelerometerSensorListenerList)
+	{
+		this.contextWrapper = contextWrapper;
+		this.accelerometerSensorListenerList = accelerometerSensorListenerList;
+
+		mSensorManager = (SensorManager) contextWrapper.getContext().getSystemService(Context.SENSOR_SERVICE);
+
+		if(isAvailable())
+		{
+			mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		}
+	}
+
+	@Deprecated
 	public AccelerometerSensor(double alpha, Context context, TextView textView)
 	{
 		this.alpha = alpha;
@@ -55,7 +69,7 @@ public class AccelerometerSensor implements SensorEventListener
 			Log.d(LOG_TAG, "Sorry, there are no accelerometers on your device.");
 		}
 //		databaseManager = new DatabaseManager(context);
-		databaseAccess = new DatabaseAccess(context);
+//		databaseAccess = new DatabaseAccess(context);
 	}
 
 	@Override
@@ -71,46 +85,51 @@ public class AccelerometerSensor implements SensorEventListener
 		linear_acceleration[1] = event.values[1] - gravity[1];
 		linear_acceleration[2] = event.values[2] - gravity[2];
 
-		list = "";
-		if(linear_acceleration[0] < 0)
+		for(IAccelerometerListener listener : accelerometerSensorListenerList.getListCopy())
 		{
-			list += "-\t";
+			listener.onAccData(linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
 		}
-		else
-		{
-			list += "\t";
-		}
-		list += String.format(
-				"%1$.4f", abs(linear_acceleration[0]));
-		if(linear_acceleration[1] < 0)
-		{
-			list += "\n-\t";
-		}
-		else
-		{
-			list += "\n\t";
-		}
-		list += String.format(
-				"%1$.4f", abs(linear_acceleration[1]));
-		if(linear_acceleration[2] < 0)
-		{
-			list += "\n-\t";
-		}
-		else
-		{
-			list += "\n\t";
-		}
-		list += String.format(
-				"%1$.4f", abs(linear_acceleration[2]));
-		textView.setText(list);
-		if(recordingFlag)
-		{
-			AccDataModel accDataModel = new AccDataModel(trip_id, new Date().getTime(),
-					linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
-			databaseAccess.asyncInsert(accDataModel);
+
+//		list = "";
+//		if(linear_acceleration[0] < 0)
+//		{
+//			list += "-\t";
+//		}
+//		else
+//		{
+//			list += "\t";
+//		}
+//		list += String.format(
+//				"%1$.4f", abs(linear_acceleration[0]));
+//		if(linear_acceleration[1] < 0)
+//		{
+//			list += "\n-\t";
+//		}
+//		else
+//		{
+//			list += "\n\t";
+//		}
+//		list += String.format(
+//				"%1$.4f", abs(linear_acceleration[1]));
+//		if(linear_acceleration[2] < 0)
+//		{
+//			list += "\n-\t";
+//		}
+//		else
+//		{
+//			list += "\n\t";
+//		}
+//		list += String.format(
+//				"%1$.4f", abs(linear_acceleration[2]));
+//		textView.setText(list);
+//		if(recordingFlag)
+//		{
+//			AccDataModel accDataModel = new AccDataModel(trip_id, new Date().getTime(),
+//					linear_acceleration[0], linear_acceleration[1], linear_acceleration[2]);
+//			databaseAccess.asyncInsert(accDataModel);
 //			AsyncDatabaseAccess asyncDatabaseAccess = new AsyncDatabaseAccess();
 //			asyncDatabaseAccess.execute(accDataModel);
-		}
+//		}
 	}
 
 	@Override
@@ -118,13 +137,41 @@ public class AccelerometerSensor implements SensorEventListener
 	{
 	}
 
-
+	@Deprecated
 	public void start()
 	{
 		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
 		sensorListenerFlag = true;
 	}
 
+	public void start(int sensorDelay)
+	{
+		switch(sensorDelay)
+		{
+			case SensorManager.SENSOR_DELAY_FASTEST:
+				mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+				break;
+			case SensorManager.SENSOR_DELAY_GAME:
+				mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
+				break;
+			case SensorManager.SENSOR_DELAY_UI:
+				mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
+				break;
+			case SensorManager.SENSOR_DELAY_NORMAL:
+				mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+				break;
+			default:
+				mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
+				break;
+		}
+	}
+
+	public void finish()
+	{
+		mSensorManager.unregisterListener(this);
+	}
+
+	@Deprecated
 	public void stop()
 	{
 		if(recordingFlag)
@@ -160,4 +207,9 @@ public class AccelerometerSensor implements SensorEventListener
 //			return null;
 //		}
 //	}
+
+	public boolean isAvailable()
+	{
+		return mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null;
+	}
 }

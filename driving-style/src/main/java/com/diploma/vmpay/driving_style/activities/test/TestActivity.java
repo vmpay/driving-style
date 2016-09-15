@@ -1,6 +1,5 @@
 package com.diploma.vmpay.driving_style.activities.test;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,12 +21,12 @@ import com.diploma.vmpay.driving_style.activities.main.fragments.ScenarioFragmen
 import com.diploma.vmpay.driving_style.activities.main.fragments.AccelerometerFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.GpsFragment;
 import com.diploma.vmpay.driving_style.database.dbutils.RequestExternalStorage;
-import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
+import com.diploma.vmpay.driving_style.interfaces.IAsyncOperations;
 
 import java.util.Date;
 import java.util.List;
 
-public class TestActivity extends AppCompatActivity implements View.OnClickListener, DatabaseInterface
+public class TestActivity extends AppCompatActivity implements View.OnClickListener, IAsyncOperations
 {
 	private final String LOG_TAG = "TestActivity";
 

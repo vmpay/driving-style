@@ -25,14 +25,14 @@ import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.database.dbutils.DatabaseAccess;
-import com.diploma.vmpay.driving_style.interfaces.DatabaseInterface;
+import com.diploma.vmpay.driving_style.interfaces.IAsyncOperations;
 
 
 /**
  * Created by Andrew on 10.04.2016.
  */
 public class ExportDialog extends DialogFragment implements View.OnClickListener,
-		TextView.OnEditorActionListener, TextWatcher, DatabaseInterface
+		TextView.OnEditorActionListener, TextWatcher, IAsyncOperations
 {
 	private final String LOG_TAG = "TestActivity";
 

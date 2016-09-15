@@ -1,29 +1,31 @@
 package com.diploma.vmpay.driving_style.activities.login;
 
-import android.content.pm.PackageInfo;
+import android.Manifest;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.login.fragments.LoginFragment;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.diploma.vmpay.driving_style.controller.AppController;
+import com.diploma.vmpay.driving_style.controller.ContextOwner;
 
 public class AuthActivity extends AppCompatActivity
 {
 
 	private final String LOG_TAG = "AuthActivity";
+	private final String[] permissions = { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		checkPermissions();
+		AppController.getInstance().setUp(getApplicationContext(), ContextOwner.AUTHORISING_ACTIVITY, hashCode());
 		setContentView(R.layout.activity_auth);
 
 		Log.d(LOG_TAG, "AuthActivity: onCreate()");
@@ -100,5 +102,37 @@ public class AuthActivity extends AppCompatActivity
 			//finish(); // Closes app
 			super.onBackPressed();
 		}
+	}
+
+	private void checkPermissions()
+	{
+		// Here, thisActivity is the current activity
+		if (ContextCompat.checkSelfPermission(this,
+				permissions[0]) != PackageManager.PERMISSION_GRANTED
+				|| ContextCompat.checkSelfPermission(this,
+				permissions[1]) != PackageManager.PERMISSION_GRANTED)
+		{
+
+			// Should we show an explanation?
+//			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//					permission)) {
+
+			// Show an expanation to the user *asynchronously* -- don't block
+			// this thread waiting for the user's response! After the user
+			// sees the explanation, try again to request the permission.
+
+//			} else {
+
+			// No explanation needed, we can request the permission.
+
+			ActivityCompat.requestPermissions(this,
+					permissions,
+					0);
+		}
+
+				// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+				// app-defined int constant. The callback method gets the
+				// result of the request.
+//			}
 	}
 }

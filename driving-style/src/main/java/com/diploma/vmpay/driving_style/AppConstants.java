@@ -18,4 +18,10 @@ public class AppConstants
 		public static final String EMAIL = "email";
 		public static final String PASSWORD = "password";
 	}
+
+	public static class FacebookNames
+	{
+		public static final String USER_FRIENDS_PERMISSION = "user_friends";
+		public static final String USER_EMAIL_PERMISSION = "email";
+	}
 }
