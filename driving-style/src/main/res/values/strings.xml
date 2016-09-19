@@ -66,6 +66,12 @@
 	<string name="enable_gps_dialog">Your GPS seems to be disabled, do you want to enable it?</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
+	<string name="choose_mode">Menu</string>
+	<string name="practice">Practice</string>
+	<string name="exam">Exam</string>
+	<string name="scenario">Scenario</string>
+	<string name="user_profile">Your profile</string>
+	<string name="settings">Settings</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">

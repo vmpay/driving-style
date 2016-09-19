@@ -11,24 +11,18 @@ import android.view.ViewGroup;
 import com.diploma.vmpay.driving_style.R;
 
 /**
- * Created by Andrew on 15/09/2016.
+ * Created by Andrew on 19/09/2016.
  */
-public class MainMenuFragment extends Fragment
+public class SettingsFragment extends Fragment
 {
-	private static final String LOG_TAG = "MainMenuFragment";
+	private static final String LOG_TAG = "HistoryFragment";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		Log.v(LOG_TAG, "MainMenuFragment onCreateView()");
-		View v = inflater.inflate(R.layout.main_menu_fragment, container, false);
+		View v = inflater.inflate(R.layout.settings_fragment, container, false);
 
 		return v;
 	}
-
-//				MainMenuFragment mainMenuFragment = new MainMenuFragment();
-//				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//				fragmentTransaction.replace(R.id.fragmentStartActivity, mainMenuFragment);
-//				//fragmentTransaction.addToBackStack(null);
-//				fragmentTransaction.commit();
 }

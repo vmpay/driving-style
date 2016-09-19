@@ -4,11 +4,31 @@
 			  android:layout_height="match_parent"
 			  android:orientation="vertical">
 
+	<TextView
+		android:text="@string/choose_mode"
+		style="@style/LargeTextStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
+
 	<Button
-		android:id="@+id/btnStartTutorial"
-		style="@style/BorderlessButtonStyle"
+		android:id="@+id/btnStartPractice"
+		style="@style/BigButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/start_recording_button"/>
+		android:text="@string/practice"/>
+
+	<Button
+		android:id="@+id/btnStartExam"
+		style="@style/BigButtonStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/exam"/>
+
+	<Button
+		android:id="@+id/btnStartScenario"
+		style="@style/BigButtonStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/scenario"/>
 
 </LinearLayout>
