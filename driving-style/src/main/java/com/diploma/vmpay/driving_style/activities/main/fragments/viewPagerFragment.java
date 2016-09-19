@@ -15,9 +15,9 @@ import com.diploma.vmpay.driving_style.R;
 /**
  * Created by Andrew on 15/09/2016.
  */
-public class TutorialFragment extends Fragment implements ViewPager.OnPageChangeListener
+public class ViewPagerFragment extends Fragment implements ViewPager.OnPageChangeListener
 {
-	private static final String LOG_TAG = "TutorialFragment";
+	private static final String LOG_TAG = "ViewPagerFragment";
 	private TextView tvStepNumber;
 	private ViewPager viewPager;
 	private MainFragmentPagerAdapter pagerAdapter;
@@ -26,7 +26,7 @@ public class TutorialFragment extends Fragment implements ViewPager.OnPageChange
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		Log.v(LOG_TAG, "TutorialFragment onCreateView()");
+		Log.v(LOG_TAG, "ViewPagerFragment onCreateView()");
 		View v = inflater.inflate(R.layout.tutorial_fragment, container, false);
 
 		tvStepNumber = (TextView) v.findViewById(R.id.tvStepNumber);
@@ -37,7 +37,7 @@ public class TutorialFragment extends Fragment implements ViewPager.OnPageChange
 
 		viewPager.addOnPageChangeListener(this);
 
-		stepnumbers = getResources().getStringArray(R.array.step_number);
+		stepnumbers = getResources().getStringArray(R.array.dot_bar);
 		tvStepNumber.setText(stepnumbers[0]);
 
 		return v;
@@ -53,6 +53,7 @@ public class TutorialFragment extends Fragment implements ViewPager.OnPageChange
 	public void onPageSelected(int position)
 	{
 		Log.v(LOG_TAG, "onPageSelected, position = " + position);
+
 		tvStepNumber.setText(stepnumbers[position]);
 	}
 

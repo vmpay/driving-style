@@ -63,6 +63,9 @@
 	<string name="wrong_password">Wrong password</string>
 	<string name="wrong_email">There is no such user registered</string>
 	<string name="enable_gps">Enable GPS service, please</string>
+	<string name="enable_gps_dialog">Your GPS seems to be disabled, do you want to enable it?</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">
@@ -73,6 +76,12 @@
 		<item>\u2780 \u2781 \u2782 \u2783 \u277A \u2785 \u2786</item>
 		<item>\u2780 \u2781 \u2782 \u2783 \u2784 \u277B \u2786</item>
 		<item>\u2780 \u2781 \u2782 \u2783 \u2784 \u2785 \u277C</item>
+	</string-array>
+
+	<string-array name="dot_bar">
+		<item>\u2022 \u25E6 \u25E6</item>
+		<item>\u25E6 \u2022 \u25E6</item>
+		<item>\u25E6 \u25E6 \u2022</item>
 	</string-array>
 
 </resources>

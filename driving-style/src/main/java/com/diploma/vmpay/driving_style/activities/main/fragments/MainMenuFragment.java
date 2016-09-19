@@ -35,7 +35,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		switch(view.getId())
 		{
 			case R.id.btnStartTutorial:
-				TutorialFragment tutorialFragment = new TutorialFragment();
+				ViewPagerFragment tutorialFragment = new ViewPagerFragment();
 				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 				fragmentTransaction.replace(R.id.fragmentStartActivity, tutorialFragment);
 				fragmentTransaction.addToBackStack("MainMenu");

@@ -1,13 +1,16 @@
 package com.diploma.vmpay.driving_style.sensors;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.TextView;
@@ -45,14 +48,6 @@ public class LocationSensor
 		this.locationListenerListenerList = locationListenerListenerList;
 
 		locationManager = (LocationManager) contextWrapper.getContext().getSystemService(Context.LOCATION_SERVICE);
-
-		if(!isAvailable())
-		{
-			Toast.makeText(contextWrapper.getContext(), contextWrapper.getContext().getResources().getText(R.string.enable_gps), Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			contextWrapper.getContext().startActivity(intent);
-		}
 	}
 
 	@Deprecated

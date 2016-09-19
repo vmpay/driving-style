@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private static final int PAGE_COUNT = 7;
+    private static final int PAGE_COUNT = 3;
 
     public MainFragmentPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
