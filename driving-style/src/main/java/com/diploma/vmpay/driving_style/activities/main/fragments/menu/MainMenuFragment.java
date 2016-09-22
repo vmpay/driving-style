@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.activities.main.fragments;
+package com.diploma.vmpay.driving_style.activities.main.fragments.menu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

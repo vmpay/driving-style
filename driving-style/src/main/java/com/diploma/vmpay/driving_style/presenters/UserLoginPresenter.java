@@ -105,7 +105,7 @@ public class UserLoginPresenter
 						{
 							String email = object.getString("email");
 							String name = object.getString("name");
-							facebookLogin(email);
+							facebookLogin(email, name);
 						} catch(JSONException e)
 						{
 							e.printStackTrace();
@@ -128,9 +128,10 @@ public class UserLoginPresenter
 		}
 	}
 
-	private void facebookLogin(String email)
+	private void facebookLogin(String email, String name)
 	{
 		UserModel userModel = new UserModel(email, "facebook", -1);
+		userModel.setName(name);
 		userModel.setWhereClause(UserModel.UserNames.LOGIN + "='" + userModel.getLogin() + "'");
 		List<UserModel> userModelList = UserModel.buildFromContentValuesList(
 				databaseClient.select(userModel));
@@ -141,7 +142,7 @@ public class UserLoginPresenter
 		else
 		{
 			databaseClient.insert(userModel);
-			facebookLogin(email);
+			facebookLogin(email, name);
 		}
 	}
 

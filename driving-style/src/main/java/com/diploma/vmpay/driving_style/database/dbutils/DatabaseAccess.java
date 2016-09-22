@@ -37,7 +37,7 @@ public class DatabaseAccess implements IDatabaseClient {
 
     public DatabaseAccess(Context mContext) {
         this.mContext = mContext;
-        this.DATABASE_VERSION = 2;
+        this.DATABASE_VERSION = 3;
         openDatabase();
     }
 

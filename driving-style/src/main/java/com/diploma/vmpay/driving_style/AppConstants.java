@@ -24,4 +24,19 @@ public class AppConstants
 		public static final String USER_FRIENDS_PERMISSION = "user_friends";
 		public static final String USER_EMAIL_PERMISSION = "email";
 	}
+
+	public static class DateFormat
+	{
+		public static final String DATE_AND_HOUR = "yyyy-MM-dd'T'HH:mm:ss";
+		public static final String DATE = "yyyy-MM-dd";
+		public static final String HOUR = "HH:mm";
+	}
+
+	public enum TripType
+	{
+		UNKONWN,
+		PRACTICE,
+		EXAM,
+		SCENARIO
+	}
 }

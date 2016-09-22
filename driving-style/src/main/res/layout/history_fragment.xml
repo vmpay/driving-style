@@ -5,9 +5,76 @@
 			  android:orientation="vertical">
 
 	<TextView
-		style="@style/LargeTextStyle"
+		style="@style/BigTitleStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/user_profile"/>
+		android:text="@string/average_mark"
+		android:textAllCaps="true"/>
+
+	<TextView
+		android:id="@+id/tvMark"
+		style="@style/BigTitleStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="5.0"
+		android:textSize="100dp"/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/textInactive"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:weightSum="1">
+
+		<Button
+			android:id="@+id/btnShare"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.33"
+			android:text="@string/share"/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/textInactive"/>
+
+		<Button
+			android:id="@+id/btnExport"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.33"
+			android:text="@string/export_title"/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/textInactive"/>
+
+		<Button
+			android:id="@+id/btnThird"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.33"
+			android:text="3rd btn"/>
+
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/textInactive"/>
+
+	<ListView
+		android:id="@+id/lvHistory"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
 </LinearLayout>

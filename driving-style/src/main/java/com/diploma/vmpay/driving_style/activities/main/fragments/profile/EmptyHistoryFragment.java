@@ -1,4 +1,4 @@
-package com.diploma.vmpay.driving_style.activities.main.fragments;
+package com.diploma.vmpay.driving_style.activities.main.fragments.profile;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,15 +13,15 @@ import com.diploma.vmpay.driving_style.R;
 /**
  * Created by Andrew on 19/09/2016.
  */
-public class SettingsFragment extends Fragment
+public class EmptyHistoryFragment extends Fragment
 {
-	private static final String LOG_TAG = "HistoryFragment";
+	private static final String LOG_TAG = "EmptyHistoryFragment";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		Log.v(LOG_TAG, "MainMenuFragment onCreateView()");
-		View v = inflater.inflate(R.layout.settings_fragment, container, false);
+		View v = inflater.inflate(R.layout.empty_history_fragment, container, false);
 
 		return v;
 	}

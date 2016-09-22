@@ -19,14 +19,14 @@ public class ModelUtils
 
 		if(UserModelList.isEmpty()) return null;
 
-		UserModel actualModel = ModelUtils.getLastConnectedMyDevice(UserModelList);
+		UserModel actualModel = ModelUtils.getLastConnectedUser(UserModelList);
 		if(actualModel != null) return actualModel;
 
 		return UserModelList.get(0);
 	}
 
 	@Nullable
-	public static UserModel getLastConnectedMyDevice(List<UserModel> UserModelList)
+	public static UserModel getLastConnectedUser(List<UserModel> UserModelList)
 	{
 		if(UserModelList == null || UserModelList.isEmpty()) return null;
 

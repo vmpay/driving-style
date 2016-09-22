@@ -2,6 +2,7 @@ package com.diploma.vmpay.driving_style.database.dbmodels;
 
 import android.content.ContentValues;
 
+import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.database.dbentities.TripEntity;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class TripModel extends ParentModel
 	private long startTime;
 	private long finishTime;
 	private double mark;
+	private AppConstants.TripType tripType = AppConstants.TripType.UNKONWN;
 
 	public static class TripNames
 	{
@@ -24,6 +26,7 @@ public class TripModel extends ParentModel
 		public final static String START_TIME = "start_time";
 		public final static String FINISH_TIME = "finish_time";
 		public final static String MARK = "mark";
+		public final static String TRIP_TYPE = "trip_type";
 
 		public final static String TABLENAME = "trip_table";
 		public final static String CREATE_TABLE = "CREATE TABLE " + TABLENAME +
@@ -31,14 +34,20 @@ public class TripModel extends ParentModel
 				USER_ID + " INTEGER NOT NULL, " +
 				START_TIME + " TEXT UNIQUE NOT NULL, " +
 				FINISH_TIME + " TEXT NOT NULL, " +
-				MARK + " REAL NOT NULL);";
+				MARK + " REAL NOT NULL, " +
+				TRIP_TYPE + " INTEGER NOT NULL);";
 	}
 
 	public TripModel()
 	{
 		tableName = TripNames.TABLENAME;
 		columns = new String[] { TripNames.ID, TripNames.USER_ID, TripNames.START_TIME,
-				TripNames.FINISH_TIME, TripNames.MARK };
+				TripNames.FINISH_TIME, TripNames.MARK, TripNames.TRIP_TYPE };
+	}
+
+	public TripModel(long userId)
+	{
+		this.userId = userId;
 	}
 
 	@Deprecated
@@ -68,6 +77,7 @@ public class TripModel extends ParentModel
 		contentValues.put(TripNames.START_TIME, startTime);
 		contentValues.put(TripNames.FINISH_TIME, finishTime);
 		contentValues.put(TripNames.MARK, mark);
+		contentValues.put(TripNames.TRIP_TYPE, tripType.ordinal());
 		return contentValues;
 	}
 
@@ -90,6 +100,7 @@ public class TripModel extends ParentModel
 		tripModel.setStartTime(contentValues.getAsLong(TripNames.START_TIME));
 		tripModel.setFinishTime(contentValues.getAsLong(TripNames.FINISH_TIME));
 		tripModel.setMark(contentValues.getAsDouble(TripNames.MARK));
+		tripModel.setTripType(AppConstants.TripType.values()[contentValues.getAsInteger(TripNames.TRIP_TYPE)]);
 
 		return tripModel;
 	}
@@ -117,5 +128,25 @@ public class TripModel extends ParentModel
 	public long getFinishTime()
 	{
 		return finishTime;
+	}
+
+	public long getUserId()
+	{
+		return userId;
+	}
+
+	public AppConstants.TripType getTripType()
+	{
+		return tripType;
+	}
+
+	public void setTripType(AppConstants.TripType tripType)
+	{
+		this.tripType = tripType;
+	}
+
+	public double getMark()
+	{
+		return mark;
 	}
 }

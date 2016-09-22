@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.diploma.vmpay.driving_style.activities.main.fragments.menu.MainMenuFragment;
+import com.diploma.vmpay.driving_style.activities.main.fragments.profile.ProfileFragment;
+import com.diploma.vmpay.driving_style.activities.main.fragments.settings.SettingsFragment;
+
 /**
  * Created by Andrew on 11.02.2016.
  */
@@ -27,7 +31,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter
 				fragment = new MainMenuFragment();
 				break;
 			case 1:
-				fragment = new HistoryFragment();
+				fragment = new ProfileFragment();
 				break;
 			case 2:
 				fragment = new SettingsFragment();

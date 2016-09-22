@@ -8,6 +8,14 @@
 		style="@style/BigTitleStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/settings"/>
+		android:text="@string/average_mark"
+		android:textAllCaps="true"/>
+
+	<TextView
+		style="@style/LargeTextStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/empty_history"
+		android:textColor="@color/dark_grey"/>
 
 </LinearLayout>

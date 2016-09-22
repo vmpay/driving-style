@@ -8,6 +8,7 @@ import com.diploma.vmpay.driving_style.interfaces.IAccelerometerListener;
 import com.diploma.vmpay.driving_style.interfaces.IDatabaseClient;
 import com.diploma.vmpay.driving_style.interfaces.ILocationListener;
 import com.diploma.vmpay.driving_style.interfaces.IOnActualUserChangedListener;
+import com.diploma.vmpay.driving_style.presenters.HistoryPresenter;
 import com.diploma.vmpay.driving_style.presenters.SensorPresenter;
 import com.diploma.vmpay.driving_style.presenters.UserLoginPresenter;
 import com.diploma.vmpay.driving_style.sensors.AccelerometerSensor;
@@ -46,6 +47,7 @@ public class AppController
 	//------------------PRESENTERS------------------
 	private SensorPresenter sensorPresenter;
 	private UserLoginPresenter userLoginPresenter;
+	private HistoryPresenter historyPresenter;
 
 	private AppController()
 	{
@@ -121,12 +123,14 @@ public class AppController
 	{
 		sensorPresenter = new SensorPresenter(actualUserWrapper, databaseClient, accelerometerSensor, locationSensor);
 		userLoginPresenter = new UserLoginPresenter(databaseClient, actualUserWrapper, appContextWrapper);
+		historyPresenter = new HistoryPresenter(actualUserWrapper, databaseClient, appContextWrapper);
 	}
 
 	private void initializeListeners()
 	{
 		accelerometerSensorListenerList.add(sensorPresenter);
 		locationListenerListenerList.add(sensorPresenter);
+		actualUserChangedListenerListenerList.add(historyPresenter);
 	}
 
 	private void clearListeners()
@@ -152,5 +156,10 @@ public class AppController
 	public UserLoginPresenter getUserLoginPresenter()
 	{
 		return userLoginPresenter;
+	}
+
+	public HistoryPresenter getHistoryPresenter()
+	{
+		return historyPresenter;
 	}
 }

@@ -53,4 +53,9 @@ public abstract class ParentModel
 	{
 		this.id = id;
 	}
+
+	public void setThisIdClause()
+	{
+		whereClause = ID + "=" + id;
+	}
 }
