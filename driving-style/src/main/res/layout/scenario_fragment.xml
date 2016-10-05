@@ -6,46 +6,111 @@
 			  android:layout_marginRight="@dimen/view_margin"
 			  android:orientation="vertical">
 
-	<TextView
-		android:id="@+id/tvScenarioName"
-		style="@style/LargeTextStyle"
+	<LinearLayout
+		android:id="@+id/llPickScenario"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Scenario name"/>
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:visibility="visible">
 
-	<ImageView
-		android:id="@+id/ivScenarioHint"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:src="@drawable/hard_breaking"
-		android:layout_weight="1"/>
+		<TextView
+			style="@style/LargeTextStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/pick_scenario"/>
 
-	<TextView
-		android:id="@+id/tvScenarioHint"
-		style="@style/MediumInactiveTextStyle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Scenario hint"/>
+		<RadioGroup
+			android:id="@+id/rbngScenarioType"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<RadioButton
+				android:id="@+id/rbnBraking"
+				style="@style/RadioButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/scenario_braking"/>
+
+			<RadioButton
+				android:id="@+id/rbnTurn"
+				style="@style/RadioButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/scenario_turn"/>
+
+			<RadioButton
+				android:id="@+id/rbnLaneChange"
+				style="@style/RadioButtonStyle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/scenario_lane_change"/>
+
+		</RadioGroup>
+
+		<Button
+			android:id="@+id/btnProceed"
+			style="@style/BigButtonStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/start_recording_button"
+			android:visibility="gone"/>
+
+	</LinearLayout>
 
 	<LinearLayout
+		android:id="@+id/llScenario"
 		android:layout_width="match_parent"
-		android:layout_height="140sp"
-		android:orientation="horizontal"
-		android:layout_weight="1">
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:visibility="gone"
+		>
+
+		<TextView
+			android:id="@+id/tvScenarioName"
+			style="@style/LargeTextStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Scenario name"/>
 
 		<ImageView
-			android:id="@+id/ivNo"
+			android:id="@+id/ivScenarioHint"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:src="@drawable/ic_no"
-			android:layout_weight="1"/>
-
-		<ImageView
-			android:id="@+id/ivYes"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:src="@drawable/ic_yes"/>
+			android:layout_marginLeft="@dimen/view_margin"
+			android:layout_marginRight="@dimen/view_margin"
+			android:src="@drawable/hard_breaking"/>
+
+		<!--
+		<TextView
+			android:id="@+id/tvScenarioHint"
+			style="@style/MediumInactiveTextStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Scenario hint"
+			android:visibility="gone"/>
+			-->
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<ImageView
+				android:id="@+id/ivNo"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:src="@drawable/ic_no"/>
+
+			<ImageView
+				android:id="@+id/ivYes"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:src="@drawable/ic_yes"/>
+
+		</LinearLayout>
 
 	</LinearLayout>
 

@@ -6,4 +6,6 @@
     <color name="textPrimary">#000000</color>
     <color name="textInactive">#A9A9A9</color>
     <color name="black">#000000</color>
+    <color name="grey">#C0C0C0</color>
+    <color name="dark_grey">#808080</color>
 </resources>

@@ -16,6 +16,8 @@ public interface IDatabaseClient {
 
     long insert(ParentModel databaseModel);
 
+    void asyncInsert(ParentModel databaseModel);
+
 //	DbOperationStatus insertOrUpdate(ParentModel databaseModel);
 
     long update(ParentModel databaseModel);

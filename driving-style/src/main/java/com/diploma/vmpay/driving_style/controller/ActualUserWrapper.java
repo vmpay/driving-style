@@ -35,9 +35,12 @@ public class ActualUserWrapper
 		this.actualUser = newUser;
 		if (newUser != null)
 		{
+			actualUser.setLastConnectionTimestamp(System.currentTimeMillis() / 1000);
+			actualUser.setThisIdClause();
+			databaseClient.update(actualUser);
 			for(IOnActualUserChangedListener listener : actualSelectedDeviceChangedListenerList.getListCopy())
 			{
-				listener.onActualUserChanged(newUser);
+				listener.onActualUserChanged(actualUser);
 			}
 		}
 	}

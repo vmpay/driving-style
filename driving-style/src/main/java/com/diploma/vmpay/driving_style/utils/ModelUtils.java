@@ -2,6 +2,10 @@ package com.diploma.vmpay.driving_style.utils;
 
 import android.support.annotation.Nullable;
 
+import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
+import com.diploma.vmpay.driving_style.database.dbentities.GpsDataEntity;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.interfaces.IDatabaseClient;
 
@@ -19,14 +23,14 @@ public class ModelUtils
 
 		if(UserModelList.isEmpty()) return null;
 
-		UserModel actualModel = ModelUtils.getLastConnectedMyDevice(UserModelList);
+		UserModel actualModel = ModelUtils.getLastConnectedUser(UserModelList);
 		if(actualModel != null) return actualModel;
 
 		return UserModelList.get(0);
 	}
 
 	@Nullable
-	public static UserModel getLastConnectedMyDevice(List<UserModel> UserModelList)
+	public static UserModel getLastConnectedUser(List<UserModel> UserModelList)
 	{
 		if(UserModelList == null || UserModelList.isEmpty()) return null;
 
@@ -45,5 +49,23 @@ public class ModelUtils
 		}
 
 		return newestModel;
+	}
+
+	public static void saveAccEntityList(IDatabaseClient databaseClient, long tripId, List<AccDataEntity> accDataEntityList)
+	{
+		for (AccDataEntity entity : accDataEntityList)
+		{
+			entity.setTripId(tripId);
+			databaseClient.asyncInsert(new AccDataModel(entity));
+		}
+	}
+
+	public static void saveGpsEntityList(IDatabaseClient databaseClient, long tripId, List<GpsDataEntity> gpsDataEntityList)
+	{
+		for (GpsDataEntity entity : gpsDataEntityList)
+		{
+			entity.setTripId(tripId);
+			databaseClient.asyncInsert(new GpsDataModel(entity));
+		}
 	}
 }

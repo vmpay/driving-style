@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:orientation="vertical">
+
+	<TextView
+		style="@style/BigTitleStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/average_mark"
+		android:textAllCaps="true"/>
+
+	<TextView
+		android:id="@+id/tvMark"
+		style="@style/BigTitleStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="5.0"
+		android:textSize="100dp"/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/textInactive"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:weightSum="1">
+
+		<Button
+			android:id="@+id/btnShare"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.33"
+			android:text="@string/share"/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/textInactive"/>
+
+		<Button
+			android:id="@+id/btnExport"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.33"
+			android:text="@string/export_title"/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="@color/textInactive"/>
+
+		<Button
+			android:id="@+id/btnThird"
+			style="@style/BorderlessButtonStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.33"
+			android:text="3rd btn"/>
+
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/textInactive"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<CheckBox
+			android:id="@+id/cbHistory"
+			style="@style/CheckBoxStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="invisible"/>
+
+		<TextView
+			style="@style/SmallTextStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.5"
+			android:text="Date"/>
+
+		<TextView
+			style="@style/SmallTextStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.2"
+			android:text="@string/mark"/>
+
+		<TextView
+			style="@style/SmallTextStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:text="@string/type"/>
+
+
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/grey"/>
+
+	<ListView
+		android:id="@+id/lvHistory"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		/>
+
+</LinearLayout>
