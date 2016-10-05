@@ -41,11 +41,10 @@ public class ProfileFragment extends Fragment
 		historyPresenter.setProfileFragment(this);
 
 		String string = getActivity().getResources().getText(R.string.hello) + " " + historyPresenter.getUserName() + "!";
-//		tvGreetings = (TextView) v.findViewById(R.id.tvHelloUser);
 		tvGreetings.setText(string);
 
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-		if(!historyPresenter.isDataValid())
+		if(historyPresenter.isDataValid())
 		{
 			HistoryFragment historyFragment = new HistoryFragment();
 			fragmentTransaction.add(R.id.llHistoryFragment, historyFragment, "HistoryFragment").commit();

@@ -11,6 +11,7 @@ import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 
+import java.security.PrivilegedAction;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -71,5 +72,29 @@ public class HistoryAdapter extends BaseAdapter
 		tvType.setText(tripModel.getTripType().toString());
 
 		return v;
+	}
+
+	public double getAverageMark()
+	{
+		//TODO: count only exams and practices
+		double mark = 0;
+		int count = 0;
+		for (TripModel model : tripModelList)
+		{
+			if (model.getTripType().equals(AppConstants.TripType.EXAM)|| model.getTripType().equals(AppConstants.TripType.PRACTICE ))
+			{
+				count++;
+				mark += model.getMark();
+			}
+		}
+		if (count == 0)
+		{
+			return 5.0;
+		}
+		else
+		{
+			mark = mark / count;
+			return mark;
+		}
 	}
 }

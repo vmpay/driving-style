@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.controller.AppController;
 
 /**
  * Created by Andrew on 15/09/2016.
@@ -21,7 +22,7 @@ public class ViewPagerFragment extends Fragment implements ViewPager.OnPageChang
 	private TextView tvStepNumber;
 	private ViewPager viewPager;
 	private MainFragmentPagerAdapter pagerAdapter;
-	private String[] stepnumbers;
+	private String[] stepNumbers;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -37,8 +38,8 @@ public class ViewPagerFragment extends Fragment implements ViewPager.OnPageChang
 
 		viewPager.addOnPageChangeListener(this);
 
-		stepnumbers = getResources().getStringArray(R.array.dot_bar);
-		tvStepNumber.setText(stepnumbers[0]);
+		stepNumbers = getResources().getStringArray(R.array.dot_bar);
+		tvStepNumber.setText(stepNumbers[0]);
 
 		return v;
 	}
@@ -54,7 +55,12 @@ public class ViewPagerFragment extends Fragment implements ViewPager.OnPageChang
 	{
 		Log.v(LOG_TAG, "onPageSelected, position = " + position);
 
-		tvStepNumber.setText(stepnumbers[position]);
+		tvStepNumber.setText(stepNumbers[position]);
+		//TODO: refactor page number somehow
+		if (position == 1)
+		{
+			AppController.getInstance().getHistoryPresenter().updateTripModelList();
+		}
 	}
 
 	@Override

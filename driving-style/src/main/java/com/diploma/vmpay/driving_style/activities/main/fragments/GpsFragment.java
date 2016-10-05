@@ -52,7 +52,7 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 			getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}else
 		{
-			locationSensor.stop();
+			locationSensor.finish();
 			AccelerometerFragment accelerometerFragment = (AccelerometerFragment) getFragmentManager()
 					.findFragmentById(R.id.llAccelerometerFragment);
 			if (!accelerometerFragment.tbLaunch.isChecked())
@@ -76,6 +76,6 @@ public class GpsFragment extends Fragment implements CompoundButton.OnCheckedCha
 	public void onDestroy()
 	{
 		super.onDestroy();
-		locationSensor.stop();
+		locationSensor.finish();
 	}
 }

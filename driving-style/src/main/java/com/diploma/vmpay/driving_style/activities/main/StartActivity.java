@@ -27,6 +27,7 @@ public class StartActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		appController.setUp(getApplicationContext(), ContextOwner.MAIN_ACTIVITY, hashCode());
 		setContentView(R.layout.activity_start);
+		appController.getSensorPresenter().enableGpsDialog(this);
 
 		setupTabs();
 	}

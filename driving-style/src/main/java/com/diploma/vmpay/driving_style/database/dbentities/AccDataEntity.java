@@ -3,7 +3,6 @@ package com.diploma.vmpay.driving_style.database.dbentities;
 /**
  * Created by Andrew on 01.03.2016.
  */
-@Deprecated
 public class AccDataEntity
 {
 	public long tripId;
@@ -19,5 +18,18 @@ public class AccDataEntity
 		this.accX = accX;
 		this.accY = accY;
 		this.accZ = accZ;
+	}
+
+	public AccDataEntity(long timeStamp, double accX, double accY, double accZ)
+	{
+		this.timeStamp = timeStamp;
+		this.accX = accX;
+		this.accY = accY;
+		this.accZ = accZ;
+	}
+
+	public void setTripId(long tripId)
+	{
+		this.tripId = tripId;
 	}
 }

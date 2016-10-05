@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.R;
+import com.diploma.vmpay.driving_style.adapters.HistoryAdapter;
 import com.diploma.vmpay.driving_style.controller.AppController;
 import com.diploma.vmpay.driving_style.presenters.HistoryPresenter;
 
@@ -28,6 +29,7 @@ public class HistoryFragment extends Fragment
 	private static final String LOG_TAG = "HistoryFragment";
 
 	private HistoryPresenter historyPresenter;
+	private HistoryAdapter historyAdapter;
 
 	private Unbinder unbinder;
 	@BindView(R.id.tvMark) TextView tvMark;
@@ -60,7 +62,9 @@ public class HistoryFragment extends Fragment
 		historyPresenter = AppController.getInstance().getHistoryPresenter();
 		historyPresenter.setHistoryFragment(this);
 
-		lvHistory.setAdapter(historyPresenter.getHistoryAdapter());
+		historyAdapter = historyPresenter.getHistoryAdapter();
+		lvHistory.setAdapter(historyAdapter);
+		tvMark.setText(Double.toString(historyAdapter.getAverageMark()));
 
 		return v;
 	}

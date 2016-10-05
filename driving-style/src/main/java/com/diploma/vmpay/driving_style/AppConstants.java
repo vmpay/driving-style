@@ -34,9 +34,17 @@ public class AppConstants
 
 	public enum TripType
 	{
-		UNKONWN,
+		UNKNOWN,
 		PRACTICE,
 		EXAM,
 		SCENARIO
+	}
+
+	public enum ScenarioType
+	{
+		UNKNOWN,
+		BRAKING,
+		TURNING,
+		CHANGING_LANE
 	}
 }

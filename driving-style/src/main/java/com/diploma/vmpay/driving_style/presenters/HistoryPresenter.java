@@ -49,14 +49,16 @@ public class HistoryPresenter implements IOnActualUserChangedListener
 	public void updateTripModelList()
 	{
 		getTripModelList();
+//		historyAdapter = new HistoryAdapter(tripModelList, contextWrapper.getContext());
 		historyAdapter.notifyDataSetChanged();
 	}
 
 	private void getTripModelList()
 	{
-//		TripModel tripModel = new TripModel(actualUserWrapper.getActualUser().getId());
-//		tripModel.setWhereClause(TripModel.TripNames.USER_ID + "=" + tripModel.getUserId());
-//		tripModelList = TripModel.buildFromContentValuesList(databaseClient.select(tripModel));
+		tripModelList.clear();
+		TripModel tripModel = new TripModel(actualUserWrapper.getActualUser().getId());
+		tripModel.setWhereClause(TripModel.TripNames.USER_ID + "=" + tripModel.getUserId());
+		tripModelList.addAll(TripModel.buildFromContentValuesList(databaseClient.select(tripModel)));
 	}
 
 	public void setProfileFragment(ProfileFragment profileFragment)

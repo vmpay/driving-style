@@ -76,6 +76,14 @@
 	<string name="empty_history">We need learn your driving style. Swipe to the left and take a ride!</string>
 	<string name="hello">Hello,</string>
 	<string name="share">Share</string>
+	<string name="pick_scenario">Choose scenario</string>
+	<string name="scenario_braking">Sharp braking</string>
+	<string name="scenario_turn">Sharp turn</string>
+	<string name="scenario_lane_change">Sharp lane change</string>
+	<string name="proceed">Proceed</string>
+	<string name="unknown">Unknown</string>
+	<string name="mark">Mark</string>
+	<string name="type">Type</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">

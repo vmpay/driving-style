@@ -60,6 +60,12 @@ public class LocationSensor
 		databaseAccess = new DatabaseAccess(this.context);
 	}
 
+	/**
+	 * Launches location sensor
+	 * @param minTime in ms, time between updating position
+	 * @param minDistance in m, distance between updating position
+	 */
+
 	public void start(long minTime, float minDistance)
 	{
 		if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -104,13 +110,13 @@ public class LocationSensor
 		return true;
 	}
 
-	public void stop()
+	public void finish()
 	{
 		if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
 				!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
 				contextWrapper.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
 		{
-			Log.v(LOG_TAG, "stop: Application has no permission to acquire GPS data");
+			Log.v(LOG_TAG, "finish: Application has no permission to acquire GPS data");
 			// TODO: Consider calling
 			//    ActivityCompat#requestPermissions
 			// here to request the missing permissions, and then overriding
@@ -174,7 +180,7 @@ public class LocationSensor
 						!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
 						context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
 				{
-					Log.v(LOG_TAG, "stop: Application has no permission to acquire GPS data");
+					Log.v(LOG_TAG, "finish: Application has no permission to acquire GPS data");
 					// TODO: Consider calling
 					//    ActivityCompat#requestPermissions
 					// here to request the missing permissions, and then overriding

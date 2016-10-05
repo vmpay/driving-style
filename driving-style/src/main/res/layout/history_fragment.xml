@@ -71,10 +71,51 @@
 		android:layout_height="1dp"
 		android:background="@color/textInactive"/>
 
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<CheckBox
+			android:id="@+id/cbHistory"
+			style="@style/CheckBoxStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="invisible"/>
+
+		<TextView
+			style="@style/SmallTextStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.5"
+			android:text="Date"/>
+
+		<TextView
+			style="@style/SmallTextStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.2"
+			android:text="@string/mark"/>
+
+		<TextView
+			style="@style/SmallTextStyle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:text="@string/type"/>
+
+
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/grey"/>
+
 	<ListView
 		android:id="@+id/lvHistory"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_marginTop="@dimen/activity_horizontal_margin"/>
+		/>
 
 </LinearLayout>
