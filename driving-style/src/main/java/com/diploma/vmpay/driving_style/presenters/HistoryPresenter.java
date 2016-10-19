@@ -7,6 +7,8 @@ import com.diploma.vmpay.driving_style.activities.main.fragments.profile.Profile
 import com.diploma.vmpay.driving_style.adapters.HistoryAdapter;
 import com.diploma.vmpay.driving_style.controller.ActualUserWrapper;
 import com.diploma.vmpay.driving_style.controller.ContextWrapper;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.interfaces.IDatabaseClient;
@@ -84,5 +86,14 @@ public class HistoryPresenter implements IOnActualUserChangedListener
 	public boolean isDataValid()
 	{
 		return tripModelList.size() > 0;
+	}
+
+	public void clearDatabase()
+	{
+		databaseClient.delete(new TripModel());
+		databaseClient.delete(new AccDataModel());
+		databaseClient.delete(new GpsDataModel());
+		update history fragment
+//		updateTripModelList();
 	}
 }

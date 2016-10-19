@@ -9,22 +9,25 @@ import java.util.List;
 /**
  * Created by Andrew on 03.05.2016.
  */
-public interface IDatabaseClient {
-    void openDatabase();
+public interface IDatabaseClient
+{
+	void openDatabase();
 
-    void closeDatabase();
+	void closeDatabase();
 
-    long insert(ParentModel databaseModel);
+	long insert(ParentModel databaseModel);
 
-    void asyncInsert(ParentModel databaseModel);
+	void asyncInsert(ParentModel databaseModel);
 
 //	DbOperationStatus insertOrUpdate(ParentModel databaseModel);
 
-    long update(ParentModel databaseModel);
+	long update(ParentModel databaseModel);
 
-    int delete(ParentModel databaseModel);
+	int delete(ParentModel databaseModel);
 
-    List<ContentValues> select(ParentModel databaseModel);
+	List<ContentValues> select(ParentModel databaseModel);
 
 //	List<ContentValues> select(ParentModel databaseModel, int limit);
+
+	void dropDatabase();
 }

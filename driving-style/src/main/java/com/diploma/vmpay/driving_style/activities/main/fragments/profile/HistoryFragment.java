@@ -47,7 +47,8 @@ public class HistoryFragment extends Fragment
 				Log.v(LOG_TAG, "btnExport");
 				break;
 			case R.id.btnThird:
-				Log.v(LOG_TAG, "btnThird");
+				Log.v(LOG_TAG, "btnDropDb");
+				historyPresenter.clearDatabase();
 				break;
 		}
 	}
