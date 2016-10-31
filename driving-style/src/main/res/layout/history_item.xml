@@ -14,9 +14,10 @@
 
 		<CheckBox
 			android:id="@+id/cbHistory"
-			style="@style/CheckBoxStyle"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"/>
+			android:layout_height="wrap_content"
+			android:clickable="false"
+			android:theme="@style/CheckBoxStyle"/>
 
 		<TextView
 			android:id="@+id/tvDate"

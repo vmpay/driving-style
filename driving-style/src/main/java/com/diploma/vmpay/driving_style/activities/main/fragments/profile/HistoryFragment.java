@@ -45,9 +45,11 @@ public class HistoryFragment extends Fragment
 				break;
 			case R.id.btnExport:
 				Log.v(LOG_TAG, "btnExport");
+				historyPresenter.exportData(historyAdapter.getCheckedItemsID(), "exported_data");
 				break;
 			case R.id.btnThird:
-				Log.v(LOG_TAG, "btnThird");
+				Log.v(LOG_TAG, "btnDropDb");
+				historyPresenter.clearDatabase();
 				break;
 		}
 	}
@@ -64,7 +66,7 @@ public class HistoryFragment extends Fragment
 
 		historyAdapter = historyPresenter.getHistoryAdapter();
 		lvHistory.setAdapter(historyAdapter);
-		tvMark.setText(Double.toString(historyAdapter.getAverageMark()));
+		tvMark.setText(String.format(Double.toString(historyAdapter.getAverageMark())));
 
 		return v;
 	}

@@ -31,261 +31,319 @@ import com.opencsv.CSVWriter;
 /**
  * Created by Andrew on 01.03.2016.
  */
-public class DatabaseAccess implements IDatabaseClient {
-    public final static String DATABASE_NAME = "driving_style_database";
-    private int DATABASE_VERSION;
+public class DatabaseAccess implements IDatabaseClient
+{
+	public final static String DATABASE_NAME = "driving_style_database";
+	private int DATABASE_VERSION;
 
-    public DatabaseAccess(Context mContext) {
-        this.mContext = mContext;
-        this.DATABASE_VERSION = 3;
-        openDatabase();
-    }
+	public DatabaseAccess(Context mContext)
+	{
+		this.mContext = mContext;
+		this.DATABASE_VERSION = 3;
+		openDatabase();
+	}
 
-    private DbHelper dbHelper;
-    public SQLiteDatabase database;
-    private Context mContext;
-    private IAsyncOperations mCallback;
+	private DbHelper dbHelper;
+	public SQLiteDatabase database;
+	private Context mContext;
+	private IAsyncOperations mCallback;
 
-    class DbHelper extends SQLiteOpenHelper {
+	class DbHelper extends SQLiteOpenHelper
+	{
 
-        public DbHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
+		public DbHelper(Context context)
+		{
+			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		}
 
-        @Override
-        public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            sqLiteDatabase.execSQL(UserModel.UserNames.CREATE_TABLE);
-            sqLiteDatabase.execSQL(TripModel.TripNames.CREATE_TABLE);
-            sqLiteDatabase.execSQL(AccDataModel.AccDataNames.CREATE_TABLE);
-            sqLiteDatabase.execSQL(TripDataView.TripDataNames.CREATE_TABLE);
-            sqLiteDatabase.execSQL(GpsDataModel.GpsDataNames.CREATE_TABLE);
-        }
+		@Override
+		public void onCreate(SQLiteDatabase sqLiteDatabase)
+		{
+			sqLiteDatabase.execSQL(UserModel.UserNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(TripModel.TripNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(AccDataModel.AccDataNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(TripDataView.TripDataNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(GpsDataModel.GpsDataNames.CREATE_TABLE);
+		}
 
-        @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-            //TODO: refactor if we need to save previous data
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserModel.UserNames.TABLENAME);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripModel.TripNames.TABLENAME);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AccDataModel.AccDataNames.TABLENAME);
-            sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GpsDataModel.GpsDataNames.TABLENAME);
-            onCreate(sqLiteDatabase);
-        }
+		@Override
+		public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
+		{
+			//TODO: refactor if we need to save previous data
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserModel.UserNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripModel.TripNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AccDataModel.AccDataNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GpsDataModel.GpsDataNames.TABLENAME);
+			onCreate(sqLiteDatabase);
+		}
 
-    }
+	}
 
-    public void openDatabase() {
-        dbHelper = new DbHelper(mContext);
-        database = dbHelper.getWritableDatabase();
-    }
+	public void openDatabase()
+	{
+		dbHelper = new DbHelper(mContext);
+		database = dbHelper.getWritableDatabase();
+	}
 
-    public void closeDatabase() {
-        dbHelper.close();
-    }
+	public void closeDatabase()
+	{
+		dbHelper.close();
+	}
 
-    public long insert(ParentModel parentModel) {
-        ContentValues contentValues = parentModel.getInsert();
-        long success = 0;
-        try {
-            success = database.insertWithOnConflict(parentModel.getTableName(), null,
-                    contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-        return success;
-    }
+	public void dropDatabase()
+	{
+		mContext.deleteDatabase(DATABASE_NAME);
+	}
 
-    public void asyncInsert(ParentModel parentModel) {
-        new AsyncInsert().execute(parentModel);
-    }
+	public long insert(ParentModel parentModel)
+	{
+		ContentValues contentValues = parentModel.getInsert();
+		long success = 0;
+		try
+		{
+			success = database.insertWithOnConflict(parentModel.getTableName(), null,
+					contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+		} catch(RuntimeException e)
+		{
+			e.printStackTrace();
+		}
+		return success;
+	}
 
-    public long update(ParentModel parentModel) {
-        return (long) database.update(parentModel.getTableName(), parentModel.getInsert(),
-                parentModel.getWhereClause(), null);
-    }
+	public void asyncInsert(ParentModel parentModel)
+	{
+		new AsyncInsert().execute(parentModel);
+	}
 
-    public int delete(ParentModel parentModel) {
-        return database.delete(parentModel.getTableName(), parentModel.getWhereClause(), null);
-    }
+	public long update(ParentModel parentModel)
+	{
+		return (long) database.update(parentModel.getTableName(), parentModel.getInsert(),
+				parentModel.getWhereClause(), null);
+	}
 
-    public List<ContentValues> select(ParentModel parentModel) {
-        Cursor cursor = database.query(parentModel.getTableName(), parentModel.getColumns(),
-                parentModel.getWhereClause(), null, null, null, null);
-        List<ContentValues> results = null;
+	public int delete(ParentModel parentModel)
+	{
+		return database.delete(parentModel.getTableName(), parentModel.getWhereClause(), null);
+	}
 
-        if (cursor != null) {
-            results = new ArrayList<>();
-            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                ContentValues contentValues = new ContentValues();
-                for (int i = 0; i < parentModel.getColumns().length; i++) {
-                    int columnIndex = cursor.getColumnIndex(parentModel.getColumns()[i]);
-                    String value = cursor.getString(columnIndex);
-                    if (value != null) {
-                        contentValues.put(parentModel.getColumns()[i], value);
-                    }
-                }
-                results.add(contentValues);
-            }
-            cursor.close();
-        } else {
-            Log.d("DB", "null cursor");
-        }
-        return results;
-    }
+	public List<ContentValues> select(ParentModel parentModel)
+	{
+		Cursor cursor = database.query(parentModel.getTableName(), parentModel.getColumns(),
+				parentModel.getWhereClause(), null, null, null, null);
+		List<ContentValues> results = null;
 
-    public Cursor selectCursor(ParentModel parentModel) {
-        return database.query(parentModel.getTableName(), parentModel.getColumns(),
-                parentModel.getWhereClause(), null, null, null, null);
-    }
+		if(cursor != null)
+		{
+			results = new ArrayList<>();
+			for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
+			{
+				ContentValues contentValues = new ContentValues();
+				for(int i = 0; i < parentModel.getColumns().length; i++)
+				{
+					int columnIndex = cursor.getColumnIndex(parentModel.getColumns()[i]);
+					String value = cursor.getString(columnIndex);
+					if(value != null)
+					{
+						contentValues.put(parentModel.getColumns()[i], value);
+					}
+				}
+				results.add(contentValues);
+			}
+			cursor.close();
+		}
+		else
+		{
+			Log.d("DB", "null cursor");
+		}
+		return results;
+	}
 
-    /**
-     * Export data from db table to CSV file
-     *
-     * @param cursor   data to export into @link{fileName}
-     * @param fileName name of file to export into
-     * @return boolean result of the transaction
-     */
-    public boolean exportToCSV(Cursor cursor, String fileName) {
-        String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator + fileName + ".csv";
-        Log.d("DB", "Path: " + path);
-        File file = new File(path);
-        try {
-            if (file.exists()) {
-                if (!file.createNewFile()) {
-                    return false;
-                }
-            }
-            if (cursor.getCount() == 0) {
-                cursor.close();
-                return false;
-            }
-            CSVWriter writer = new CSVWriter(new FileWriter(path));
-            int columnCount = cursor.getColumnCount();
-            String[] columnNames = cursor.getColumnNames();
-            writer.writeNext(columnNames);
-            cursor.moveToFirst();
-            do {
-                String[] rows = new String[columnCount];
-                for (int i = 0; i < columnCount; i++) {
-                    switch (cursor.getType(i)) {
-                        case Cursor.FIELD_TYPE_INTEGER:
-                            rows[i] = String.valueOf(cursor.getInt(i));
-                            break;
-                        case Cursor.FIELD_TYPE_FLOAT:
-                            rows[i] = String.valueOf(cursor.getFloat(i));
-                            break;
-                        case Cursor.FIELD_TYPE_STRING:
-                            rows[i] = cursor.getString(i);
-                            break;
-                    }
-                }
-                writer.writeNext(rows);
-            } while (cursor.moveToNext());
-            writer.close();
-            cursor.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            cursor.close();
-            return false;
-        }
-    }
+	public Cursor selectCursor(ParentModel parentModel)
+	{
+		return database.query(parentModel.getTableName(), parentModel.getColumns(),
+				parentModel.getWhereClause(), null, null, null, null);
+	}
 
-    public void exportAsyncToCSV(Cursor cursor, String fileName) {
-        AsyncExportEntity asyncExportEntity = new AsyncExportEntity(cursor, fileName);
-        AsyncExport asyncExport = new AsyncExport();
-        asyncExport.execute(asyncExportEntity);
-    }
+	/**
+	 * Export data from db table to CSV file
+	 *
+	 * @param cursor   data to export into @link{fileName}
+	 * @param fileName name of file to export into
+	 * @return boolean result of the transaction
+	 */
+	public boolean exportToCSV(Cursor cursor, String fileName)
+	{
+		String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator + fileName + ".csv";
+		Log.d("DB", "Path: " + path);
+		File file = new File(path);
+		try
+		{
+			if(file.exists())
+			{
+				if(!file.createNewFile())
+				{
+					return false;
+				}
+			}
+			if(cursor.getCount() == 0)
+			{
+				cursor.close();
+				return false;
+			}
+			CSVWriter writer = new CSVWriter(new FileWriter(path));
+			int columnCount = cursor.getColumnCount();
+			String[] columnNames = cursor.getColumnNames();
+			writer.writeNext(columnNames);
+			cursor.moveToFirst();
+			do
+			{
+				String[] rows = new String[columnCount];
+				for(int i = 0; i < columnCount; i++)
+				{
+					switch(cursor.getType(i))
+					{
+						case Cursor.FIELD_TYPE_INTEGER:
+							rows[i] = String.valueOf(cursor.getInt(i));
+							break;
+						case Cursor.FIELD_TYPE_FLOAT:
+							rows[i] = String.valueOf(cursor.getFloat(i));
+							break;
+						case Cursor.FIELD_TYPE_STRING:
+							rows[i] = cursor.getString(i);
+							break;
+					}
+				}
+				writer.writeNext(rows);
+			} while(cursor.moveToNext());
+			writer.close();
+			cursor.close();
+			return true;
+		} catch(IOException e)
+		{
+			e.printStackTrace();
+			cursor.close();
+			return false;
+		}
+	}
 
-    private class AsyncInsert extends AsyncTask<ParentModel, Void, ParentModel> {
+	public void exportAsyncToCSV(Cursor cursor, String fileName)
+	{
+		AsyncExportEntity asyncExportEntity = new AsyncExportEntity(cursor, fileName);
+		AsyncExport asyncExport = new AsyncExport();
+		asyncExport.execute(asyncExportEntity);
+	}
 
-        @Override
-        protected ParentModel doInBackground(ParentModel... params) {
-            if (insert(params[0]) < 0) {
-                params[0].setWhereClause(params[0].ID + "=" + params[0].getId());
-                update(params[0]);
-            }
-            return params[0];
-        }
+	private class AsyncInsert extends AsyncTask<ParentModel, Void, ParentModel>
+	{
 
-        @Override
-        protected void onPostExecute(ParentModel parentModel) {
-            if (parentModel instanceof TripModel) {
-                if (mCallback != null) {
-                    mCallback.onAsyncInsertFinished();
-                }
-            }
-        }
-    }
+		@Override
+		protected ParentModel doInBackground(ParentModel... params)
+		{
+			if(insert(params[0]) < 0)
+			{
+				params[0].setWhereClause(params[0].ID + "=" + params[0].getId());
+				update(params[0]);
+			}
+			return params[0];
+		}
 
-    private class AsyncExport extends AsyncTask<AsyncExportEntity, Void, AsyncExportEntity> {
-        private Cursor cursor;
-        private String fileName;
+		@Override
+		protected void onPostExecute(ParentModel parentModel)
+		{
+			if(parentModel instanceof TripModel)
+			{
+				if(mCallback != null)
+				{
+					mCallback.onAsyncInsertFinished();
+				}
+			}
+		}
+	}
 
-        @Override
-        protected AsyncExportEntity doInBackground(AsyncExportEntity... params) {
-            cursor = params[0].getCursor();
-            fileName = params[0].getFileName();
-            String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator + fileName + ".csv";
-            Log.d("DB", "Path: " + path);
-            File file = new File(path);
-            try {
-                if (file.exists()) {
-                    if (!file.createNewFile()) {
-                        return params[0];
-                    }
-                }
-                if (cursor.getCount() == 0) {
-                    cursor.close();
-                    return params[0];
-                }
-                CSVWriter writer = new CSVWriter(new FileWriter(path));
-                int columnCount = cursor.getColumnCount();
-                String[] columnNames = cursor.getColumnNames();
-                writer.writeNext(columnNames);
-                cursor.moveToFirst();
-                do {
-                    String[] rows = new String[columnCount];
-                    for (int i = 0; i < columnCount; i++) {
-                        switch (cursor.getType(i)) {
-                            case Cursor.FIELD_TYPE_INTEGER:
-                                rows[i] = String.valueOf(cursor.getInt(i));
-                                break;
-                            case Cursor.FIELD_TYPE_FLOAT:
-                                rows[i] = String.valueOf(cursor.getFloat(i));
-                                break;
-                            case Cursor.FIELD_TYPE_STRING:
-                                rows[i] = cursor.getString(i);
-                                break;
-                        }
-                    }
-                    writer.writeNext(rows);
-                } while (cursor.moveToNext());
-                writer.close();
-                cursor.close();
-                params[0].setResult(true);
-                return params[0];
-            } catch (IOException e) {
-                e.printStackTrace();
-                cursor.close();
-                return params[0];
-            }
-        }
+	private class AsyncExport extends AsyncTask<AsyncExportEntity, Void, AsyncExportEntity>
+	{
+		private Cursor cursor;
+		private String fileName;
 
-        @Override
-        protected void onPostExecute(AsyncExportEntity asyncExportEntity) {
-            if (mCallback != null) {
-                mCallback.onAsyncExportFinished(asyncExportEntity);
-            }
-        }
-    }
+		@Override
+		protected AsyncExportEntity doInBackground(AsyncExportEntity... params)
+		{
+			cursor = params[0].getCursor();
+			fileName = params[0].getFileName();
+			String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator + fileName + ".csv";
+			Log.d("DB", "Path: " + path);
+			File file = new File(path);
+			try
+			{
+				if(file.exists())
+				{
+					if(!file.createNewFile())
+					{
+						//INFO: uncomment if you want not to overwrite file
+//						return params[0];
+					}
+				}
+				if(cursor.getCount() == 0)
+				{
+					cursor.close();
+					return params[0];
+				}
+				CSVWriter writer = new CSVWriter(new FileWriter(path));
+				int columnCount = cursor.getColumnCount();
+				String[] columnNames = cursor.getColumnNames();
+				writer.writeNext(columnNames);
+				cursor.moveToFirst();
+				do
+				{
+					String[] rows = new String[columnCount];
+					for(int i = 0; i < columnCount; i++)
+					{
+						switch(cursor.getType(i))
+						{
+							case Cursor.FIELD_TYPE_INTEGER:
+								rows[i] = String.valueOf(cursor.getInt(i));
+								break;
+							case Cursor.FIELD_TYPE_FLOAT:
+								rows[i] = String.valueOf(cursor.getFloat(i));
+								break;
+							case Cursor.FIELD_TYPE_STRING:
+								rows[i] = cursor.getString(i);
+								break;
+						}
+					}
+					writer.writeNext(rows);
+				} while(cursor.moveToNext());
+				writer.close();
+				cursor.close();
+				params[0].setResult(true);
+				return params[0];
+			} catch(IOException e)
+			{
+				e.printStackTrace();
+				cursor.close();
+				return params[0];
+			}
+		}
 
-    public void setCallback(IAsyncOperations callback) {
-        mCallback = callback;
-    }
+		@Override
+		protected void onPostExecute(AsyncExportEntity asyncExportEntity)
+		{
+			if(mCallback != null)
+			{
+				mCallback.onAsyncExportFinished(asyncExportEntity);
+			}
+		}
+	}
 
-    public void removeCallback() {
-        mCallback = null;
-    }
+	public void setCallback(IAsyncOperations callback)
+	{
+		mCallback = callback;
+	}
+
+	public void removeCallback()
+	{
+		mCallback = null;
+	}
 
 }

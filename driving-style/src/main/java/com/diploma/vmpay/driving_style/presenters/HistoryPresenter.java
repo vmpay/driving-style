@@ -7,6 +7,9 @@ import com.diploma.vmpay.driving_style.activities.main.fragments.profile.Profile
 import com.diploma.vmpay.driving_style.adapters.HistoryAdapter;
 import com.diploma.vmpay.driving_style.controller.ActualUserWrapper;
 import com.diploma.vmpay.driving_style.controller.ContextWrapper;
+import com.diploma.vmpay.driving_style.database.dbmodels.AccDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.interfaces.IDatabaseClient;
@@ -84,5 +87,33 @@ public class HistoryPresenter implements IOnActualUserChangedListener
 	public boolean isDataValid()
 	{
 		return tripModelList.size() > 0;
+	}
+
+	public void clearDatabase()
+	{
+		databaseClient.delete(new TripModel());
+		databaseClient.delete(new AccDataModel());
+		databaseClient.delete(new GpsDataModel());
+//		update history fragment
+		updateTripModelList();
+	}
+
+	public void exportData(List<Long> itemIDs, String fileName)
+	{
+		long actualUserID = actualUserWrapper.getActualUser().getId();
+		TripDataView tripDataView = new TripDataView();
+		tripDataView.setWhereClause(TripModel.TripNames.USER_ID + "=" + actualUserID);
+
+		if (itemIDs.size() > 0)
+		{
+			tripDataView.setWhereClause(tripDataView.getWhereClause() + " AND (" + TripDataView.ID + "=" + itemIDs.get(0));
+			for(int i = 1; i < itemIDs.size(); i++)
+			{
+				tripDataView.setWhereClause(tripDataView.getWhereClause() + " OR " + TripDataView.ID + "=" + itemIDs.get(i));
+			}
+			tripDataView.setWhereClause(tripDataView.getWhereClause() + ")");
+		}
+
+		databaseClient.exportAsyncToCSV(databaseClient.selectCursor(tripDataView), fileName);
 	}
 }

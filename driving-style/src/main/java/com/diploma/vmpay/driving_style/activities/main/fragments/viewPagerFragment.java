@@ -59,6 +59,7 @@ public class ViewPagerFragment extends Fragment implements ViewPager.OnPageChang
 		//TODO: refactor page number somehow
 		if (position == 1)
 		{
+//			update history fragment
 			AppController.getInstance().getHistoryPresenter().updateTripModelList();
 		}
 	}
