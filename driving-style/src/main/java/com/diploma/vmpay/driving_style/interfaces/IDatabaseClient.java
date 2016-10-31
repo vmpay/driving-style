@@ -1,6 +1,7 @@
 package com.diploma.vmpay.driving_style.interfaces;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
 
@@ -27,7 +28,11 @@ public interface IDatabaseClient
 
 	List<ContentValues> select(ParentModel databaseModel);
 
+	Cursor selectCursor(ParentModel parentModel);
+
 //	List<ContentValues> select(ParentModel databaseModel, int limit);
+
+	void exportAsyncToCSV(Cursor cursor, String fileName);
 
 	void dropDatabase();
 }

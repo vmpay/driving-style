@@ -5,14 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
 
-import java.security.PrivilegedAction;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 public class HistoryAdapter extends BaseAdapter
 {
 	private List<TripModel> tripModelList;
+	private List<Long> checkedModelsIDs = new ArrayList<>();
 	private LayoutInflater layoutInflater;
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(AppConstants.DateFormat.DATE_AND_HOUR);
 
@@ -49,7 +51,7 @@ public class HistoryAdapter extends BaseAdapter
 	@Override
 	public long getItemId(int i)
 	{
-		return i;
+		return tripModelList.get(i).getId();
 	}
 
 	@Override
@@ -60,6 +62,24 @@ public class HistoryAdapter extends BaseAdapter
 			v = layoutInflater.inflate(R.layout.history_item, viewGroup, false);
 		}
 		v.setTag(i);
+		final CheckBox cbHistory = (CheckBox) v.findViewById(R.id.cbHistory);
+		cbHistory.setTag(i);
+		v.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				cbHistory.setChecked(!cbHistory.isChecked());
+				if (cbHistory.isChecked())
+				{
+					checkedModelsIDs.add(getItemId(Integer.parseInt(cbHistory.getTag().toString())));
+				}
+				else
+				{
+					checkedModelsIDs.remove(getItemId(Integer.parseInt(cbHistory.getTag().toString())));
+				}
+			}
+		});
 
 		TripModel tripModel = tripModelList.get(i);
 
@@ -68,7 +88,7 @@ public class HistoryAdapter extends BaseAdapter
 		TextView tvType = ButterKnife.findById(v, R.id.tvType);
 
 		tvDate.setText(simpleDateFormat.format(tripModel.getFinishTime()));
-		tvMark.setText(Double.toString(tripModel.getMark()));
+		tvMark.setText(String.format(Double.toString(tripModel.getMark())));
 		tvType.setText(tripModel.getTripType().toString());
 
 		return v;
@@ -96,5 +116,10 @@ public class HistoryAdapter extends BaseAdapter
 			mark = mark / count;
 			return mark;
 		}
+	}
+
+	public List<Long> getCheckedItemsID()
+	{
+		return checkedModelsIDs;
 	}
 }

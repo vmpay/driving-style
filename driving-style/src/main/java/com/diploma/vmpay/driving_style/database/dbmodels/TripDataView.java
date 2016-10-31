@@ -16,7 +16,7 @@ public class TripDataView extends ParentModel
 
 	public static class TripDataNames
 	{
-		public final static String ID = "trip_id";
+		public final static String ID = ParentModel.ID;
 		public final static String USER_ID = "user_id";
 		public final static String START_TIME = "start_time";
 		public final static String FINISH_TIME = "finish_time";

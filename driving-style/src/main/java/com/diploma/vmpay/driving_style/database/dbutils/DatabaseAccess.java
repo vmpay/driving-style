@@ -280,7 +280,8 @@ public class DatabaseAccess implements IDatabaseClient
 				{
 					if(!file.createNewFile())
 					{
-						return params[0];
+						//INFO: uncomment if you want not to overwrite file
+//						return params[0];
 					}
 				}
 				if(cursor.getCount() == 0)
