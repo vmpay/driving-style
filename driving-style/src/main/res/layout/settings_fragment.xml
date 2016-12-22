@@ -10,4 +10,62 @@
 		android:layout_height="wrap_content"
 		android:text="@string/settings"/>
 
+	<TextView
+		style="@style/MediumTextStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/activity_vertical_margin"
+		android:text="@string/accelerometer_sensor"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			style="@style/SmallInactiveTextStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="@dimen/activity_vertical_margin"
+			android:layout_marginRight="@dimen/activity_vertical_margin"
+			android:text="@string/coef"/>
+
+		<TextView
+			android:id="@+id/tvAlpha"
+			style="@style/MediumInactiveTextStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+
+	<SeekBar
+		android:id="@+id/sbAlpha"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:max="100"
+		android:padding="@dimen/activity_vertical_margin"
+		android:progress="80"
+		/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1sp"
+		android:layout_margin="@dimen/activity_vertical_margin"
+		android:background="@color/textInactive"/>
+
+	<TextView
+		style="@style/MediumTextStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/activity_vertical_margin"
+		android:text="@string/account"/>
+
+	<Button
+		android:id="@+id/btnLogout"
+		android:text="@string/logout"
+		android:textAllCaps="true"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/BigButtonStyle"/>
+
 </LinearLayout>

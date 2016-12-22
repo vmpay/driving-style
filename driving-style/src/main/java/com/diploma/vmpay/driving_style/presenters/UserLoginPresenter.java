@@ -9,6 +9,7 @@ import android.util.Log;
 import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.activities.login.fragments.LoginFragment;
 import com.diploma.vmpay.driving_style.activities.main.StartActivity;
+import com.diploma.vmpay.driving_style.activities.main.fragments.settings.SettingsFragment;
 import com.diploma.vmpay.driving_style.controller.ActualUserWrapper;
 import com.diploma.vmpay.driving_style.controller.ContextWrapper;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
@@ -19,6 +20,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -40,6 +42,7 @@ public class UserLoginPresenter
 	private ContextWrapper contextWrapper;
 
 	private LoginFragment loginFragment;
+	private static SettingsFragment settingsFragment;
 
 	private CallbackManager callbackManager;
 
@@ -53,6 +56,11 @@ public class UserLoginPresenter
 	public void setLoginFragment(LoginFragment loginFragment)
 	{
 		this.loginFragment = loginFragment;
+	}
+
+	public void setSettingsFragment(SettingsFragment settingsFragment)
+	{
+		this.settingsFragment = settingsFragment;
 	}
 
 	public String getLastLogin()
@@ -185,5 +193,14 @@ public class UserLoginPresenter
 		Intent intent = new Intent(loginFragment.getActivity(), StartActivity.class);
 		Log.v(LOG_TAG, "MainActivity is starting");
 		loginFragment.startActivity(intent);
+	}
+
+	public static void logoutFb()
+	{
+		LoginManager.getInstance().logOut();
+		if (settingsFragment != null)
+		{
+			settingsFragment.getActivity().finish();
+		}
 	}
 }

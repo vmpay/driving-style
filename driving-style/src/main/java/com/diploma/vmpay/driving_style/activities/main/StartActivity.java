@@ -32,6 +32,14 @@ public class StartActivity extends AppCompatActivity
 		setupTabs();
 	}
 
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		//TODO: comment this stuff
+		appController.getUserLoginPresenter().logoutFb();
+	}
+
 	private void setupTabs()
 	{
 		ViewPagerFragment tutorialFragment = new ViewPagerFragment();

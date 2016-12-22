@@ -144,8 +144,9 @@ public class AccelerometerSensor implements SensorEventListener
 		sensorListenerFlag = true;
 	}
 
-	public void start(int sensorDelay)
+	public void start(int sensorDelay, double alpha)
 	{
+		this.alpha = alpha;
 		switch(sensorDelay)
 		{
 			case SensorManager.SENSOR_DELAY_FASTEST:

@@ -14,6 +14,7 @@ import com.diploma.vmpay.driving_style.AppConstants;
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.main.fragments.menu.MainMenuFragment;
 import com.diploma.vmpay.driving_style.activities.main.fragments.menu.ScenarioDialog;
+import com.diploma.vmpay.driving_style.activities.main.fragments.settings.SettingsFragment;
 import com.diploma.vmpay.driving_style.controller.ActualUserWrapper;
 import com.diploma.vmpay.driving_style.database.dbentities.AccDataEntity;
 import com.diploma.vmpay.driving_style.database.dbentities.GpsDataEntity;
@@ -45,12 +46,14 @@ public class SensorPresenter implements ILocationListener, IAccelerometerListene
 
 	//------------DIALOGS------------
 	private ScenarioDialog scenarioDialog;
+	private SettingsFragment settingsFragment;
 
 
 	private List<AccDataEntity> accDataEntityList = new ArrayList<>();
 	private List<GpsDataEntity> gpsDataEntityList = new ArrayList<>();
 	private AppConstants.ScenarioType type;
 	private long startTime = 0;
+	private double alpha = 0.8;
 
 	public SensorPresenter(ActualUserWrapper actualUserWrapper, IDatabaseClient databaseClient, AccelerometerSensor accelerometerSensor, LocationSensor locationSensor)
 	{
@@ -170,7 +173,7 @@ public class SensorPresenter implements ILocationListener, IAccelerometerListene
 	{
 		startTime = System.currentTimeMillis();
 		locationSensor.start(1000, 1);
-		accelerometerSensor.start(SensorManager.SENSOR_DELAY_UI);
+		accelerometerSensor.start(SensorManager.SENSOR_DELAY_UI, alpha);
 	}
 
 	public void stopSensors()
@@ -199,5 +202,15 @@ public class SensorPresenter implements ILocationListener, IAccelerometerListene
 		accDataEntityList.clear();
 		gpsDataEntityList.clear();
 		type = AppConstants.ScenarioType.UNKNOWN;
+	}
+
+	public void setSettingsFragment(SettingsFragment settingsFragment)
+	{
+		this.settingsFragment = settingsFragment;
+	}
+
+	public void setAlpha(double alpha)
+	{
+		this.alpha = alpha;
 	}
 }
