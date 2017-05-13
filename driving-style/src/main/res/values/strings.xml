@@ -84,6 +84,11 @@
 	<string name="unknown">Unknown</string>
 	<string name="mark">Mark</string>
 	<string name="type">Type</string>
+	<string name="coef">Low pass coefficient</string>
+	<string name="account">Account</string>
+	<string name="logout">Logout</string>
+	<string name="crashes_sent">Crash report sent successfully!</string>
+	<string name="crashes_not_sent">Crash report sending failed!</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">

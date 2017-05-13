@@ -47,12 +47,12 @@ public class ProfileFragment extends Fragment
 		if(historyPresenter.isDataValid())
 		{
 			HistoryFragment historyFragment = new HistoryFragment();
-			fragmentTransaction.add(R.id.llHistoryFragment, historyFragment, "HistoryFragment").commit();
+			fragmentTransaction.replace(R.id.llHistoryFragment, historyFragment, "HistoryFragment").commit();
 		}
 		else
 		{
 			EmptyHistoryFragment emptyHistoryFragment = new EmptyHistoryFragment();
-			fragmentTransaction.add(R.id.llHistoryFragment, emptyHistoryFragment, "EmptyHistoryFragment").commit();
+			fragmentTransaction.replace(R.id.llHistoryFragment, emptyHistoryFragment, "EmptyHistoryFragment").commit();
 		}
 
 		return v;
@@ -64,5 +64,20 @@ public class ProfileFragment extends Fragment
 		super.onDestroyView();
 		historyPresenter.setProfileFragment(null);
 		unbinder.unbind();
+	}
+
+	public void updateHistoryFragment()
+	{
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		if(historyPresenter.isDataValid())
+		{
+			HistoryFragment historyFragment = new HistoryFragment();
+			fragmentTransaction.replace(R.id.llHistoryFragment, historyFragment, "HistoryFragment").commit();
+		}
+		else
+		{
+			EmptyHistoryFragment emptyHistoryFragment = new EmptyHistoryFragment();
+			fragmentTransaction.replace(R.id.llHistoryFragment, emptyHistoryFragment, "EmptyHistoryFragment").commit();
+		}
 	}
 }

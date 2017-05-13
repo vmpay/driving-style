@@ -52,8 +52,8 @@ public class HistoryPresenter implements IOnActualUserChangedListener
 	public void updateTripModelList()
 	{
 		getTripModelList();
-//		historyAdapter = new HistoryAdapter(tripModelList, contextWrapper.getContext());
 		historyAdapter.notifyDataSetChanged();
+		profileFragment.updateHistoryFragment();
 	}
 
 	private void getTripModelList()
@@ -104,15 +104,15 @@ public class HistoryPresenter implements IOnActualUserChangedListener
 		TripDataView tripDataView = new TripDataView();
 		tripDataView.setWhereClause(TripModel.TripNames.USER_ID + "=" + actualUserID);
 
-		if (itemIDs.size() > 0)
-		{
-			tripDataView.setWhereClause(tripDataView.getWhereClause() + " AND (" + TripDataView.ID + "=" + itemIDs.get(0));
-			for(int i = 1; i < itemIDs.size(); i++)
-			{
-				tripDataView.setWhereClause(tripDataView.getWhereClause() + " OR " + TripDataView.ID + "=" + itemIDs.get(i));
-			}
-			tripDataView.setWhereClause(tripDataView.getWhereClause() + ")");
-		}
+//		if (itemIDs.size() > 0)
+//		{
+//			tripDataView.setWhereClause(tripDataView.getWhereClause() + " AND (" + TripDataView.ID + "=" + itemIDs.get(0));
+//			for(int i = 1; i < itemIDs.size(); i++)
+//			{
+//				tripDataView.setWhereClause(tripDataView.getWhereClause() + " OR " + TripDataView.ID + "=" + itemIDs.get(i));
+//			}
+//			tripDataView.setWhereClause(tripDataView.getWhereClause() + ")");
+//		}
 
 		databaseClient.exportAsyncToCSV(databaseClient.selectCursor(tripDataView), fileName);
 	}

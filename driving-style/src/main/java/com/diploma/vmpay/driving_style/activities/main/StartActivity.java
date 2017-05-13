@@ -9,6 +9,7 @@ import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.main.fragments.ViewPagerFragment;
 import com.diploma.vmpay.driving_style.controller.AppController;
 import com.diploma.vmpay.driving_style.controller.ContextOwner;
+import com.diploma.vmpay.driving_style.utils.BugTrackingUtils;
 
 
 /**
@@ -29,7 +30,33 @@ public class StartActivity extends AppCompatActivity
 		setContentView(R.layout.activity_start);
 		appController.getSensorPresenter().enableGpsDialog(this);
 
+		BugTrackingUtils.trackEvent("StartActivity onCreate()");
 		setupTabs();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		BugTrackingUtils.checkForCrashes(getApplication(), this);
+		BugTrackingUtils.trackUsage(this, true);
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		BugTrackingUtils.trackUsage(this, false);
+		BugTrackingUtils.unregisterManagers();
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		//TODO: comment this stuff
+		appController.getUserLoginPresenter().logoutFb();
+		BugTrackingUtils.unregisterManagers();
 	}
 
 	private void setupTabs()
