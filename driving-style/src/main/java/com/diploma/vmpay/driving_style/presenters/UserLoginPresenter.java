@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.diploma.vmpay.driving_style.AppConstants;
@@ -68,33 +69,31 @@ public class UserLoginPresenter
 		return PreferenceManager.getDefaultSharedPreferences(contextWrapper.getContext()).getString(AppConstants.SharedPreferencesNames.EMAIL, "");
 	}
 
-	public void facebookLoginInit(LoginButton loginButton)
+	public void facebookLoginInit()
 	{
-		loginButton.setReadPermissions(Arrays.asList(AppConstants.FacebookNames.USER_EMAIL_PERMISSION, AppConstants.FacebookNames.USER_EMAIL_PERMISSION));
-		loginButton.setFragment(loginFragment);
 		callbackManager = CallbackManager.Factory.create();
-		loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>()
-		{
-			@Override
-			public void onSuccess(LoginResult loginResult)
-			{
-				Log.v(LOG_TAG, "onSuccess Token " + loginResult.getAccessToken()
-						+ " Permissions" + loginResult.getRecentlyGrantedPermissions());
-				logInAsync(loginResult.getAccessToken());
-			}
+		LoginManager.getInstance().registerCallback(callbackManager,
+				new FacebookCallback<LoginResult>() {
+					@Override
+					public void onSuccess(LoginResult loginResult)
+					{
+						Log.v(LOG_TAG, "onSuccess Token " + loginResult.getAccessToken()
+								+ " Permissions" + loginResult.getRecentlyGrantedPermissions());
+						logInAsync(loginResult.getAccessToken());
+					}
 
-			@Override
-			public void onCancel()
-			{
-				Log.v(LOG_TAG, "onCancel");
-			}
+					@Override
+					public void onCancel()
+					{
+						Log.v(LOG_TAG, "onCancel");
+					}
 
-			@Override
-			public void onError(FacebookException error)
-			{
-				Log.v(LOG_TAG, "onError");
-			}
-		});
+					@Override
+					public void onError(FacebookException error)
+					{
+						Log.v(LOG_TAG, "onError");
+					}
+				});
 	}
 
 	private void logInAsync(AccessToken accessToken)
@@ -167,15 +166,9 @@ public class UserLoginPresenter
 		return AccessToken.getCurrentAccessToken() != null;
 	}
 
-	public void attemptLogin()
+	public void attempFacebookLogin(Fragment fragment)
 	{
-		if(isLoggedIn())
-		{
-			//TODO: uncomment after logout button'll be added
-			logInAsync(AccessToken.getCurrentAccessToken());
-			return;
-		}
-		loginFragment.attemptLogin();
+		LoginManager.getInstance().logInWithReadPermissions(fragment, Arrays.asList(AppConstants.FacebookNames.USER_EMAIL_PERMISSION, AppConstants.FacebookNames.USER_EMAIL_PERMISSION));
 	}
 
 	public List<UserModel> authorize(String email, String password)
