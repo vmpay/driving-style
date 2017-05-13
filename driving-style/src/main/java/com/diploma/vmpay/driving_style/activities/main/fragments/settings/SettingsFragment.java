@@ -55,9 +55,17 @@ public class SettingsFragment extends Fragment implements SeekBar.OnSeekBarChang
 	}
 
 	@Override
+	public void onResume()
+	{
+		super.onResume();
+		userLoginPresenter.setSettingsFragment(this);
+	}
+
+	@Override
 	public void onDestroyView()
 	{
 		super.onDestroyView();
+		userLoginPresenter.setSettingsFragment(null);
 		sensorPresenter.setSettingsFragment(null);
 		unbinder.unbind();
 	}
