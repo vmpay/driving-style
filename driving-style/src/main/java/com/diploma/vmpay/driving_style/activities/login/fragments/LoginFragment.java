@@ -17,17 +17,23 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.controller.AppController;
 import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.presenters.UserLoginPresenter;
+import com.diploma.vmpay.driving_style.utils.BugTrackingUtils;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Andrew on 10.02.2016.
@@ -46,6 +52,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 	private ArrayAdapter<CharSequence> adapterEmail;
 	private LoginButton loginButton;
 
+	@BindView(R.id.tvVersion) TextView tvVersion;
+
+	private Unbinder unbinder;
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
@@ -55,6 +65,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 
 		FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 		View v = inflater.inflate(R.layout.login_fragment, container, false);
+		unbinder = ButterKnife.bind(this, v);
 
 		swRememberMe = (Switch) v.findViewById(R.id.switchRememberMe);
 		btnSignIn = (Button) v.findViewById(R.id.btnSignIn);
@@ -83,6 +94,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 		loginButton = (LoginButton) v.findViewById(R.id.login_button);
 		userLoginPresenter.facebookLoginInit(loginButton);
 
+		tvVersion.setText(BugTrackingUtils.getAppVersion());
+
 		return v;
 	}
 
@@ -95,10 +108,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 	}
 
 	@Override
-	public void onDestroy()
+	public void onDestroyView()
 	{
-		super.onDestroy();
+		super.onDestroyView();
 		userLoginPresenter.setLoginFragment(null);
+		unbinder.unbind();
 	}
 
 	@Override

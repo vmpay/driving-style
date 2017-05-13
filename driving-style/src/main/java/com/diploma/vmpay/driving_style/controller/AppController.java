@@ -162,4 +162,9 @@ public class AppController
 	{
 		return historyPresenter;
 	}
+
+	public ActualUserWrapper getActualUserWrapper()
+	{
+		return actualUserWrapper;
+	}
 }

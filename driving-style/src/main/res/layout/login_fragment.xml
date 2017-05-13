@@ -82,12 +82,20 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
-				android:layout_marginTop="30dp"
-				android:layout_marginBottom="30dp" />
+				android:layout_marginBottom="30dp"
+				android:layout_marginTop="30dp"/>
 
 		</LinearLayout>
 
 	</ScrollView>
+
+	<TextView
+		android:id="@+id/tvVersion"
+		style="@style/SmallInactiveTextStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/activity_horizontal_margin"
+		android:text="version"/>
 
 	<View
 		android:layout_width="wrap_content"
@@ -118,8 +126,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/signUp"
-			android:enabled="false"/>
+			android:enabled="false"
+			android:text="@string/signUp"/>
 
 	</LinearLayout>
 

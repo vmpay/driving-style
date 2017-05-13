@@ -13,10 +13,10 @@ import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.activities.login.fragments.LoginFragment;
 import com.diploma.vmpay.driving_style.controller.AppController;
 import com.diploma.vmpay.driving_style.controller.ContextOwner;
+import com.diploma.vmpay.driving_style.utils.BugTrackingUtils;
 
 public class AuthActivity extends AppCompatActivity
 {
-
 	private final String LOG_TAG = "AuthActivity";
 	private final String[] permissions = { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
@@ -25,35 +25,22 @@ public class AuthActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		checkPermissions();
-		AppController.getInstance().setUp(getApplicationContext(), ContextOwner.AUTHORISING_ACTIVITY, hashCode());
+		AppController appController = AppController.getInstance();
+		appController.setUp(getApplicationContext(), ContextOwner.AUTHORISING_ACTIVITY, hashCode());
 		setContentView(R.layout.activity_auth);
 
+		BugTrackingUtils.initialize(getApplicationContext(), appController.getActualUserWrapper());
+		BugTrackingUtils.registerLoginManager(this);
+		BugTrackingUtils.checkForUpdates(this);
+		BugTrackingUtils.registerMetricsManager(getApplication());
+
 		Log.d(LOG_TAG, "AuthActivity: onCreate()");
-		//Fragment loginFragment = new LoginFragment();
 		LoginFragment loginFragment = new LoginFragment();
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		fragmentTransaction.add(R.id.fragmentLoginActivity, loginFragment);
 		//fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 
-		// Add code to print out the key hash
-//		try
-//		{
-//			PackageInfo info = getPackageManager().getPackageInfo(
-//					"com.diploma.vmpay.driving_style",
-//					PackageManager.GET_SIGNATURES);
-//			for(Signature signature : info.signatures)
-//			{
-//				MessageDigest md = MessageDigest.getInstance("SHA");
-//				md.update(signature.toByteArray());
-//				Log.d(LOG_TAG, "KeyHash:" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//			}
-//		} catch(PackageManager.NameNotFoundException e)
-//		{
-//
-//		} catch(NoSuchAlgorithmException e)
-//		{
-//		}
 	}
 
 	@Override
@@ -61,6 +48,9 @@ public class AuthActivity extends AppCompatActivity
 	{
 		super.onResume();
 		Log.d(LOG_TAG, "AuthActivity: onResume()");
+		BugTrackingUtils.registerLoginManager(this);
+		BugTrackingUtils.trackUsage(this, true);
+		BugTrackingUtils.checkForCrashes(getApplication(), this);
 	}
 
 	@Override
@@ -68,6 +58,8 @@ public class AuthActivity extends AppCompatActivity
 	{
 		super.onPause();
 		Log.d(LOG_TAG, "AuthActivity: onPause()");
+		BugTrackingUtils.unregisterManagers();
+		BugTrackingUtils.trackUsage(this, false);
 	}
 
 	@Override
@@ -82,6 +74,7 @@ public class AuthActivity extends AppCompatActivity
 	{
 		super.onDestroy();
 		Log.d(LOG_TAG, "AuthActivity: onDestroy()");
+		BugTrackingUtils.unregisterManagers();
 	}
 
 	@Override

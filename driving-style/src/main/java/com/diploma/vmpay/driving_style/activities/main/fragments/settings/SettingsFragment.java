@@ -15,6 +15,7 @@ import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.controller.AppController;
 import com.diploma.vmpay.driving_style.presenters.SensorPresenter;
 import com.diploma.vmpay.driving_style.presenters.UserLoginPresenter;
+import com.diploma.vmpay.driving_style.utils.BugTrackingUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +32,7 @@ public class SettingsFragment extends Fragment implements SeekBar.OnSeekBarChang
 	private UserLoginPresenter userLoginPresenter;
 	private Unbinder unbinder;
 	@BindView(R.id.tvAlpha) TextView tvAlpha;
+	@BindView(R.id.tvVersion) TextView tvVersion;
 	@BindView(R.id.sbAlpha) SeekBar sbAlpha;
 	@BindView(R.id.btnLogout) Button btnLogout;
 
@@ -47,6 +49,7 @@ public class SettingsFragment extends Fragment implements SeekBar.OnSeekBarChang
 		tvAlpha.setText("0.8");
 		sbAlpha.setOnSeekBarChangeListener(this);
 		btnLogout.setOnClickListener(this);
+		tvVersion.setText(BugTrackingUtils.getAppVersion());
 
 		return v;
 	}
