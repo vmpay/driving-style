@@ -20,6 +20,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    signingConfigs {
+        debug {
+            keyAlias 'DrivingStyleDebugKey'
+            keyPassword 'andrew12#$'
+            storeFile file('../../andrewprivatekeystore.jks')
+            storePassword 'AndrewKeyStore12#$'
+        }
+    }
 }
 
 repositories {
@@ -73,9 +82,9 @@ task('incrementVersionName') << {
     manifestFile.write(manifestContent)
 }
 
-tasks.whenTaskAdded { task ->
-    if (task.name == 'generateReleaseBuildConfig' || task.name == 'generateDebugBuildConfig') {
-        task.dependsOn 'increaseVersionCode'
+//tasks.whenTaskAdded { task ->
+//    if (task.name == 'generateReleaseBuildConfig' || task.name == 'generateDebugBuildConfig') {
+//        task.dependsOn 'increaseVersionCode'
 //        task.dependsOn 'incrementVersionName'
-    }
-}
+//    }
+//}
