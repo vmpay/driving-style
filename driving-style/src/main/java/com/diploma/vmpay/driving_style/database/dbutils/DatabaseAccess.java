@@ -15,17 +15,16 @@ import com.diploma.vmpay.driving_style.database.dbmodels.GpsDataModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.ParentModel;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripDataView;
 import com.diploma.vmpay.driving_style.database.dbmodels.TripModel;
+import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
+import com.diploma.vmpay.driving_style.interfaces.IAsyncOperations;
+import com.diploma.vmpay.driving_style.interfaces.IDatabaseClient;
+import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
-import com.diploma.vmpay.driving_style.interfaces.IAsyncOperations;
-import com.diploma.vmpay.driving_style.interfaces.IDatabaseClient;
-import com.opencsv.CSVWriter;
 
 
 /**
@@ -34,50 +33,16 @@ import com.opencsv.CSVWriter;
 public class DatabaseAccess implements IDatabaseClient
 {
 	public final static String DATABASE_NAME = "driving_style_database";
+	public SQLiteDatabase database;
 	private int DATABASE_VERSION;
-
+	private DbHelper dbHelper;
+	private Context mContext;
+	private IAsyncOperations mCallback;
 	public DatabaseAccess(Context mContext)
 	{
 		this.mContext = mContext;
 		this.DATABASE_VERSION = 3;
 		openDatabase();
-	}
-
-	private DbHelper dbHelper;
-	public SQLiteDatabase database;
-	private Context mContext;
-	private IAsyncOperations mCallback;
-
-	class DbHelper extends SQLiteOpenHelper
-	{
-
-		public DbHelper(Context context)
-		{
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase sqLiteDatabase)
-		{
-			sqLiteDatabase.execSQL(UserModel.UserNames.CREATE_TABLE);
-			sqLiteDatabase.execSQL(TripModel.TripNames.CREATE_TABLE);
-			sqLiteDatabase.execSQL(AccDataModel.AccDataNames.CREATE_TABLE);
-			sqLiteDatabase.execSQL(TripDataView.TripDataNames.CREATE_TABLE);
-			sqLiteDatabase.execSQL(GpsDataModel.GpsDataNames.CREATE_TABLE);
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
-		{
-			//TODO: refactor if we need to save previous data
-			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserModel.UserNames.TABLENAME);
-			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripModel.TripNames.TABLENAME);
-			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AccDataModel.AccDataNames.TABLENAME);
-			sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
-			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GpsDataModel.GpsDataNames.TABLENAME);
-			onCreate(sqLiteDatabase);
-		}
-
 	}
 
 	public void openDatabase()
@@ -234,6 +199,48 @@ public class DatabaseAccess implements IDatabaseClient
 		asyncExport.execute(asyncExportEntity);
 	}
 
+	public void setCallback(IAsyncOperations callback)
+	{
+		mCallback = callback;
+	}
+
+	public void removeCallback()
+	{
+		mCallback = null;
+	}
+
+	class DbHelper extends SQLiteOpenHelper
+	{
+
+		public DbHelper(Context context)
+		{
+			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase sqLiteDatabase)
+		{
+			sqLiteDatabase.execSQL(UserModel.UserNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(TripModel.TripNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(AccDataModel.AccDataNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(GpsDataModel.GpsDataNames.CREATE_TABLE);
+			sqLiteDatabase.execSQL(TripDataView.TripDataNames.CREATE_TABLE);
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
+		{
+			//TODO: refactor if we need to save previous data
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserModel.UserNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TripModel.TripNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + AccDataModel.AccDataNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + TripDataView.TripDataNames.TABLENAME);
+			sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GpsDataModel.GpsDataNames.TABLENAME);
+			onCreate(sqLiteDatabase);
+		}
+
+	}
+
 	private class AsyncInsert extends AsyncTask<ParentModel, Void, ParentModel>
 	{
 
@@ -334,16 +341,6 @@ public class DatabaseAccess implements IDatabaseClient
 				mCallback.onAsyncExportFinished(asyncExportEntity);
 			}
 		}
-	}
-
-	public void setCallback(IAsyncOperations callback)
-	{
-		mCallback = callback;
-	}
-
-	public void removeCallback()
-	{
-		mCallback = null;
 	}
 
 }
