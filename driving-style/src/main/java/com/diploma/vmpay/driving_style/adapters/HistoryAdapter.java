@@ -88,7 +88,8 @@ public class HistoryAdapter extends BaseAdapter
 		TextView tvType = ButterKnife.findById(v, R.id.tvType);
 
 		tvDate.setText(simpleDateFormat.format(tripModel.getFinishTime()));
-		tvMark.setText(String.format(Double.toString(tripModel.getMark())));
+//		tvMark.setText(String.format(Double.toString(tripModel.getMark())));
+		tvMark.setText(String.format(Long.toString(tripModel.getId())));
 		tvType.setText(tripModel.getTripType().toString());
 
 		return v;

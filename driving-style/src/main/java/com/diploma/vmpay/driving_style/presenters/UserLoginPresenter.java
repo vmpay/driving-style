@@ -136,7 +136,7 @@ public class UserLoginPresenter
 		}
 	}
 
-	private void facebookLogin(String email, String name)
+	public void facebookLogin(String email, String name)
 	{
 		UserModel userModel = new UserModel(email, "facebook", -1);
 		userModel.setName(name);

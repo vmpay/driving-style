@@ -1,8 +1,10 @@
 package com.diploma.vmpay.driving_style.activities.main.fragments.profile;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.adapters.HistoryAdapter;
@@ -45,11 +48,32 @@ public class HistoryFragment extends Fragment
 				break;
 			case R.id.btnExport:
 				Log.v(LOG_TAG, "btnExport");
+				Toast.makeText(getActivity(), "Exporting data: Downloads/exported_data.csv", Toast.LENGTH_LONG).show();
 				historyPresenter.exportData(historyAdapter.getCheckedItemsID(), "exported_data");
 				break;
 			case R.id.btnThird:
 				Log.v(LOG_TAG, "btnDropDb");
-				historyPresenter.clearDatabase();
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+				alertDialog.setTitle(R.string.alert_dialog_title);
+				alertDialog.setMessage(R.string.alert_dialog_message);
+				alertDialog.setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						dialog.dismiss();
+					}
+				});
+				alertDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						historyPresenter.clearDatabase();
+					}
+				});
+				alertDialog.show();
+//				historyPresenter.clearDatabase();
 				break;
 		}
 	}

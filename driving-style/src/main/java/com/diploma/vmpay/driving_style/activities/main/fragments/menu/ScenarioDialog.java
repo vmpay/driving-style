@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +51,7 @@ public class ScenarioDialog extends android.support.v4.app.DialogFragment implem
 	{
 		Log.v(LOG_TAG, "onCreateView()");
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
 		View v = inflater.inflate(R.layout.scenario_fragment, container, false);
 		unbinder = ButterKnife.bind(this, v);

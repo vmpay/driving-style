@@ -121,7 +121,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
 		switch(v.getId())
 		{
 			case R.id.btnSignIn:
-				userLoginPresenter.attemptLogin();
+//				userLoginPresenter.attemptLogin();
+				userLoginPresenter.facebookLogin("example@gmail.com", "Jaśnie oświecony użytkownik");
 				break;
 			case R.id.btnSignUp:
 				RegistrationFragment registrationFragment = new RegistrationFragment();

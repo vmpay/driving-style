@@ -89,6 +89,9 @@
 	<string name="logout">Logout</string>
 	<string name="crashes_sent">Crash report sent successfully!</string>
 	<string name="crashes_not_sent">Crash report sending failed!</string>
+	<string name="alert_dialog_title">Are you sure?</string>
+	<string name="alert_dialog_message">You are going to delete all  trips</string>
+	<string name="ok">OK</string>
 
 	<!-- StartActivity resources -->
 	<string-array name="step_number">
