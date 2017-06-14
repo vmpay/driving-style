@@ -115,5 +115,6 @@ public class HistoryPresenter implements IOnActualUserChangedListener
 //		}
 
 		databaseClient.exportAsyncToCSV(databaseClient.selectCursor(tripDataView), fileName);
+		databaseClient.exportAsyncToCSV(databaseClient.selectCursor(new GpsDataModel()), fileName + "_gps");
 	}
 }
