@@ -23,7 +23,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,14 +36,11 @@ import java.util.List;
 public class UserLoginPresenter
 {
 	private static final String LOG_TAG = "UserLoginPresenter";
-
+	private static SettingsFragment settingsFragment;
 	private IDatabaseClient databaseClient;
 	private ActualUserWrapper actualUserWrapper;
 	private ContextWrapper contextWrapper;
-
 	private LoginFragment loginFragment;
-	private static SettingsFragment settingsFragment;
-
 	private CallbackManager callbackManager;
 
 	public UserLoginPresenter(IDatabaseClient databaseClient, ActualUserWrapper actualUserWrapper, ContextWrapper contextWrapper)
@@ -52,6 +48,15 @@ public class UserLoginPresenter
 		this.databaseClient = databaseClient;
 		this.actualUserWrapper = actualUserWrapper;
 		this.contextWrapper = contextWrapper;
+	}
+
+	public static void logoutFb()
+	{
+		LoginManager.getInstance().logOut();
+		if(settingsFragment != null)
+		{
+			settingsFragment.getActivity().finish();
+		}
 	}
 
 	public void setLoginFragment(LoginFragment loginFragment)
@@ -166,16 +171,9 @@ public class UserLoginPresenter
 		return AccessToken.getCurrentAccessToken() != null;
 	}
 
-	public void attempFacebookLogin(Fragment fragment)
+	public void attemptFacebookLogin(Fragment fragment)
 	{
 		LoginManager.getInstance().logInWithReadPermissions(fragment, Arrays.asList(AppConstants.FacebookNames.USER_EMAIL_PERMISSION, AppConstants.FacebookNames.USER_EMAIL_PERMISSION));
-	}
-
-	public List<UserModel> authorize(String email, String password)
-	{
-		UserModel userModel = new UserModel(email, password, -1);
-		userModel.setWhereClause(UserModel.UserNames.LOGIN + "='" + userModel.getLogin() + "'");
-		return UserModel.buildFromContentValuesList(databaseClient.select(userModel));
 	}
 
 	public void startMainActivity(UserModel userModel, boolean checked)
@@ -186,14 +184,5 @@ public class UserLoginPresenter
 		Intent intent = new Intent(loginFragment.getActivity(), StartActivity.class);
 		Log.v(LOG_TAG, "MainActivity is starting");
 		loginFragment.startActivity(intent);
-	}
-
-	public static void logoutFb()
-	{
-		LoginManager.getInstance().logOut();
-		if (settingsFragment != null)
-		{
-			settingsFragment.getActivity().finish();
-		}
 	}
 }

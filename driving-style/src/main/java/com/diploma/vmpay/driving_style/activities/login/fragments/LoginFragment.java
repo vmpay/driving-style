@@ -4,32 +4,17 @@ package com.diploma.vmpay.driving_style.activities.login.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.diploma.vmpay.driving_style.R;
 import com.diploma.vmpay.driving_style.controller.AppController;
-import com.diploma.vmpay.driving_style.database.dbmodels.UserModel;
 import com.diploma.vmpay.driving_style.presenters.UserLoginPresenter;
 import com.diploma.vmpay.driving_style.utils.BugTrackingUtils;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.login.widget.LoginButton;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,13 +28,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 {
 
 	private final String LOG_TAG = "AuthActivity";
-
-	private UserLoginPresenter userLoginPresenter;
-
-	@BindView(R.id.btnSignIn) Button btnSignIn;
-
 	@BindView(R.id.tvVersion) TextView tvVersion;
-
+	private UserLoginPresenter userLoginPresenter;
 	private Unbinder unbinder;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,16 +66,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener
 		unbinder.unbind();
 	}
 
-	@OnClick({R.id.btnSignIn, R.id.ivFbLogin})
+	@OnClick({ R.id.ivFbLogin })
 	public void onClick(View v)
 	{
 		switch(v.getId())
 		{
-			case R.id.btnSignIn:
-				userLoginPresenter.attempFacebookLogin(this);
-				break;
 			case R.id.ivFbLogin:
-				userLoginPresenter.attempFacebookLogin(this);
+				userLoginPresenter.attemptFacebookLogin(this);
 				break;
 		}
 	}
