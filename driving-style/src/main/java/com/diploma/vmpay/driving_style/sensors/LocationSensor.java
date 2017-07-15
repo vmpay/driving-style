@@ -35,7 +35,7 @@ public class LocationSensor
 
 	private LocationManager locationManager;
 	private TextView tvEnabledGPS, tvStatusGPS, tvLocationGPS;
-	private Context context;
+//	private Context context;
 	private boolean recordingFlag = false;
 	private long trip_id = -1;
 	private DatabaseAccess databaseAccess;
@@ -54,10 +54,10 @@ public class LocationSensor
 	public LocationSensor(Context context, TextView tvStatusGPS, TextView tvLocationGPS)
 	{
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		this.context = context;
+//		this.context = context;
 		this.tvLocationGPS = tvLocationGPS;
 		this.tvStatusGPS = tvStatusGPS;
-		databaseAccess = new DatabaseAccess(this.context);
+//		databaseAccess = new DatabaseAccess(this.context);
 	}
 
 	/**
@@ -91,9 +91,9 @@ public class LocationSensor
 	@Deprecated
 	public boolean start()
 	{
-		if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+		if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
 				!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-				context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+				contextWrapper.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
 		{
 			// TODO: Consider calling
 			//    ActivityCompat#requestPermissions
@@ -147,17 +147,17 @@ public class LocationSensor
 		{
 			if(provider.equals(LocationManager.GPS_PROVIDER))
 			{
-				String result = context.getResources().getString(R.string.available);
+				String result = contextWrapper.getContext().getResources().getString(R.string.available);
 				switch(status)
 				{
 					case 0:
-						result = context.getResources().getString(R.string.unavailable);
+						result = contextWrapper.getContext().getResources().getString(R.string.unavailable);
 						break;
 					case 1:
-						result = context.getResources().getString(R.string.temporarily_unavailable);
+						result = contextWrapper.getContext().getResources().getString(R.string.temporarily_unavailable);
 						break;
 					case 2:
-						result = context.getResources().getString(R.string.available);
+						result = contextWrapper.getContext().getResources().getString(R.string.available);
 						break;
 				}
 				for(ILocationListener listener : locationListenerListenerList.getListCopy())
@@ -176,9 +176,9 @@ public class LocationSensor
 				{
 					listener.onProviderEnabled();
 				}
-				if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+				if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
 						!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-						context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+						contextWrapper.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
 				{
 					Log.v(LOG_TAG, "finish: Application has no permission to acquire GPS data");
 					// TODO: Consider calling
@@ -238,8 +238,8 @@ public class LocationSensor
 		@Override
 		public void onProviderEnabled(String provider)
 		{
-			if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-					!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context,
+			if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+					!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(contextWrapper.getContext(),
 					Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
 			{
 				// TODO: Consider calling
@@ -262,13 +262,13 @@ public class LocationSensor
 				switch(status)
 				{
 					case 0:
-						tvStatusGPS.setText(context.getResources().getString(R.string.unavailable));
+						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.unavailable));
 						break;
 					case 1:
-						tvStatusGPS.setText(context.getResources().getString(R.string.temporarily_unavailable));
+						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.temporarily_unavailable));
 						break;
 					case 2:
-						tvStatusGPS.setText(context.getResources().getString(R.string.available));
+						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.available));
 						break;
 				}
 
@@ -304,8 +304,8 @@ public class LocationSensor
 	{
 		if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			Toast.makeText(context, "Enable GPS service, please.", Toast.LENGTH_SHORT).show();
-			context.startActivity(new Intent(
+			Toast.makeText(contextWrapper.getContext(), "Enable GPS service, please.", Toast.LENGTH_SHORT).show();
+			contextWrapper.getContext().startActivity(new Intent(
 					android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 		}
 	}
