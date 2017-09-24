@@ -1,16 +1,13 @@
 package com.diploma.vmpay.driving_style.sensors;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.TextView;
@@ -41,6 +38,149 @@ public class LocationSensor
 	private DatabaseAccess databaseAccess;
 	private ContextWrapper contextWrapper;
 	private ListenerList<ILocationListener> locationListenerListenerList;
+	private LocationListener gpsLocationListener = new LocationListener()
+	{
+		@Override
+		public void onLocationChanged(Location location)
+		{
+			for(ILocationListener listener : locationListenerListenerList.getListCopy())
+			{
+				listener.onLocationChanged(location);
+			}
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle bundle)
+		{
+			if(provider.equals(LocationManager.GPS_PROVIDER))
+			{
+				GpsStatus result = GpsStatus.AVAILABLE;
+				switch(status)
+				{
+					case 0:
+						result = GpsStatus.UNAVAILABLE;
+						break;
+					case 1:
+						result = GpsStatus.TEMPORARY_UNAVAILABLE;
+						break;
+					case 2:
+						result = GpsStatus.AVAILABLE;
+						break;
+				}
+				for(ILocationListener listener : locationListenerListenerList.getListCopy())
+				{
+					listener.onStatusChanged(result);
+				}
+			}
+		}
+
+		@Override
+		public void onProviderEnabled(String provider)
+		{
+			if(provider.equals(LocationManager.GPS_PROVIDER))
+			{
+				for(ILocationListener listener : locationListenerListenerList.getListCopy())
+				{
+					listener.onProviderEnabled();
+				}
+				if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+						!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+						contextWrapper.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+				{
+					Log.v(LOG_TAG, "finish: Application has no permission to acquire GPS data");
+					// TODO: Consider calling
+					//    ActivityCompat#requestPermissions
+					// here to request the missing permissions, and then overriding
+					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+					//                                          int[] grantResults)
+					// to handle the case where the user grants the permission. See the documentation
+					// for ActivityCompat#requestPermissions for more details.
+				}
+				else
+				{
+					Location location = locationManager.getLastKnownLocation(provider);
+					for(ILocationListener listener : locationListenerListenerList.getListCopy())
+					{
+						listener.onLastKnownLocation(location);
+					}
+				}
+			}
+		}
+
+		@Override
+		public void onProviderDisabled(String provider)
+		{
+			if(provider.equals(LocationManager.GPS_PROVIDER))
+			{
+				for(ILocationListener listener : locationListenerListenerList.getListCopy())
+				{
+					listener.onProviderDisabled();
+				}
+			}
+		}
+	};
+	@Deprecated
+	private LocationListener locationListener = new LocationListener()
+	{
+
+		@Override
+		public void onLocationChanged(Location location)
+		{
+			showLocation(location);
+			if(recordingFlag)
+			{
+				databaseAccess.insert(new GpsDataModel(trip_id, new Date().getTime(),
+						location.getLatitude(), location.getLongitude(), location.getAltitude(),
+						location.getSpeed()));
+			}
+		}
+
+		@Override
+		public void onProviderDisabled(String provider)
+		{
+			isGpsAvailable();
+		}
+
+		@Override
+		public void onProviderEnabled(String provider)
+		{
+			if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+					!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(contextWrapper.getContext(),
+					Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+			{
+				// TODO: Consider calling
+				//    ActivityCompat#requestPermissions
+				// here to request the missing permissions, and then overriding
+				//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+				//                                          int[] grantResults)
+				// to handle the case where the user grants the permission. See the documentation
+				// for ActivityCompat#requestPermissions for more details.
+				return;
+			}
+			showLocation(locationManager.getLastKnownLocation(provider));
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras)
+		{
+			if(provider.equals(LocationManager.GPS_PROVIDER))
+			{
+				switch(status)
+				{
+					case 0:
+						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.unavailable));
+						break;
+					case 1:
+						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.temporarily_unavailable));
+						break;
+					case 2:
+						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.available));
+						break;
+				}
+
+			}
+		}
+	};
 
 	public LocationSensor(ContextWrapper contextWrapper, ListenerList<ILocationListener> locationListenerListenerList)
 	{
@@ -62,7 +202,8 @@ public class LocationSensor
 
 	/**
 	 * Launches location sensor
-	 * @param minTime in ms, time between updating position
+	 *
+	 * @param minTime     in ms, time between updating position
 	 * @param minDistance in m, distance between updating position
 	 */
 
@@ -131,151 +272,6 @@ public class LocationSensor
 		}
 	}
 
-	private LocationListener gpsLocationListener = new LocationListener()
-	{
-		@Override
-		public void onLocationChanged(Location location)
-		{
-			for(ILocationListener listener : locationListenerListenerList.getListCopy())
-			{
-				listener.onLocationChanged(location);
-			}
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle bundle)
-		{
-			if(provider.equals(LocationManager.GPS_PROVIDER))
-			{
-				String result = contextWrapper.getContext().getResources().getString(R.string.available);
-				switch(status)
-				{
-					case 0:
-						result = contextWrapper.getContext().getResources().getString(R.string.unavailable);
-						break;
-					case 1:
-						result = contextWrapper.getContext().getResources().getString(R.string.temporarily_unavailable);
-						break;
-					case 2:
-						result = contextWrapper.getContext().getResources().getString(R.string.available);
-						break;
-				}
-				for(ILocationListener listener : locationListenerListenerList.getListCopy())
-				{
-					listener.onStatusChanged(result);
-				}
-			}
-		}
-
-		@Override
-		public void onProviderEnabled(String provider)
-		{
-			if(provider.equals(LocationManager.GPS_PROVIDER))
-			{
-				for(ILocationListener listener : locationListenerListenerList.getListCopy())
-				{
-					listener.onProviderEnabled();
-				}
-				if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-						!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-						contextWrapper.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-				{
-					Log.v(LOG_TAG, "finish: Application has no permission to acquire GPS data");
-					// TODO: Consider calling
-					//    ActivityCompat#requestPermissions
-					// here to request the missing permissions, and then overriding
-					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-					//                                          int[] grantResults)
-					// to handle the case where the user grants the permission. See the documentation
-					// for ActivityCompat#requestPermissions for more details.
-				}
-				else
-				{
-					Location location = locationManager.getLastKnownLocation(provider);
-					for(ILocationListener listener : locationListenerListenerList.getListCopy())
-					{
-						listener.onLastKnownLocation(location);
-					}
-				}
-			}
-		}
-
-		@Override
-		public void onProviderDisabled(String provider)
-		{
-			if(provider.equals(LocationManager.GPS_PROVIDER))
-			{
-				for(ILocationListener listener : locationListenerListenerList.getListCopy())
-				{
-					listener.onProviderDisabled();
-				}
-			}
-		}
-	};
-
-	@Deprecated
-	private LocationListener locationListener = new LocationListener()
-	{
-
-		@Override
-		public void onLocationChanged(Location location)
-		{
-			showLocation(location);
-			if(recordingFlag)
-			{
-				databaseAccess.insert(new GpsDataModel(trip_id, new Date().getTime(),
-						location.getLatitude(), location.getLongitude(), location.getAltitude(),
-						location.getSpeed()));
-			}
-		}
-
-		@Override
-		public void onProviderDisabled(String provider)
-		{
-			isGpsAvailable();
-		}
-
-		@Override
-		public void onProviderEnabled(String provider)
-		{
-			if(ActivityCompat.checkSelfPermission(contextWrapper.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-					!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(contextWrapper.getContext(),
-					Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-			{
-				// TODO: Consider calling
-				//    ActivityCompat#requestPermissions
-				// here to request the missing permissions, and then overriding
-				//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-				//                                          int[] grantResults)
-				// to handle the case where the user grants the permission. See the documentation
-				// for ActivityCompat#requestPermissions for more details.
-				return;
-			}
-			showLocation(locationManager.getLastKnownLocation(provider));
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras)
-		{
-			if(provider.equals(LocationManager.GPS_PROVIDER))
-			{
-				switch(status)
-				{
-					case 0:
-						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.unavailable));
-						break;
-					case 1:
-						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.temporarily_unavailable));
-						break;
-					case 2:
-						tvStatusGPS.setText(contextWrapper.getContext().getResources().getString(R.string.available));
-						break;
-				}
-
-			}
-		}
-	};
-
 	private void showLocation(Location location)
 	{
 		if(location == null)
@@ -324,5 +320,12 @@ public class LocationSensor
 	public void stopRecording()
 	{
 		recordingFlag = false;
+	}
+
+	public enum GpsStatus
+	{
+		AVAILABLE,
+		UNAVAILABLE,
+		TEMPORARY_UNAVAILABLE
 	}
 }

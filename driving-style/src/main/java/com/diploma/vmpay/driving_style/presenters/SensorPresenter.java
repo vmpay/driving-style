@@ -99,7 +99,7 @@ public class SensorPresenter implements ILocationListener, IAccelerometerListene
 	}
 
 	@Override
-	public void onStatusChanged(String status)
+	public void onStatusChanged(LocationSensor.GpsStatus status)
 	{
 
 	}

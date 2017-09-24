@@ -2,6 +2,8 @@ package com.diploma.vmpay.driving_style.interfaces;
 
 import android.location.Location;
 
+import com.diploma.vmpay.driving_style.sensors.LocationSensor;
+
 /**
  * Created by Andrew on 07/09/2016.
  */
@@ -11,7 +13,7 @@ public interface ILocationListener
 
 	void onLastKnownLocation(Location location);
 
-	void onStatusChanged(String status);
+	void onStatusChanged(LocationSensor.GpsStatus status);
 
 	void onProviderEnabled();
 
@@ -31,7 +33,7 @@ public interface ILocationListener
 		}
 
 		@Override
-		public void onStatusChanged(String status)
+		public void onStatusChanged(LocationSensor.GpsStatus status)
 		{
 		}
 
